@@ -6,7 +6,7 @@ Object-oriented Tetris 3D.
 Uses GLUT and has VS Code `tasks.json` configurations.
 
 Works on MacOS.
-Linux and Windows to be implemented.
+Linux to be implemented.
 
 ## To-do
 
