@@ -2,27 +2,28 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build opengl-app",
+            "label": "build tetris3d",
             "type": "shell",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "windows": {
-                "command": ".vscode/build_windows.bat"
-            },
+            // "windows": {
+            //     "command": ".vscode/build_windows.bat"
+            // },
             "osx": {
-                "command": "rm -rf build; mkdir build; cd build; clang++ -g -I ${workspaceRoot}/include/ -framework OpenGL -lglew -lglfw ${workspaceRoot}/src/cpp/*.cpp -o opengl-app"
-                
+                "command": "rm -rf build; mkdir build; cd build; c++ /System/Library/Frameworks/GLUT.framework/GLUT /System/Library/Frameworks/OpenGL.framework/OpenGL ${workspaceRoot}/src/*.cpp -o tetris3d.app"
             },
-            "linux": {
-                "command": "rm -rf build; mkdir build; cd build; g++ -g -I ${workspaceRoot}/include/ ${workspaceRoot}/src/cpp/*.cpp -lGL -lGLEW -lglfw -o opengl-app"
-            }
+            // "linux": {
+            //     "command": "rm -rf build; mkdir build; cd build; g++ -g -I ${workspaceRoot}/include/ ${workspaceRoot}/src/cpp/*.cpp -lGL -lGLEW -lglfw -o opengl-app"
+            // },
+            "problemMatcher": []
         },
-        {
-            "label": "run opengl-app",
-            "type": "shell",
-            "command": "./build/opengl-app"
-        }
+        // {
+        //     "label": "run opengl-app",
+        //     "type": "shell",
+        //     "command": "./build/opengl-app",
+        //     "problemMatcher": []
+        // }
     ]
 }
