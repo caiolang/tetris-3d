@@ -5,14 +5,13 @@ Object-oriented Tetris 3D.
 
 Uses GLUT and has VS Code `tasks.json` configurations.
 
-Works on MacOS.
-Linux to be implemented.
+Works on MacOS and Linux.
 
 ## To-do
 
+* Change cubes[] to be a vector of Cube, and not int.
 * Implement classes and game logic
-* Configure `tasks.json` to run on Linux
-* ...
+* 
 
 ## Instructions
 

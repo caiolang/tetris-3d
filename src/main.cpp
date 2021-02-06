@@ -2,6 +2,8 @@
 #include <math.h>
 #include <iostream>
 #include <ctime>
+#include "Cube.h"
+#include "Matrix.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -88,6 +90,14 @@ int main( int argc, char* argv[] )
     // Capture the previous time to calculate the delta time on the next frame
     g_PreviousTicks = std::clock();
 
+    Matrix *matrix = new Matrix();
+
+    for (size_t i = 0; i < 2200; i++)
+    {
+        std::cout << matrix->getCubes()[i] << "\n";
+    }
+    
+
     InitGL( argc, argv );
     glutMainLoop();
     Cleanup(g_iErrorCode);
@@ -122,7 +132,7 @@ void InitGL( int argc, char* argv[] )
                             ( iScreenHeight - g_iWindowHeight ) / 2 );
     glutInitWindowSize( g_iWindowWidth, g_iWindowHeight );
 
-    g_iGLUTWindowHandle = glutCreateWindow( "OpenGL" );
+    g_iGLUTWindowHandle = glutCreateWindow( "Tetris 3D" );
 
     // Register GLUT callbacks
     glutDisplayFunc(DisplayGL);
@@ -375,6 +385,7 @@ void RenderScene1()
     glLoadIdentity();                                                       // Load the identity matrix
 
     glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate our view matrix back and a bit to the left.
+    
     
     drawS();
     // glColor3f( 1.0f, 0.0f, 0.0f );                                          // Set Color to red
