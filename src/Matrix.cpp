@@ -2,29 +2,30 @@
 
 Matrix::Matrix()
 {
-    std::cout << "GOT INTO CONSTRUCTOR\n";
+    // std::cout << "GOT INTO CONSTRUCTOR\n";
 
+    /* Initializing the Matrix Cubes */
     for (int i = 0; i < 2200; i++)
     {
-        cubes[i]=3;
+        m_cubes[i]= Cube(id_to_x(i), id_to_y(i), id_to_z(i), false);
     }
     
 
 }
 
-int Matrix::coordToId(int x, int y, int z){
+int Matrix::coord_to_id(int x, int y, int z){
     int id = x + 10*y + 100*z;
     return id;
 }
 
-int Matrix::idToX(int id){
+int Matrix::id_to_x(int id){
     int x;
 
     x=id%10;
     return x;
 }
 
-int Matrix::idToY(int id){
+int Matrix::id_to_y(int id){
     int y;
 
     y=(int)id/10;
@@ -32,46 +33,14 @@ int Matrix::idToY(int id){
     return y;
 }
 
-int Matrix::idToZ(int id){
-    int x;
+int Matrix::id_to_z(int id){
+    int z;
 
     z=(int)id/100;
     return z;
 }
 
-int* Matrix::getCubes(){
-    return cubes;
+Cube* Matrix::get_cubes(){
+    return m_cubes;
 }
 
-// ? Matrix::idToCoord(int id){
-//     int x,y,z;
-
-//     x=id%10;
-//     y=(int)id/10;
-//     y=y%10;
-//     z=(int)id/100;
-
-// }
-
-
-
-// int Matrix::getCubes(int x, int y, int z){
-//     return this->cubes[x][y][z];
-// }
-// Matrix::Matrix(int x_dim, int y_dim, int z_dim)
-// {
-//     this->x=x_dim;
-//     this->y=y_dim;
-//     this->z=z_dim;
-//     // this->cubes[10][10][10];
-
-
-//     for (int i = 0; i < x_dim; i++){
-//         for (int j = 0; j < y_dim; i++){
-//             for (int k = 0; k < z_dim; i++){
-//                 cubes[i][j][k]= new Cube(i,j,k,false);
-//             }
-//         }
-//     }
-    
-// }

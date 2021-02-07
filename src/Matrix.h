@@ -7,24 +7,24 @@
  
 class Matrix
 {
-    public:
- 
-    Matrix(); // Simple constructor
-    int coordToId(int x, int y, int z);
-    int idToX(int id);
-    int idToY(int id);
-    int idToZ(int id);
-
-    // Matrix(int x_dim, int y_dim, int z_dim); // Constructor with matrix dimensions
     
-    int* getCubes();
- 
     private:
 
-    int x,y,z;
-    int cubes[2200];
+        // int m_cubes[2200];
+        Cube m_cubes[2200];
 
+    public:
+    
+        Matrix(); // Simple constructor
+        int coord_to_id(int x, int y, int z);
+        int id_to_x(int id);
+        int id_to_y(int id);
+        int id_to_z(int id);
 
+        // Matrix(int x_dim, int y_dim, int z_dim); // Constructor with matrix dimensions
+
+        // int* get_cubes();    
+        Cube* get_cubes();
 
 };
  

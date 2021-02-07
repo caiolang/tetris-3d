@@ -91,10 +91,11 @@ int main( int argc, char* argv[] )
     g_PreviousTicks = std::clock();
 
     Matrix *matrix = new Matrix();
+ 
 
     for (size_t i = 0; i < 2200; i++)
     {
-        std::cout << matrix->getCubes()[i] << "\n";
+        std::cout << matrix->get_cubes()[i]; // << "\n";
     }
     
 
