@@ -10,8 +10,9 @@ Works on MacOS and Linux.
 ## To-do
 
 * [X] GAME: Vetor de Pieces
-* [ ] getCubes para pegar posicao inicial da peca
-* [ ] fazer método isSafe (MATRIX)
+* [X] getCubes para pegar posicao inicial da peca
+* [X] 1/2: fazer método isSafe (MATRIX)
+ESTÁ BUGADO: fala que as pecas iniciais da O_piece estão ocupadas. Investigar o porquê. (linha 135 da main.cpp)
 * [ ] se for safe: inicializa a Piece
 * **Inicializar significa:**
 * [ ] Passar para Cubes a cor da peca, setá-los como occupied
@@ -49,4 +50,4 @@ Then, to run, type and run this in the integrated terminal:
 
 ## PARA RELATORIO
 
-- polimorfismo no vetor de Piece pieces, que é um vetor heterogeneo composto por varios tipos de pecas (O_piece, I_piece etc.)
+- polimorfismo no vetor de Piece pieces, que é um vetor heterogeneo composto por varios tipos de pecas (O_piece, I_piece etc.

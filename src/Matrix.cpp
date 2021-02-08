@@ -44,3 +44,19 @@ Cube* Matrix::get_cubes(){
     return m_cubes;
 }
 
+bool Matrix::is_safe(int* ids_vec){
+    bool safe=true;
+    int id=0;
+
+    for (int i = 0; i < 4; i++)
+    {
+        id = ids_vec[i];
+        if(!this->m_cubes[id].is_occupied()){
+            safe=false;
+            std::cout << "\n" << id << " is not safe\n";
+        }
+    }
+    
+    return safe;
+}
+

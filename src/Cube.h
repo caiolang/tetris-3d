@@ -11,7 +11,6 @@ class Cube{
         int m_y;
         int m_z;
         bool m_occupied;
-        // Piece *m_piece;
         int m_color; // TEMPORARY - three digit (0-111) representing RGB color
     
     public:

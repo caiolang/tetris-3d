@@ -121,13 +121,31 @@ int main( int argc, char* argv[] )
     //     std::cout << matrix->get_cubes()[i]; // << "\n";
     // }
     
-    std::vector<Piece*> pieces(NUM_PIECES);
+    std::vector<Piece*> pieces;
 
     pieces.push_back( new O_piece());
     pieces.push_back( new O_piece());
     pieces.push_back( new O_piece());
     pieces.push_back( new O_piece());
     pieces.push_back( new O_piece());
+
+    // std::cout << pieces.at(0)->get_cubes()[1] << "\n";
+    // std::cout << pieces.at(0) << "\n";
+
+    // ESTA BUGANDO AQUI EMBAIXO: ESTA FALANDO QUE AS POSICOES ESTAO OCUPADAS
+
+    std::cout << matrix->get_cubes()[2044].is_occupied();
+    std::cout << matrix->get_cubes()[2144].is_occupied();
+    std::cout << matrix->get_cubes()[2145].is_occupied();
+    std::cout << matrix->get_cubes()[2045].is_occupied();
+
+    if( matrix->is_safe(pieces.at(0)->get_cubes()) ){
+        std::cout << "\nIS SAFE\n";
+    } else {
+        std::cout << "\nNOT SAFE\n";
+    }
+
+    
 
     // O_piece *test_piece = new O_piece();
     // for (size_t i = 0; i < 4; i++)
@@ -501,6 +519,20 @@ void render_game_stage(){
         }
     glEnd();
 
+    // Back
+    glBegin( GL_QUADS );
+        for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+            for(GLfloat x0f=0; x0f<X_DIM;x0f++){
+                glVertex3f(  x0f, y0f, 0.0f );                                   
+                glVertex3f(  x0f, y0f+1.0f, 0.0f );
+                glVertex3f(  x0f+1.0f, y0f+1.0f, 0.0f );                             
+                glVertex3f(  x0f+1.0f, y0f, 0.0f );   
+            }
+        }
+    glEnd();
+
+      
+
 }
 
 void render_cube(int x0, int y0, int z0, int color){
@@ -510,7 +542,6 @@ void render_cube(int x0, int y0, int z0, int color){
     r=color/100;
     g=(color/10)%10;
     b=color%10;
-
 
     glBegin( GL_QUADS );
 
