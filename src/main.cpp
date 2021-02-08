@@ -2,6 +2,7 @@
 #include <math.h>
 #include <iostream>
 #include <ctime>
+#include <vector>
 // #include <string.h>
 #include "Cube.h"
 #include "Matrix.h"
@@ -40,11 +41,15 @@ int g_iWindowHeight = 512;
 int g_iGLUTWindowHandle = 0;
 int g_iErrorCode = 0;
 
-Matrix *matrix = new Matrix();
 const int MATRIX_SIZE = 2200;
 const int X_DIM = 10;
 const int Y_DIM = 22;
 const int Z_DIM = 10;
+const int NUM_PIECES = 20;
+
+Matrix *matrix = new Matrix();
+
+
 // unsigned char hello_string[] = "The quick god jumps over the lazy brown fox.";
 // int w = glutBitmapLength(GLUT_BITMAP_8_BY_13, hello_string);
 
@@ -101,6 +106,8 @@ void RenderScene4();
 // We're exiting, cleanup the allocated resources.
 void Cleanup( int exitCode, bool bExit = true );
 
+// ------------------------------------------------
+
 int main( int argc, char* argv[] )
 {
     // Capture the previous time to calculate the delta time on the next frame
@@ -114,21 +121,28 @@ int main( int argc, char* argv[] )
     //     std::cout << matrix->get_cubes()[i]; // << "\n";
     // }
     
-    O_piece *test_piece = new O_piece();
+    std::vector<Piece*> pieces(NUM_PIECES);
 
-      for (size_t i = 0; i < 4; i++)
-    {
-        std::cout << test_piece->get_cubes()[i] << ",";
+    pieces.push_back( new O_piece());
+    pieces.push_back( new O_piece());
+    pieces.push_back( new O_piece());
+    pieces.push_back( new O_piece());
+    pieces.push_back( new O_piece());
+
+    // O_piece *test_piece = new O_piece();
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     std::cout << test_piece->get_cubes()[i] << ",";
         
-    }
+    // }
 
-    int new_pos[4];
-    test_piece->rotate_x(new_pos);
-    std::cout << std::endl <<"New Position:"<< std::endl;
-    for (size_t i = 0; i < 4; i++)
-    {
-        std::cout << new_pos[i] << ",";
-    }
+    // int new_pos[4];
+    // test_piece->rotate_x(new_pos);
+    // std::cout << std::endl <<"New Position:"<< std::endl;
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     std::cout << new_pos[i] << ",";
+    // }
 
     InitGL( argc, argv );
     glutMainLoop();

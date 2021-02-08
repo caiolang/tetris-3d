@@ -9,6 +9,7 @@ O_piece::O_piece()
     m_cube_position[1]=m_cube_position[0]+100;
     m_cube_position[3]=m_cube_position[0]+1;
     m_cube_position[2]=m_cube_position[1]+1;
+    // std::cout << "Creating O_piece\n";
 }
 
 void O_piece::rotate_x(int* new_pos){
