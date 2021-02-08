@@ -448,7 +448,8 @@ void RenderScene1()
 
 void render_game_stage(){
 
-    glColor3f( 1.0f, 1.0f, 1.0f);
+    // glColor3f( 1.0f, 1.0f, 1.0f);
+    glColor3f( 0.3f, 0.3f, 0.3f);
 
     // Bottom
     glBegin( GL_QUADS );
