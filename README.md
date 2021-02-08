@@ -49,4 +49,4 @@ Then, to run, type and run this in the integrated terminal:
 
 ## PARA RELATORIO
 
-- polimorfismo na classe Cube, que tem um ponteiro para Piece (mas que varia entre as O_piece, I_piece etc)
+- polimorfismo no vetor de Piece pieces, que é um vetor heterogeneo composto por varios tipos de pecas (O_piece, I_piece etc.)
