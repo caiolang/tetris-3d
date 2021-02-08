@@ -12,11 +12,11 @@
             //     "command": ".vscode/build_windows.bat"
             // },
             "osx": {
-                "command": "rm -rf build; mkdir build; cd build; c++ /System/Library/Frameworks/GLUT.framework/GLUT /System/Library/Frameworks/OpenGL.framework/OpenGL ${workspaceRoot}/src/*.cpp -o tetris3d.app"
+                "command": "rm -rf build; mkdir build; cd build; c++ /System/Library/Frameworks/GLUT.framework/GLUT /System/Library/Frameworks/OpenGL.framework/OpenGL ${workspaceRoot}/src/*.cpp -o tetris3d.app -Wno-deprecated"
             },
-            // "linux": {
-            //     "command": "rm -rf build; mkdir build; cd build; g++ -g -I ${workspaceRoot}/include/ ${workspaceRoot}/src/cpp/*.cpp -lGL -lGLEW -lglfw -o opengl-app"
-            // },
+            "linux": {
+                "command": "rm -rf build; mkdir build; cd build; g++ ${workspaceRoot}/src/*.cpp -lGL -lGLU -lglut -o tetris3d.app"
+            },
             "problemMatcher": []
         },
         // {

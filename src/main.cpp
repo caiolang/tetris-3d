@@ -2,8 +2,11 @@
 #include <math.h>
 #include <iostream>
 #include <ctime>
+// #include <string.h>
 #include "Cube.h"
 #include "Matrix.h"
+#include "Piece.h"
+#include "O_piece.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -37,6 +40,15 @@ int g_iWindowHeight = 512;
 int g_iGLUTWindowHandle = 0;
 int g_iErrorCode = 0;
 
+Matrix *matrix = new Matrix();
+const int MATRIX_SIZE = 2200;
+const int X_DIM = 10;
+const int Y_DIM = 22;
+const int Z_DIM = 10;
+// unsigned char hello_string[] = "The quick god jumps over the lazy brown fox.";
+// int w = glutBitmapLength(GLUT_BITMAP_8_BY_13, hello_string);
+
+
 void InitGL( int argc, char* argv[] );
 void DisplayGL();
 void IdleGL();
@@ -54,6 +66,10 @@ void DrawTriangle( float2 p1, float2 p2, float2 p3 );
 void DrawCube( float width, float height, float depth );
 void DrawSphere( float radius );
 void DrawPyramid( float scale = 1.0f );
+
+int id_to_x(int id);
+int id_to_y(int id);
+int id_to_z(int id);
 
 enum ESceneType
 {
@@ -73,9 +89,9 @@ float g_fRotate3 = 0.0f;
 std::clock_t g_PreviousTicks;
 std::clock_t g_CurrentTicks;
 
-// Render a simple scene with 2D primitives
+// Render a test scene
 void RenderScene1();
-// Render a slightly more complex scene using different colors
+// Render the matrix 
 void RenderScene2(); 
 // Render a scene with animated transformations
 void RenderScene3();
@@ -90,14 +106,29 @@ int main( int argc, char* argv[] )
     // Capture the previous time to calculate the delta time on the next frame
     g_PreviousTicks = std::clock();
 
-    Matrix *matrix = new Matrix();
+    // Matrix *matrix = new Matrix();
  
 
-    for (size_t i = 0; i < 2200; i++)
-    {
-        std::cout << matrix->get_cubes()[i]; // << "\n";
-    }
+    // for (size_t i = 0; i < MATRIX_SIZE; i++)
+    // {
+    //     std::cout << matrix->get_cubes()[i]; // << "\n";
+    // }
     
+    O_piece *test_piece = new O_piece();
+
+      for (size_t i = 0; i < 4; i++)
+    {
+        std::cout << test_piece->get_cubes()[i] << ",";
+        
+    }
+
+    int new_pos[4];
+    test_piece->rotate_x(new_pos);
+    std::cout << std::endl <<"New Position:"<< std::endl;
+    for (size_t i = 0; i < 4; i++)
+    {
+        std::cout << new_pos[i] << ",";
+    }
 
     InitGL( argc, argv );
     glutMainLoop();
@@ -282,6 +313,7 @@ void KeyboardGL( unsigned char c, int x, int y )
     glutPostRedisplay();
 }
 
+/* Unused Mouse methods */
 void MouseGL( int button, int state, int x, int y )
 {
 
@@ -296,9 +328,9 @@ void ReshapeGL( int w, int h )
 {
     std::cout << "ReshapGL( " << w << ", " << h << " );" << std::endl;
 
-    if ( h == 0)										// Prevent A Divide By Zero error
+    if ( h == 0) // Prevent A Divide By Zero error
     {
-        h = 1;										// Making Height Equal One
+        h = 1; // Making Height Equal One
     }
 
     g_iWindowWidth = w;
@@ -382,8 +414,17 @@ void drawS(){
 
 void RenderScene1()
 {
+
     glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
     glLoadIdentity();                                                       // Load the identity matrix
+
+    // float x = .5; /* Centre in the middle of the window */
+    // glRasterPos2f(x - (float) glutGet(GLUT_SCREEN_WIDTH) / 2, 0.);
+    // glColor3f(1.f, 0.f, 0.f);
+    // int len = strlen(hello_string);
+    // for (int i = 0; i < len; i++) {
+    //     glutBitmapCharacter(GLUT_BITMAP_8_BY_13, hello_string);
+    // }
 
     glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate our view matrix back and a bit to the left.
     
@@ -405,61 +446,179 @@ void RenderScene1()
     DrawCircle( 1.0f, 16 );
 }
 
+void render_game_stage(){
+
+    glColor3f( 1.0f, 1.0f, 1.0f);
+
+    // Bottom
+    glBegin( GL_QUADS );
+        for(GLfloat x0f=0; x0f<X_DIM;x0f++){
+            for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+                glVertex3f(  x0f, 0.0f, z0f );                                   
+                glVertex3f(  x0f+1.0f, 0.0f, z0f );
+                glVertex3f(  x0f+1.0f, 0.0f, z0f+1.0f );                             
+                glVertex3f(  x0f, 0.0f, z0f+1.0f );   
+            }
+        }
+    glEnd();
+
+    // Left
+    glBegin( GL_QUADS );
+        for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+            for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+                glVertex3f(  0.0f, y0f, z0f );                                   
+                glVertex3f(  0.0f, y0f, z0f+1.0f );
+                glVertex3f(  0.0f, y0f+1.0f, z0f+1.0f );                             
+                glVertex3f(  0.0f, y0f+1.0f, z0f );   
+            }
+        }
+    glEnd();
+
+    // Right
+    glBegin( GL_QUADS );
+        for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+            for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+                glVertex3f(  10.0f, y0f, z0f );                                   
+                glVertex3f(  10.0f, y0f, z0f+1.0f );
+                glVertex3f(  10.0f, y0f+1.0f, z0f+1.0f );                             
+                glVertex3f(  10.0f, y0f+1.0f, z0f );   
+            }
+        }
+    glEnd();
+
+}
+
+void render_cube(int x0, int y0, int z0, int color){
+    
+    GLfloat x0f=(GLfloat)x0, y0f=(GLfloat)y0, z0f=(GLfloat)z0;
+    float r,g,b;
+    r=color/100;
+    g=(color/10)%10;
+    b=color%10;
+
+
+    glBegin( GL_QUADS );
+
+        glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
+
+        // Top face
+        glVertex3f(  x0f, y0f+1.0f, z0f );                                   
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f );
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f+1.0f );                             
+        glVertex3f(  x0f, y0f+1.0f, z0f+1.0f );                                  
+
+        // glColor3f(   1.0f, 1.0f,  0.0f ); // Yellow
+
+        // Bottom face
+        glVertex3f(  x0f, y0f, z0f );                                   
+        glVertex3f(  x0f+1.0f, y0f, z0f );
+        glVertex3f(  x0f+1.0f, y0f, z0f+1.0f );                             
+        glVertex3f(  x0f, y0f, z0f+1.0f );         
+
+        // Front face
+        glVertex3f(  x0f, y0f, z0f+1.0f );                                   
+        glVertex3f(  x0f, y0f+1.0f, z0f+1.0f );
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f+1.0f );                             
+        glVertex3f(  x0f+1.0f, y0f, z0f+1.0f );  
+
+        // Back face
+        glVertex3f(  x0f, y0f, z0f );                                   
+        glVertex3f(  x0f, y0f+1.0f, z0f );
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f );                             
+        glVertex3f(  x0f+1.0f, y0f, z0f );   
+
+        // Left face
+        glVertex3f(  x0f, y0f, z0f );                                   
+        glVertex3f(  x0f, y0f, z0f+1.0f );
+        glVertex3f(  x0f, y0f+1.0f, z0f+1.0f );                             
+        glVertex3f(  x0f, y0f+1.0f, z0f );   
+
+        // Right face
+        glVertex3f(  x0f+1.0f, y0f, z0f );                                   
+        glVertex3f(  x0f+1.0f, y0f, z0f+1.0f );
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f+1.0f );                             
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f );      
+
+    glEnd();
+
+}
+
 void RenderScene2()
 {
     glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
     glLoadIdentity();                                                       // Load the identity matrix
 
-    glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate back and to the left
-    // Draw a triangle with different colors on each vertex
-    glBegin( GL_TRIANGLES );
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex2f( 0.0f, 1.0f );                                           // Top-Center
+    glTranslatef( -5.0f, -10.0f, -30.0f );                                     // Translate back and to the left
+    
+    /* Rendering game matrix */
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    
+    // glBegin( GL_QUADS );
+    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
 
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex2f( -1.0f, -1.0f );                                         // Bottom-Left
+    //     glVertex3f( 0.0f, 0.0f, 0.0f);
+    //     glVertex3f( 10.0f, 0.0f, 0.0f);
+    //     glVertex3f( 10.0f, 0.0f, 10.0f);
+    //     glVertex3f( 0.0f, 0.0f, 10.0f);
+    // glEnd();
 
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex2f( 1.0f, -1.0f );                                          // Bottom-Right
-    glEnd();
+    // glBegin( GL_QUADS );
+    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
 
-    glTranslatef( 3.0f, 0.0f, 0.0f );                                       // Translate right
-    // Draw a rectangle with different colors on each vertex
-    glBegin( GL_QUADS );
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex2f( -1.0f, 1.0f );                                          // Top-Left
+    //     glVertex3f( 0.0f, 0.0f, 0.0f);
+    //     glVertex3f( 0.0f, 0.0f, 10.0f);
+    //     glVertex3f( 0.0f, 22.0f, 10.0f);
+    //     glVertex3f( 0.0f, 22.0f, 0.0f);
+    // glEnd();
 
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex2f( 1.0f, 1.0f );                                           // Top-Right
+    // glBegin( GL_QUADS );
+    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
 
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex2f( 1.0f, -1.0f );                                          // Bottom-Right
+    //     glVertex3f( 10.0f, 0.0f, 0.0f);
+    //     glVertex3f( 10.0f, 0.0f, 10.0f);
+    //     glVertex3f( 10.0f, 22.0f, 10.0f);
+    //     glVertex3f( 10.0f, 22.0f, 0.0f);
+    // glEnd();
 
-        glColor3f( 1.0f, 1.0f, 1.0f );                                      // White
-        glVertex2f( -1.0f, -1.0f );                                         // Bottom-Left
-    glEnd();
+    // glBegin( GL_QUADS );
+    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
 
-    glTranslatef( -1.5f, -3.0f, 0.0f );                                     // Back to center and lower screen
+    //     glVertex3f( 0.0f, 0.0f, 0.0f);
+    //     glVertex3f( 10.0f, 0.0f, 0.0f);
+    //     glVertex3f( 10.0f, 22.0f, 0.0f);
+    //     glVertex3f( 0.0f, 22.0f, 0.0f);
+    // glEnd();
 
-    // Draw a circle with blended red/blue vertices.
-    const float step = M_PI / 16;
-    const float radius = 1.0f;
+    render_game_stage();
 
-    glBegin( GL_TRIANGLE_FAN );
-        glColor3f( 1.0f, 1.0f, 1.0f );    
-        glVertex2f(0.0f, 0.0f);
-        for ( float angle = 0.0f; angle < ( 2.0f * M_PI ); angle += step )
-        {
-            float fSin = sinf(angle);
-            float fCos = cosf(angle);
+    /* Rendering the game cubes */
 
-            glColor3f( ( fCos + 1.0f ) * 0.5f, ( fSin + 1.0f ) * 0.5f , 0.0f);
-            glVertex2f( radius * fSin, radius * fCos );
-        }
-        glColor3f( 1.0f, 0.5f, 0.0f );
-        glVertex2f( 0.0f, radius ); // One more vertex to close the circle
-    glEnd();
+    Cube cube_aux;
+    int color;
+    int x,y,z;
+
+    // glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+    for (size_t i = 0; i < MATRIX_SIZE; i++){
+            // std::cout << matrix->get_cubes()[i]; // << "\n";
+            cube_aux = matrix->get_cubes()[i];
+            color = cube_aux.get_color();
+             
+            x=id_to_x(i);
+            y=id_to_y(i);
+            z=id_to_z(i);
+
+            if (cube_aux.is_occupied()){
+                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+                // render_cube(x,y,z,111);
+                // glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+                render_cube(x,y,z,color);
+            }
+    }
+
 }
+
+
 
 void RenderScene3()
 {
@@ -636,4 +795,27 @@ void RenderScene4()
     glColor3f( 1.0f, 0.0f, 0.0f );                                          // Red
     glutWireSphere( 1.0f, 16, 16 );                                         // Use GLUT to draw a wireframe sphere
     glPopMatrix();
+}
+
+
+int id_to_x(int id){
+    int x;
+
+    x=id%10;
+    return x;
+}
+
+int id_to_y(int id){
+    int y;
+
+    y=(int)id/100;
+    return y;
+}
+
+int id_to_z(int id){
+    int z;
+
+    z=(int)id/10;
+    z=z%10;
+    return z;
 }

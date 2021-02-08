@@ -28,15 +28,15 @@ int Matrix::id_to_x(int id){
 int Matrix::id_to_y(int id){
     int y;
 
-    y=(int)id/10;
-    y=y%10;
+    y=(int)id/100;
     return y;
 }
 
 int Matrix::id_to_z(int id){
     int z;
 
-    z=(int)id/100;
+    z=(int)id/10;
+    z=z%10;
     return z;
 }
 

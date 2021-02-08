@@ -3,14 +3,13 @@
 
 #include <vector>
 #include <iostream>
-#include "Cube.h"
 
 class Piece
 {
     protected:
-        int cube_position[4];
-        bool stop;
-        char* color;
+        int m_cube_position[4];
+        bool m_stop;
+        int m_color;
 
     public:
         Piece(); // Constructor
@@ -19,7 +18,7 @@ class Piece
         void translate_z(int* new_pos,int dir);
         bool get_stop();
         int* get_cubes();
-        char* get_color();
+        int get_color();
         void rotate_x(int* new_pos);
         void rotate_y(int* new_pos);
         void rotate_z(int* new_pos);

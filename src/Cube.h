@@ -1,8 +1,8 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include <vector>
 #include <iostream>
+#include "Piece.h"
  
 class Cube{
     private:
@@ -11,7 +11,8 @@ class Cube{
         int m_y;
         int m_z;
         bool m_occupied;
-        // Piece *piece
+        // Piece *m_piece;
+        int m_color; // TEMPORARY - three digit (0-111) representing RGB color
     
     public:
         Cube(); // Default constructor 
@@ -21,7 +22,9 @@ class Cube{
         int get_x() ;
         int get_y() ;
         int get_z() ;
+        int get_pos() ;
         bool is_occupied() ;
+        int get_color(); // TEMPORARY
 
         void print(std::ostream &flux) const;      
 };
