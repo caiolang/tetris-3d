@@ -10,13 +10,12 @@ Works on MacOS and Linux.
 ## To-do
 
 * [X] GAME: Vetor de Pieces
-* [X] getCubes para pegar posicao inicial da peca
-* [X] 1/2: fazer método isSafe (MATRIX)
-ESTÁ BUGADO: fala que as pecas iniciais da O_piece estão ocupadas. Investigar o porquê. (linha 135 da main.cpp)
-* [ ] se for safe: inicializa a Piece
+* [X] get_cubes() para pegar posicao inicial da peca
+* [X] fazer método is_safe() (MATRIX)
+* [X] se for safe: inicializa a Piece
 * **Inicializar significa:**
-* [ ] Passar para Cubes a cor da peca, setá-los como occupied
-* [ ] dar Start na Piece
+* [X] Passar para Cubes a cor da peca, setá-los como occupied
+* [X] dar Start na Piece
 
 * [ ] COMANDO: implementar escuta de teclas
 * [ ] ex: rotate_x(...)
@@ -36,6 +35,7 @@ ESTÁ BUGADO: fala que as pecas iniciais da O_piece estão ocupadas. Investigar 
 * [ ] mostrar a proxima peca na direita 
 * [ ] inserir texto?
 * [ ] fazer tela de entrada na RenderScene1()
+* [ ] transformar main.cpp em Game.cpp (organizar em formato de classe)
 
 
 ## Instructions

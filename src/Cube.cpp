@@ -28,8 +28,28 @@ Cube::Cube(int pos_x, int pos_y, int pos_z, bool occ) //Constructor
     m_color = 101; // DEFAULT: Violet (TEMPORARY)
     // m_piece = NULL;
 
-    // //TEMPORARY:
+    //TEMPORARY:
     // if(pos_x==3){
+    //     m_occupied=true;
+    // }
+
+    if(pos_x==6 && pos_y==4 && pos_z==3 ){
+        m_occupied=true;
+    }
+
+    // if(pos_x==4 && pos_y==20 && pos_z==4 ){
+    //     m_occupied=true;
+    // }
+
+    // if(pos_x==4 && pos_y==21 && pos_z==4 ){
+    //     m_occupied=true;
+    // }
+
+    // if(pos_x==5 && pos_y==21 && pos_z==4 ){
+    //     m_occupied=true;
+    // }
+
+    // if(pos_x==5 && pos_y==20 && pos_z==4 ){
     //     m_occupied=true;
     // }
 
@@ -43,6 +63,13 @@ int Cube::get_pos() {return m_x+10*m_z+100*m_y;}
 bool Cube::is_occupied()  { return m_occupied; }
 int Cube::get_color() { return m_color;} // TEMPORARY
 
+void Cube::set_color(int color){
+    this->m_color = color;
+}
+
+void Cube::set_occupied(bool state){
+    this->m_occupied = state;
+}
 
 void Cube::print(std::ostream &flux) const
 {

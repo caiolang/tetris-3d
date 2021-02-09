@@ -49,10 +49,8 @@ const int NUM_PIECES = 20;
 
 Matrix *matrix = new Matrix();
 
-
 // unsigned char hello_string[] = "The quick god jumps over the lazy brown fox.";
 // int w = glutBitmapLength(GLUT_BITMAP_8_BY_13, hello_string);
-
 
 void InitGL( int argc, char* argv[] );
 void DisplayGL();
@@ -72,9 +70,11 @@ void DrawCube( float width, float height, float depth );
 void DrawSphere( float radius );
 void DrawPyramid( float scale = 1.0f );
 
-int id_to_x(int id);
-int id_to_y(int id);
-int id_to_z(int id);
+// Added functions
+int idToX(int id);
+int idToY(int id);
+int idToZ(int id);
+void startPiece(Piece *piece);
 
 enum ESceneType
 {
@@ -115,7 +115,6 @@ int main( int argc, char* argv[] )
 
     // Matrix *matrix = new Matrix();
  
-
     // for (size_t i = 0; i < MATRIX_SIZE; i++)
     // {
     //     std::cout << matrix->get_cubes()[i]; // << "\n";
@@ -124,28 +123,28 @@ int main( int argc, char* argv[] )
     std::vector<Piece*> pieces;
 
     pieces.push_back( new O_piece());
-    pieces.push_back( new O_piece());
-    pieces.push_back( new O_piece());
-    pieces.push_back( new O_piece());
-    pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
 
     // std::cout << pieces.at(0)->get_cubes()[1] << "\n";
     // std::cout << pieces.at(0) << "\n";
 
-    // ESTA BUGANDO AQUI EMBAIXO: ESTA FALANDO QUE AS POSICOES ESTAO OCUPADAS
-
-    std::cout << matrix->get_cubes()[2044].is_occupied();
-    std::cout << matrix->get_cubes()[2144].is_occupied();
-    std::cout << matrix->get_cubes()[2145].is_occupied();
-    std::cout << matrix->get_cubes()[2045].is_occupied();
+    // std::cout << matrix->get_cubes()[436].is_occupied();
+    // std::cout << matrix->get_cubes()[0].is_occupied();
+    // std::cout << matrix->get_cubes()[2044].is_occupied();
+    // std::cout << matrix->get_cubes()[2144].is_occupied();
+    // std::cout << matrix->get_cubes()[2145].is_occupied();
+    // std::cout << matrix->get_cubes()[2045].is_occupied();
 
     if( matrix->is_safe(pieces.at(0)->get_cubes()) ){
-        std::cout << "\nIS SAFE\n";
+        // std::cout << "\nIS SAFE\n";
+        int color = pieces.at(0)->get_color();
+        matrix->set_as_piece(pieces.at(0)->get_cubes(),color);
     } else {
-        std::cout << "\nNOT SAFE\n";
+        std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
     }
-
-    
 
     // O_piece *test_piece = new O_piece();
     // for (size_t i = 0; i < 4; i++)
@@ -167,6 +166,24 @@ int main( int argc, char* argv[] )
     Cleanup(g_iErrorCode);
 }
 
+// void startPiece(Piece *piece){
+//     // std::cout << "Starting piece " + piece + "\n";
+//     // Cube* cubes;
+//     int color;
+//     int *id;
+
+//     id = piece->get_cubes();
+//     matrix[id]
+//     color = piece->get_color();
+
+//     for(int i=0; i<4; i++){
+//         cubes[i].set_color(color);
+//         cubes[i].set_occupied(true);
+//         std::cout << "Cube in position " + piece + "\n";
+//     }
+
+// }
+
 void Cleanup( int errorCode, bool bExit )
 {
     if ( g_iGLUTWindowHandle != 0 )
@@ -180,7 +197,6 @@ void Cleanup( int errorCode, bool bExit )
         exit( errorCode );
     }
 }
-
 
 void InitGL( int argc, char* argv[] )
 {
@@ -291,34 +307,41 @@ void KeyboardGL( unsigned char c, int x, int y )
             g_eCurrentScene = ST_Scene2;
         }
         break;
-    case '3':
-        {
-            glClearColor( 0.27f, 0.27f, 0.27f, 1.0f );                      // Dark-Gray background
-            g_eCurrentScene = ST_Scene3;
-        }
-        break;
-    case '4':
-        {
-            glClearColor( 0.73f, 0.73f, 0.73f, 1.0f );                      // Light-Gray background
-            g_eCurrentScene = ST_Scene4;
-        }
-        break;
-    case 's':
-    case 'S':
-        {
-            std::cout << "Shade Model: GL_SMOOTH" << std::endl;
-            // Switch to smooth shading model
-            glShadeModel( GL_SMOOTH );
-        }
-        break;
-    case 'f':
-    case 'F':
-        {
-            std::cout << "Shade Model: GL_FLAT" << std::endl;
-            // Switch to flat shading model
-            glShadeModel( GL_FLAT );
-        }
-        break;
+    // case '3':
+    //     {
+    //         glClearColor( 0.27f, 0.27f, 0.27f, 1.0f );                      // Dark-Gray background
+    //         g_eCurrentScene = ST_Scene3;
+    //     }
+    //     break;
+    // case '4':
+    //     {
+    //         glClearColor( 0.73f, 0.73f, 0.73f, 1.0f );                      // Light-Gray background
+    //         g_eCurrentScene = ST_Scene4;
+    //     }
+    //     break;
+    // case 's':
+    // case 'S':
+    //     {
+    //         std::cout << "Shade Model: GL_SMOOTH" << std::endl;
+    //         // Switch to smooth shading model
+    //         glShadeModel( GL_SMOOTH );
+    //     }
+    //     break;
+    // case 'f':
+    // case 'F':
+    //     {
+    //         std::cout << "Shade Model: GL_FLAT" << std::endl;
+    //         // Switch to flat shading model
+    //         glShadeModel( GL_FLAT );
+    //     }
+    // case 'a':
+    // case 'A':
+    //     {
+    //         // std::cout << "Shade Model: GL_FLAT" << std::endl;
+    //         glRotatef(30.0f,0.0f,100.0f,0.0f);
+    //         // glTranspo
+    //     }
+    //     break;
     case 'r':
     case 'R':
         {
@@ -415,35 +438,6 @@ void DrawCircle(  float radius, int numSides /* = 8 */ )
     glEnd();
 }
 
-void drawS(){
-    glColor3f( 1.0f, 0.0f, 0.0f );                                          // Set Color to red
-    glutSolidCube(0.5);
-    glColor3f( 0.0f, 0.0f, 0.0f );                                          // Set Color to black
-    glutWireCube(0.5);
-    
-    glTranslatef( 0.5f, 0.0f, 0.0f );
-
-    glColor3f( 1.0f, 0.0f, 0.0f );                                          // Set Color to red
-    glutSolidCube(0.5);
-    glColor3f( 0.0f, 0.0f, 0.0f );                                          // Set Color to black
-    glutWireCube(0.5);
-
-    glTranslatef( 0.0f, 0.5f, 0.0f );
-
-    glColor3f( 1.0f, 0.0f, 0.0f );                                          // Set Color to red
-    glutSolidCube(0.5);
-    glColor3f( 0.0f, 0.0f, 0.0f );                                          // Set Color to black
-    glutWireCube(0.5);
-
-    glTranslatef( 0.5f, 0.0f, 0.0f );
-
-    glColor3f( 1.0f, 0.0f, 0.0f );                                          // Set Color to red
-    glutSolidCube(0.5);
-    glColor3f( 0.0f, 0.0f, 0.0f );                                          // Set Color to black
-    glutWireCube(0.5);
-
-}
-
 void RenderScene1()
 {
 
@@ -460,13 +454,6 @@ void RenderScene1()
 
     glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate our view matrix back and a bit to the left.
     
-    
-    drawS();
-    // glColor3f( 1.0f, 0.0f, 0.0f );                                          // Set Color to red
-    // // DrawTriangle( float2(0.0f, 1.0f), float2(-1.0f, -1.0f), float2(1.0f, -1.0f ) );
-    // glutSolidCube(1);
-    // glColor3f( 0.0f, 0.0f, 0.0f );                                          // Set Color to black
-    // glutWireCube(1);
 
     glTranslatef( 3.0f, 0.0f, 0.0f );                                       // Shift view 3 units to the right
     glColor3f( 0.0f, 0.0f, 1.0f );                                          // Set Color to blue
@@ -545,7 +532,8 @@ void render_cube(int x0, int y0, int z0, int color){
 
     glBegin( GL_QUADS );
 
-        glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
+        // glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
+        glColor3f( (GLfloat)r-0.5f, (GLfloat)g-0.5f, (GLfloat)b-0.5f);
 
         // Top face
         glVertex3f(  x0f, y0f+1.0f, z0f );                                   
@@ -553,25 +541,13 @@ void render_cube(int x0, int y0, int z0, int color){
         glVertex3f(  x0f+1.0f, y0f+1.0f, z0f+1.0f );                             
         glVertex3f(  x0f, y0f+1.0f, z0f+1.0f );                                  
 
-        // glColor3f(   1.0f, 1.0f,  0.0f ); // Yellow
-
         // Bottom face
         glVertex3f(  x0f, y0f, z0f );                                   
         glVertex3f(  x0f+1.0f, y0f, z0f );
         glVertex3f(  x0f+1.0f, y0f, z0f+1.0f );                             
         glVertex3f(  x0f, y0f, z0f+1.0f );         
 
-        // Front face
-        glVertex3f(  x0f, y0f, z0f+1.0f );                                   
-        glVertex3f(  x0f, y0f+1.0f, z0f+1.0f );
-        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f+1.0f );                             
-        glVertex3f(  x0f+1.0f, y0f, z0f+1.0f );  
-
-        // Back face
-        glVertex3f(  x0f, y0f, z0f );                                   
-        glVertex3f(  x0f, y0f+1.0f, z0f );
-        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f );                             
-        glVertex3f(  x0f+1.0f, y0f, z0f );   
+        glColor3f( (GLfloat)r-0.3f, (GLfloat)g-0.3f, (GLfloat)b-0.3f);
 
         // Left face
         glVertex3f(  x0f, y0f, z0f );                                   
@@ -583,7 +559,21 @@ void render_cube(int x0, int y0, int z0, int color){
         glVertex3f(  x0f+1.0f, y0f, z0f );                                   
         glVertex3f(  x0f+1.0f, y0f, z0f+1.0f );
         glVertex3f(  x0f+1.0f, y0f+1.0f, z0f+1.0f );                             
-        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f );      
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f );     
+
+        glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
+
+        // Front face
+        glVertex3f(  x0f, y0f, z0f+1.0f );                                   
+        glVertex3f(  x0f, y0f+1.0f, z0f+1.0f );
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f+1.0f );                             
+        glVertex3f(  x0f+1.0f, y0f, z0f+1.0f );  
+
+        // Back face
+        glVertex3f(  x0f, y0f, z0f );                                   
+        glVertex3f(  x0f, y0f+1.0f, z0f );
+        glVertex3f(  x0f+1.0f, y0f+1.0f, z0f );                             
+        glVertex3f(  x0f+1.0f, y0f, z0f );    
 
     glEnd();
 
@@ -591,73 +581,32 @@ void render_cube(int x0, int y0, int z0, int color){
 
 void RenderScene2()
 {
-    glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
-    glLoadIdentity();                                                       // Load the identity matrix
-
-    glTranslatef( -5.0f, -10.0f, -30.0f );                                     // Translate back and to the left
+    glMatrixMode( GL_MODELVIEW ); // Switch to modelview matrix mode
+    glLoadIdentity(); // Load the identity matrix
+    glEnable( GL_DEPTH_TEST );
+    glTranslatef( -5.0f, -10.0f, -30.0f ); // Translate back and to the left
     
     /* Rendering game matrix */
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    
-    // glBegin( GL_QUADS );
-    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
-
-    //     glVertex3f( 0.0f, 0.0f, 0.0f);
-    //     glVertex3f( 10.0f, 0.0f, 0.0f);
-    //     glVertex3f( 10.0f, 0.0f, 10.0f);
-    //     glVertex3f( 0.0f, 0.0f, 10.0f);
-    // glEnd();
-
-    // glBegin( GL_QUADS );
-    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
-
-    //     glVertex3f( 0.0f, 0.0f, 0.0f);
-    //     glVertex3f( 0.0f, 0.0f, 10.0f);
-    //     glVertex3f( 0.0f, 22.0f, 10.0f);
-    //     glVertex3f( 0.0f, 22.0f, 0.0f);
-    // glEnd();
-
-    // glBegin( GL_QUADS );
-    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
-
-    //     glVertex3f( 10.0f, 0.0f, 0.0f);
-    //     glVertex3f( 10.0f, 0.0f, 10.0f);
-    //     glVertex3f( 10.0f, 22.0f, 10.0f);
-    //     glVertex3f( 10.0f, 22.0f, 0.0f);
-    // glEnd();
-
-    // glBegin( GL_QUADS );
-    //     glColor3f( 1.0f, 1.0f, 1.0f ); // White
-
-    //     glVertex3f( 0.0f, 0.0f, 0.0f);
-    //     glVertex3f( 10.0f, 0.0f, 0.0f);
-    //     glVertex3f( 10.0f, 22.0f, 0.0f);
-    //     glVertex3f( 0.0f, 22.0f, 0.0f);
-    // glEnd();
-
     render_game_stage();
 
     /* Rendering the game cubes */
-
-    Cube cube_aux;
+     Cube cube_aux;
     int color;
     int x,y,z;
 
-    // glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
     for (size_t i = 0; i < MATRIX_SIZE; i++){
             // std::cout << matrix->get_cubes()[i]; // << "\n";
             cube_aux = matrix->get_cubes()[i];
             color = cube_aux.get_color();
              
-            x=id_to_x(i);
-            y=id_to_y(i);
-            z=id_to_z(i);
+            x=idToX(i);
+            y=idToY(i);
+            z=idToZ(i);
 
             if (cube_aux.is_occupied()){
-                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-                // render_cube(x,y,z,111);
-                // glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
                 render_cube(x,y,z,color);
             }
     }
@@ -844,21 +793,21 @@ void RenderScene4()
 }
 
 
-int id_to_x(int id){
+int idToX(int id){
     int x;
 
     x=id%10;
     return x;
 }
 
-int id_to_y(int id){
+int idToY(int id){
     int y;
 
     y=(int)id/100;
     return y;
 }
 
-int id_to_z(int id){
+int idToZ(int id){
     int z;
 
     z=(int)id/10;

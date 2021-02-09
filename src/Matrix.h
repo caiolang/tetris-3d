@@ -21,7 +21,7 @@ class Matrix
         int id_to_y(int id);
         int id_to_z(int id);
         bool is_safe(int* ids_vec); // Receives a vector of four elements
-
+        void set_as_piece(int* ids_vec, int color); // Receives a vector of four elements and a color
 
         // Matrix(int x_dim, int y_dim, int z_dim); // Constructor with matrix dimensions
 

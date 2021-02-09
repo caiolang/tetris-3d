@@ -51,12 +51,25 @@ bool Matrix::is_safe(int* ids_vec){
     for (int i = 0; i < 4; i++)
     {
         id = ids_vec[i];
-        if(!this->m_cubes[id].is_occupied()){
+        if(this->m_cubes[id].is_occupied()){
             safe=false;
-            std::cout << "\n" << id << " is not safe\n";
+            std::cout << "\nCube of id " << id << " is not safe\n";
         }
     }
     
     return safe;
+}
+
+
+void Matrix::set_as_piece(int* ids_vec, int color){
+    int id=0;
+
+    for (int i = 0; i < 4; i++)
+    {
+        id = ids_vec[i];
+        this->m_cubes[id].set_color(color);
+        this->m_cubes[id].set_occupied(true);
+    }
+    
 }
 

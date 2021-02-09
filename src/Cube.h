@@ -24,6 +24,8 @@ class Cube{
         int get_pos() ;
         bool is_occupied() ;
         int get_color(); // TEMPORARY
+        void set_color(int color);
+        void set_occupied(bool state);
 
         void print(std::ostream &flux) const;      
 };
