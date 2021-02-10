@@ -1,14 +1,14 @@
-#ifndef O_PIECE_H
-#define O_PIECE_H
+#ifndef T_PIECE_H
+#define T_PIECE_H
 
 #include <vector>
 #include <iostream>
 #include "Piece.h"
 #include "Cube.h"
 
-class O_piece : public Piece{
+class T_piece : public Piece{
     public:
-        O_piece();
+        T_piece();
 };
 
 
