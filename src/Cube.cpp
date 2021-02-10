@@ -33,19 +33,20 @@ Cube::Cube(int pos_x, int pos_y, int pos_z, bool occ) //Constructor
     //     m_occupied=true;
     // }
 
-    if(pos_x==6 && pos_y==4 && pos_z==3 ){
-        m_occupied=true;
-    }
-
-    // if(pos_x==4 && pos_y==20 && pos_z==4 ){
+    // if(pos_x==6 && pos_y==4 && pos_z==3 ){
     //     m_occupied=true;
     // }
 
-    // if(pos_x==4 && pos_y==21 && pos_z==4 ){
+
+    // if(pos_x==4 && pos_y==20 && pos_z==0 ){
     //     m_occupied=true;
     // }
 
-    // if(pos_x==5 && pos_y==21 && pos_z==4 ){
+    // if(pos_x==3 && pos_y==20 && pos_z==4 ){
+    //     m_occupied=true;
+    // }
+
+    // if(pos_x==5 && pos_y==19 && pos_z==4 ){
     //     m_occupied=true;
     // }
 

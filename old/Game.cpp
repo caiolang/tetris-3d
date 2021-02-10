@@ -1,13 +1,4 @@
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <iostream>
-#include <ctime>
-#include <vector>
-// #include <string.h>
-#include "Cube.h"
-#include "Matrix.h"
-#include "Piece.h"
-#include "O_piece.h"
+#include "Game.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -36,96 +27,6 @@ struct float3
     float z;
 };
 
-/* GLUT constants */
-int g_iWindowWidth = 512;
-int g_iWindowHeight = 512;
-int g_iGLUTWindowHandle = 0;
-int g_iErrorCode = 0;
-
-/* Tetris constants */
-const int MATRIX_SIZE = 2200;
-const int X_DIM = 10;
-const int Y_DIM = 22;
-const int Z_DIM = 10;
-const int NUM_PIECES = 20;
-
-Matrix *matrix = new Matrix();
-// bool rot_x_flag = false;
-// bool rot_y_flag = false;
-// bool rot_z_flag = false;
-// bool mov_x_pos_flag = false;
-// bool mov_x_neg_flag = false;
-// bool mov_y_neg_flag = false;
-// bool mov_z_pos_flag = false;
-// bool mov_z_neg_flag = false;
-// Piece curr_piece;
-// int new_pos[4];
-
-/* GL functions' primitives */
-void InitGL( int argc, char* argv[] );
-void DisplayGL();
-void IdleGL();
-void KeyboardGL( unsigned char c, int x, int y );
-void MouseGL( int button, int state, int x, int y );
-void MotionGL( int x, int y );
-void ReshapeGL( int w, int h );
-
-/* 3D Primitives */
-void DrawCube( float width, float height, float depth );
-void DrawSphere( float radius );
-void DrawPyramid( float scale = 1.0f );
-
-/* Added functions */
-int idToX(int id);
-int idToY(int id);
-int idToZ(int id);
-void resetFlags();
-void makeMove(int piece_id);
-// void startPiece(Piece *piece);
-
-enum Command
-{
-    RotateX,
-    RotateY,
-    RotateZ,
-    MovePosX,
-    MoveNegX,
-    MoveNegY,
-    MovePosZ,
-    MoveNegZ,
-    Nothing
-};
-Command curr_command = Nothing;
-
-enum ESceneType
-{
-    ST_Scene1 = 0,
-    ST_Scene2,
-    ST_Scene3,
-    ST_Scene4
-    // ST_NumScenes
-};
-ESceneType g_eCurrentScene = ST_Scene1;
-
-// Rotation parameters
-float g_fRotate1 = 0.0f;
-float g_fRotate2 = 0.0f;
-float g_fRotate3 = 0.0f;
-
-/* Clock variables */
-std::clock_t g_PreviousTicks;
-std::clock_t g_CurrentTicks;
-
-// Render main menu
-void RenderScene1();
-// Render Tetris Game
-void RenderScene2(); 
-
-void RenderScene3();
-void RenderScene4();
-
-// We're exiting, cleanup the allocated resources.
-void Cleanup( int exitCode, bool bExit = true );
 
 // ------------------------------------------------
 
@@ -141,8 +42,16 @@ int main( int argc, char* argv[] )
     //     std::cout << matrix->get_cubes()[i]; // << "\n";
     // }
     
-    // std::vector<Piece*> pieces;
+    std::vector<Piece*> pieces;
 
+    pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
+    // pieces.push_back( new O_piece());
+
+    // std::cout << pieces.at(0)->get_cubes()[1] << "\n";
+    // std::cout << pieces.at(0) << "\n";
 
     // std::cout << matrix->get_cubes()[436].is_occupied();
     // std::cout << matrix->get_cubes()[0].is_occupied();
@@ -151,15 +60,13 @@ int main( int argc, char* argv[] )
     // std::cout << matrix->get_cubes()[2145].is_occupied();
     // std::cout << matrix->get_cubes()[2045].is_occupied();
 
-    // if( matrix->is_safe(pieces.at(0)->get_cubes()) ){
-    //     // std::cout << "\nIS SAFE\n";
-    //     int color = pieces.at(0)->get_color();
-    //     matrix->set_as_piece(pieces.at(0)->get_cubes(),color);
-    // } else {
-    //     std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
-    // }
-
-    matrix->initialize_piece(0);
+    if( matrix->is_safe(pieces.at(0)->get_cubes()) ){
+        // std::cout << "\nIS SAFE\n";
+        int color = pieces.at(0)->get_color();
+        matrix->set_as_piece(pieces.at(0)->get_cubes(),color);
+    } else {
+        std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
+    }
 
     // O_piece *test_piece = new O_piece();
     // for (size_t i = 0; i < 4; i++)
@@ -281,19 +188,6 @@ void DisplayGL()
 void IdleGL()
 {
     // Update our simulation
-
-    
-    // pieces.at(0)->rotate_x(new_pos);
-    // std::cout << "\nRotating! New Position:\n";
-    // for (size_t i = 0; i < 4; i++)
-    // {
-    //     std::cout << new_pos[i] << ",";
-    // }
-
-    
-
-    
-
     g_CurrentTicks = std::clock();
     float deltaTicks = ( g_CurrentTicks - g_PreviousTicks );
     g_PreviousTicks = g_CurrentTicks;
@@ -301,17 +195,17 @@ void IdleGL()
     float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
 
     // Rate of rotation in (degrees) per second
-    // const float fRotationRate = 50.0f;
+    const float fRotationRate = 50.0f;
 
     // Update our rotation parameters
-    // g_fRotate1 += ( fRotationRate * fDeltaTime );
-    // g_fRotate1 = fmodf( g_fRotate1, 360.0f );
+    g_fRotate1 += ( fRotationRate * fDeltaTime );
+    g_fRotate1 = fmodf( g_fRotate1, 360.0f );
 
-    // g_fRotate2 += ( fRotationRate * fDeltaTime );
-    // g_fRotate2 = fmodf( g_fRotate2, 360.0f );
+    g_fRotate2 += ( fRotationRate * fDeltaTime );
+    g_fRotate2 = fmodf( g_fRotate2, 360.0f );
 
-    // g_fRotate3 += ( fRotationRate * fDeltaTime );
-    // g_fRotate3 = fmodf( g_fRotate3, 360.0f );
+    g_fRotate3 += ( fRotationRate * fDeltaTime );
+    g_fRotate3 = fmodf( g_fRotate3, 360.0f );
 
     glutPostRedisplay();
 }
@@ -335,36 +229,41 @@ void KeyboardGL( unsigned char c, int x, int y )
             g_eCurrentScene = ST_Scene2;
         }
         break;
-    case '3':
-        {
-            glClearColor( 0.27f, 0.27f, 0.27f, 1.0f );                      // Dark-Gray background
-            g_eCurrentScene = ST_Scene3;
-        }
-        break;
-    case '4':
-        {
-            glClearColor( 0.73f, 0.73f, 0.73f, 1.0f );                      // Light-Gray background
-            g_eCurrentScene = ST_Scene4;
-        }
-        break;
-    case 'i':
-    case 'I':
-        {
-            // rot_x_flag=true;
-            curr_command=RotateX;
-        }
-        break;
-    case 'o':
-    case 'O':
-        {
-            // rot_y_flag=true;
-        }
-    case 'p':
-    case 'P':
-        {
-            // rot_z_flag=true;
-        }
-        break;
+    // case '3':
+    //     {
+    //         glClearColor( 0.27f, 0.27f, 0.27f, 1.0f );                      // Dark-Gray background
+    //         g_eCurrentScene = ST_Scene3;
+    //     }
+    //     break;
+    // case '4':
+    //     {
+    //         glClearColor( 0.73f, 0.73f, 0.73f, 1.0f );                      // Light-Gray background
+    //         g_eCurrentScene = ST_Scene4;
+    //     }
+    //     break;
+    // case 's':
+    // case 'S':
+    //     {
+    //         std::cout << "Shade Model: GL_SMOOTH" << std::endl;
+    //         // Switch to smooth shading model
+    //         glShadeModel( GL_SMOOTH );
+    //     }
+    //     break;
+    // case 'f':
+    // case 'F':
+    //     {
+    //         std::cout << "Shade Model: GL_FLAT" << std::endl;
+    //         // Switch to flat shading model
+    //         glShadeModel( GL_FLAT );
+    //     }
+    // case 'a':
+    // case 'A':
+    //     {
+    //         // std::cout << "Shade Model: GL_FLAT" << std::endl;
+    //         glRotatef(30.0f,0.0f,100.0f,0.0f);
+    //         // glTranspo
+    //     }
+    //     break;
     case 'r':
     case 'R':
         {
@@ -424,6 +323,43 @@ void ReshapeGL( int w, int h )
     glutPostRedisplay();
 }
 
+// Draw 2D Prmitives
+void DrawTriangle( float2 p1, float2 p2, float2 p3 )
+{
+    glBegin( GL_TRIANGLES );
+        glVertex2f( p1.x, p1.y );
+        glVertex2f( p2.x, p2.y );
+        glVertex2f( p3.x, p3.y );
+    glEnd();
+}
+
+void DrawRectangle( float width, float height )
+{
+    const float w = width / 2.0f;
+    const float h = height / 2.0f;
+
+    glBegin( GL_QUADS );
+        glVertex2f( -w,  h );   // Top-Left
+        glVertex2f(  w,  h );   // Top-Right
+        glVertex2f(  w, -h );   // Bottom-Right
+        glVertex2f( -w, -h );   // Bottom-Left
+    glEnd();
+        
+}
+
+void DrawCircle(  float radius, int numSides /* = 8 */ )
+{
+    const float step = M_PI / numSides;
+    glBegin( GL_TRIANGLE_FAN );
+        glVertex2f(0.0f, 0.0f);
+        for ( float angle = 0.0f; angle < ( 2.0f * M_PI ); angle += step )
+        {
+            glVertex2f( radius * sinf(angle), radius * cosf(angle) );
+        }
+        glVertex2f( 0.0f, radius ); // One more vertex to close the circle
+    glEnd();
+}
+
 void RenderScene1()
 {
 
@@ -446,6 +382,9 @@ void RenderScene1()
     // DrawRectangle( 2.0f, 2.0f );
     glutSolidCube(0.5);
 
+    glTranslatef( -1.5f, -3.0f, 0.0f );                                     // Back to center and lower screen
+    glColor3f( 1.0f, 1.0f, 0.0f );                                          // Set color to yellow
+    DrawCircle( 1.0f, 16 );
 }
 
 void render_game_stage(){
@@ -574,7 +513,7 @@ void RenderScene2()
     render_game_stage();
 
     /* Rendering the game cubes */
-    Cube cube_aux;
+     Cube cube_aux;
     int color;
     int x,y,z;
 
@@ -594,66 +533,8 @@ void RenderScene2()
             }
     }
 
-    makeMove(0);
-    
-
 }
 
-void makeMove(int piece_id){
-    // int* new_pos;
-    // O_piece *test_piece = new O_piece();
-    int new_pos[4];
-
-    switch(curr_command){
-        case RotateX: std::cout << "\nGot command ROTATE X\n";
-
-            matrix->rotate_piece_x(piece_id,new_pos);
-
-
-            // new_pos=pieces.at(0)->get_cubes(); //OK
-            // pieces.at(0)->rotate_x(new_pos);
-            // std::cout << "\nRotating X! New Position:\n";
-            // for (size_t i = 0; i < 4; i++)
-            // {
-            //     std::cout << pieces.at(0)->get_cubes()[i] << ",";
-            //     std::cout << new_pos[i] << ",";
-            // }
-
-
-            // // --------
-
-            
-
-
-            // for (size_t i = 0; i < 4; i++)
-            // {
-            //     std::cout << test_piece->get_cubes()[i] << ",";
-                
-            // }
-
-
-
-            // pieces.at(0)->rotate_x(new_pos);
-            // // test_piece->rotate_x(new_pos);
-            // std::cout << std::endl <<"New Position:"<< std::endl;
-            // for (size_t i = 0; i < 4; i++)
-            // {
-            //     std::cout << new_pos[i] << ",";
-            // }
-        
-        
-        break;
-        case RotateY: std::cout << "\nGot command ROTATE Y\n"; break;
-        case RotateZ: std::cout << "\nGot command ROTATE Z\n"; break;
-        case MovePosX: std::cout << "\nGot command MOVE POSITIVE X\n"; break;
-        case MoveNegX: std::cout << "\nGot command MOVE NEGATIVE X\n"; break;
-        case MoveNegY: std::cout << "\nGot command MOVE NEGATIVE Y\n"; break;
-        case MovePosZ: std::cout << "\nGot command MOVE POSITIVE Z\n"; break;
-        case MoveNegZ: std::cout << "\nGot command MOVE NEGATIVE Z\n"; break;
-        case Nothing: break;
-    }
-    curr_command=Nothing;
-}
 
 
 void RenderScene3()
@@ -855,14 +736,3 @@ int idToZ(int id){
     z=z%10;
     return z;
 }
-
-// void resetFlags(){
-//     bool rot_x_flag = false;
-//     bool rot_y_flag = false;
-//     bool rot_z_flag = false;
-//     bool mov_x_pos_flag = false;
-//     bool mov_x_neg_flag = false;
-//     bool mov_y_neg_flag = false;
-//     bool mov_z_pos_flag = false;
-//     bool mov_z_neg_flag = false;
-// }

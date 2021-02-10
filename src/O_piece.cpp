@@ -12,12 +12,20 @@ O_piece::O_piece()
     // std::cout << "Creating O_piece\n";
 }
 
-void O_piece::rotate_x(int* new_pos){
+// void O_piece::rotate_x(int* new_pos){
 
-    new_pos[0]=m_cube_position[0];
-    new_pos[1]=m_cube_position[1]-110;
-    new_pos[2]=m_cube_position[2]-110;
-    new_pos[3]=m_cube_position[3];
+//     new_pos[0]=m_cube_position[0];
+//     new_pos[1]=m_cube_position[1]-110;
+//     new_pos[2]=m_cube_position[2]-110;
+//     new_pos[3]=m_cube_position[3];
+// };
+
+void O_piece::rotate_x(int new_pos[]){
+
+    new_pos[0]=1;
+    new_pos[1]=2;
+    new_pos[2]=3;
+    new_pos[3]=4;
 };
 
 void O_piece::rotate_z(int* new_pos){    

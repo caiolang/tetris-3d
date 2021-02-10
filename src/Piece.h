@@ -19,9 +19,11 @@ class Piece
         bool get_stop();
         int* get_cubes();
         int get_color();
-        void rotate_x(int* new_pos);
+        // void rotate_x(int* new_pos);
+        void rotate_x(int new_pos[]);
         void rotate_y(int* new_pos);
         void rotate_z(int* new_pos);
+
 };   
 
  

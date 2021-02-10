@@ -9,8 +9,32 @@ Matrix::Matrix()
     {
         m_cubes[i]= Cube(id_to_x(i), id_to_y(i), id_to_z(i), false);
     }
-    
 
+    m_pieces.push_back( new O_piece());
+
+}
+
+void Matrix::rotate_piece_x(int piece_id, int new_pos[]){
+    Piece* piece = m_pieces[piece_id];
+
+    // ERRO AO EXECUTAR A PROXIMA LINHA! COMO PROSSEGUIR? REESTRUTURAR O METODO DE ROTACAO?
+    // piece->rotate_x(new_pos);
+
+    std::cout << piece_id << " : " << m_pieces[piece_id];
+    // m_pieces[piece_id]->rotate_x(new_pos);
+
+}
+
+
+void Matrix::initialize_piece(int piece_id){
+
+    if( is_safe(m_pieces.at(piece_id)->get_cubes()) ){
+            std::cout << "\nIS SAFE\n";
+            int color = m_pieces.at(piece_id)->get_color();
+            set_as_piece(m_pieces.at(piece_id)->get_cubes(),color);
+        } else {
+            std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
+        }
 }
 
 int Matrix::coord_to_id(int x, int y, int z){

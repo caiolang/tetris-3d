@@ -17,7 +17,8 @@ Works on MacOS and Linux.
 * [X] Passar para Cubes a cor da peca, setá-los como occupied
 * [X] dar Start na Piece
 
-* [ ] COMANDO: implementar escuta de teclas
+* [X] COMANDO: implementar escuta de teclas
+* [ ] REESTRUTURAR OS METODOS DE ROTACAO/TRANSLACAO? VER Matrix::rotate_piece_x
 * [ ] ex: rotate_x(...)
 * [ ] checar se a posicao é segura com isSafe()
 * [ ] se for, reseta os cubes atualmente ocupados pela peca (usar getCubes() )
@@ -36,6 +37,7 @@ Works on MacOS and Linux.
 * [ ] inserir texto?
 * [ ] fazer tela de entrada na RenderScene1()
 * [ ] transformar main.cpp em Game.cpp (organizar em formato de classe)
+* [ ] Checar no is_safe() se esta passando dos limites do jogo
 
 
 ## Instructions
