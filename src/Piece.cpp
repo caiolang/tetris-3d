@@ -6,19 +6,19 @@ Piece::Piece(){
     m_color= 100; // DEFAULT: White (TEMPORARY)
 }
 
-int* Piece::get_cubes(){
+int* Piece::getCubes(){
     return m_cube_position;
 }
 
-bool Piece::get_stop(){
+bool Piece::getStop(){
     return m_stop;
 }
 
-int Piece::get_color(){
+int Piece::getColor(){
     return m_color;
 }
 
-void Piece::translate_x(int* new_pos, int dir){
+void Piece::translateX(int* new_pos, int dir){
     int step=1;
     if (dir<0){step=-1;}
     for(int i=0; i<4; i++){
@@ -26,20 +26,20 @@ void Piece::translate_x(int* new_pos, int dir){
     }
 }
 
-void Piece::translate_y(int* new_pos){
+void Piece::translateY(int* new_pos){
     for(int i=0; i<4; i++){
         new_pos[i]=m_cube_position[i]-100;
     }
 }
 
-void Piece::translate_z(int* new_pos,int dir){
+void Piece::translateZ(int* new_pos,int dir){
     int step=1;
     if (dir<0){step=-1;}
     for(int i=0; i<4; i++){
         new_pos[i]=m_cube_position[i]+10*step;
     }
 }
-void Piece::rotate_x(int* new_pos){
+void Piece::rotateX(int* new_pos){
     int coord[3][4];
     
     for(int i=0; i<3; i++){
@@ -63,7 +63,7 @@ void Piece::rotate_x(int* new_pos){
     new_pos[3]=(coord[0][3])+(-coord[2][3]+coord[2][0]+coord[1][0])*100+(-coord[1][0]+coord[1][3]+coord[2][0])*10;
 };
 
-void Piece::rotate_z(int* new_pos){    
+void Piece::rotateZ(int* new_pos){    
     int coord[3][4];
     
     for(int i=0; i<3; i++){
@@ -87,7 +87,7 @@ void Piece::rotate_z(int* new_pos){
     new_pos[3]=(-coord[1][3]+coord[1][0]+coord[0][0])+(-coord[0][0]+coord[0][3]+coord[1][0])*100+(coord[2][3])*10;
 }
 
-void Piece::rotate_y(int* new_pos){
+void Piece::rotateY(int* new_pos){
     int coord[3][4];
     
     for(int i=0; i<3; i++){

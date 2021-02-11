@@ -57,18 +57,18 @@ Cube::Cube(int pos_x, int pos_y, int pos_z, bool occ) //Constructor
 }
 
 // Acess methods
-int Cube::get_x()  { return m_x; }
-int Cube::get_y()  { return m_y; }
-int Cube::get_z()  { return m_z; }
-int Cube::get_pos() {return m_x+10*m_z+100*m_y;}
-bool Cube::is_occupied()  { return m_occupied; }
-int Cube::get_color() { return m_color;} // TEMPORARY
+int Cube::getX()  { return m_x; }
+int Cube::getY()  { return m_y; }
+int Cube::getZ()  { return m_z; }
+int Cube::getPos() {return m_x+10*m_z+100*m_y;}
+bool Cube::isOccupied()  { return m_occupied; }
+int Cube::getColor() { return m_color;} // TEMPORARY
 
-void Cube::set_color(int color){
+void Cube::setColor(int color){
     this->m_color = color;
 }
 
-void Cube::set_occupied(bool state){
+void Cube::setOccupied(bool state){
     this->m_occupied = state;
 }
 

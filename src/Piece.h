@@ -13,16 +13,16 @@ class Piece
 
     public:
         Piece(); // Constructor
-        void translate_x(int* new_pos, int dir);
-        void translate_y(int* new_pos);
-        void translate_z(int* new_pos,int dir);
-        bool get_stop();
-        int* get_cubes();
-        int get_color();
-        // void rotate_x(int* new_pos);
-        void rotate_x(int new_pos[]);
-        void rotate_y(int* new_pos);
-        void rotate_z(int* new_pos);
+        void translateX(int* new_pos, int dir);
+        void translateY(int* new_pos);
+        void translateZ(int* new_pos,int dir);
+        bool getStop();
+        int* getCubes();
+        int getColor();
+        // void rotateX(int* new_pos);
+        void rotateX(int new_pos[]);
+        void rotateY(int* new_pos);
+        void rotateZ(int* new_pos);
 
 };   
 

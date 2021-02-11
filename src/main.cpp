@@ -138,33 +138,33 @@ int main( int argc, char* argv[] )
  
     // for (size_t i = 0; i < MATRIX_SIZE; i++)
     // {
-    //     std::cout << matrix->get_cubes()[i]; // << "\n";
+    //     std::cout << matrix->getCubes()[i]; // << "\n";
     // }
     
     // std::vector<Piece*> pieces;
 
 
-    // std::cout << matrix->get_cubes()[436].is_occupied();
-    // std::cout << matrix->get_cubes()[0].is_occupied();
-    // std::cout << matrix->get_cubes()[2044].is_occupied();
-    // std::cout << matrix->get_cubes()[2144].is_occupied();
-    // std::cout << matrix->get_cubes()[2145].is_occupied();
-    // std::cout << matrix->get_cubes()[2045].is_occupied();
+    // std::cout << matrix->getCubes()[436].isOccupied();
+    // std::cout << matrix->getCubes()[0].isOccupied();
+    // std::cout << matrix->getCubes()[2044].isOccupied();
+    // std::cout << matrix->getCubes()[2144].isOccupied();
+    // std::cout << matrix->getCubes()[2145].isOccupied();
+    // std::cout << matrix->getCubes()[2045].isOccupied();
 
-    // if( matrix->is_safe(pieces.at(0)->get_cubes()) ){
+    // if( matrix->isSafe(pieces.at(0)->getCubes()) ){
     //     // std::cout << "\nIS SAFE\n";
-    //     int color = pieces.at(0)->get_color();
-    //     matrix->set_as_piece(pieces.at(0)->get_cubes(),color);
+    //     int color = pieces.at(0)->getColor();
+    //     matrix->setAsPiece(pieces.at(0)->getCubes(),color);
     // } else {
     //     std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
     // }
 
-    matrix->initialize_piece(0);
+    matrix->initPiece(0);
 
     // O_piece *test_piece = new O_piece();
     // for (size_t i = 0; i < 4; i++)
     // {
-    //     std::cout << test_piece->get_cubes()[i] << ",";
+    //     std::cout << test_piece->getCubes()[i] << ",";
         
     // }
 
@@ -187,13 +187,13 @@ int main( int argc, char* argv[] )
 //     int color;
 //     int *id;
 
-//     id = piece->get_cubes();
+//     id = piece->getCubes();
 //     matrix[id]
-//     color = piece->get_color();
+//     color = piece->getColor();
 
 //     for(int i=0; i<4; i++){
-//         cubes[i].set_color(color);
-//         cubes[i].set_occupied(true);
+//         cubes[i].setColor(color);
+//         cubes[i].setOccupied(true);
 //         std::cout << "Cube in position " + piece + "\n";
 //     }
 
@@ -448,7 +448,7 @@ void RenderScene1()
 
 }
 
-void render_game_stage(){
+void renderGameStage(){
 
     // glColor3f( 1.0f, 1.0f, 1.0f);
     glColor3f( 0.3f, 0.3f, 0.3f);
@@ -505,7 +505,7 @@ void render_game_stage(){
 
 }
 
-void render_cube(int x0, int y0, int z0, int color){
+void renderCube(int x0, int y0, int z0, int color){
     
     GLfloat x0f=(GLfloat)x0, y0f=(GLfloat)y0, z0f=(GLfloat)z0;
     float r,g,b;
@@ -571,7 +571,7 @@ void RenderScene2()
     
     /* Rendering game matrix */
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    render_game_stage();
+    renderGameStage();
 
     /* Rendering the game cubes */
     Cube cube_aux;
@@ -581,16 +581,16 @@ void RenderScene2()
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
     for (size_t i = 0; i < MATRIX_SIZE; i++){
-            // std::cout << matrix->get_cubes()[i]; // << "\n";
-            cube_aux = matrix->get_cubes()[i];
-            color = cube_aux.get_color();
+            // std::cout << matrix->getCubes()[i]; // << "\n";
+            cube_aux = matrix->getCubes()[i];
+            color = cube_aux.getColor();
              
             x=idToX(i);
             y=idToY(i);
             z=idToZ(i);
 
-            if (cube_aux.is_occupied()){
-                render_cube(x,y,z,color);
+            if (cube_aux.isOccupied()){
+                renderCube(x,y,z,color);
             }
     }
 
@@ -607,15 +607,15 @@ void makeMove(int piece_id){
     switch(curr_command){
         case RotateX: std::cout << "\nGot command ROTATE X\n";
 
-            matrix->rotate_piece_x(piece_id,new_pos);
+            matrix->rotatePieceX(piece_id,new_pos);
 
 
-            // new_pos=pieces.at(0)->get_cubes(); //OK
+            // new_pos=pieces.at(0)->getCubes(); //OK
             // pieces.at(0)->rotate_x(new_pos);
             // std::cout << "\nRotating X! New Position:\n";
             // for (size_t i = 0; i < 4; i++)
             // {
-            //     std::cout << pieces.at(0)->get_cubes()[i] << ",";
+            //     std::cout << pieces.at(0)->getCubes()[i] << ",";
             //     std::cout << new_pos[i] << ",";
             // }
 
@@ -627,7 +627,7 @@ void makeMove(int piece_id){
 
             // for (size_t i = 0; i < 4; i++)
             // {
-            //     std::cout << test_piece->get_cubes()[i] << ",";
+            //     std::cout << test_piece->getCubes()[i] << ",";
                 
             // }
 

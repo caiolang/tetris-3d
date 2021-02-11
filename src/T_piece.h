@@ -12,7 +12,4 @@ class T_piece : public Piece{
 };
 
 
-
-
-
 #endif

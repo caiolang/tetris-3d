@@ -18,14 +18,14 @@ class Cube{
         Cube(int pos_x, int pos_y, int pos_z); //Constructor 
         Cube(int pos_x, int pos_y, int pos_z, bool occ); //Constructor 
     
-        int get_x() ;
-        int get_y() ;
-        int get_z() ;
-        int get_pos() ;
-        bool is_occupied() ;
-        int get_color(); // TEMPORARY
-        void set_color(int color);
-        void set_occupied(bool state);
+        int getX() ;
+        int getY() ;
+        int getZ() ;
+        int getPos() ;
+        bool isOccupied() ;
+        int getColor(); // TEMPORARY
+        void setColor(int color);
+        void setOccupied(bool state);
 
         void print(std::ostream &flux) const;      
 };
