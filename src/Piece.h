@@ -20,9 +20,12 @@ class Piece
         int* getCubes();
         int getColor();
         // void rotateX(int* new_pos);
-        void rotateX(int new_pos[]);
-        void rotateY(int* new_pos);
-        void rotateZ(int* new_pos);
+        // void rotateY(int* new_pos);
+        // void rotateZ(int* new_pos);
+        void rotateX();
+        void rotateY();
+        void rotateZ();
+        void setCubesPos(int pos0,int pos1,int pos2,int pos3);
 
 };   
 

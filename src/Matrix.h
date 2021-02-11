@@ -5,6 +5,12 @@
 #include <iostream>
 #include "Cube.h"
 #include "O_piece.h"
+#include "I_piece.h"
+#include "S_piece.h"
+#include "Z_piece.h"
+#include "T_piece.h"
+// #include "L_piece.h"
+// #include "J_piece.h"
  
 class Matrix
 {
@@ -13,6 +19,7 @@ class Matrix
 
         Cube m_cubes[2200];
         std::vector<Piece*> m_pieces;
+        Piece* m_curr_piece;
 
     public:
     
@@ -22,9 +29,17 @@ class Matrix
         int idToY(int id);
         int idToZ(int id);
         bool isSafe(int* ids_vec); // Receives a vector of four elements
-        void setAsPiece(int* ids_vec, int color); // Receives a vector of four elements and a color
+        bool isSafeToMove(int a0,int a1,int a2,int a3,int b0,int b1,int b2,int b3);
+        // void setAsPiece(int* ids_vec, int color); // Receives a vector of four elements and a color
+        // void setAsEmpty(int* ids_vec);
+        void setAsPiece(int id0, int id1, int id2, int id3, int color);
+        void setAsEmpty(int id0, int id1, int id2, int id3);
         void initPiece(int piece_id);
-        void rotatePieceX(int piece_id, int newPos[]);
+        void initCurrPiece();
+
+        void rotatePieceX();
+        void rotatePieceY();
+        void rotatePieceZ();
 
         Cube* getCubes();
 

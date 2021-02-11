@@ -70,6 +70,7 @@ void Cube::setColor(int color){
 
 void Cube::setOccupied(bool state){
     this->m_occupied = state;
+    std::cout << this->m_x << "," << this->m_y << "," << this->m_z << ", " << this->m_occupied <<"\n";
 }
 
 void Cube::print(std::ostream &flux) const

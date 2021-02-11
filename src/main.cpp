@@ -83,19 +83,19 @@ void resetFlags();
 void makeMove(int piece_id);
 // void startPiece(Piece *piece);
 
-enum Command
-{
-    RotateX,
-    RotateY,
-    RotateZ,
-    MovePosX,
-    MoveNegX,
-    MoveNegY,
-    MovePosZ,
-    MoveNegZ,
-    Nothing
-};
-Command curr_command = Nothing;
+// enum Command
+// {
+//     RotateX,
+//     RotateY,
+//     RotateZ,
+//     MovePosX,
+//     MoveNegX,
+//     MoveNegY,
+//     MovePosZ,
+//     MoveNegZ,
+//     Nothing
+// };
+// Command curr_command = Nothing;
 
 enum ESceneType
 {
@@ -159,7 +159,8 @@ int main( int argc, char* argv[] )
     //     std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
     // }
 
-    matrix->initPiece(0);
+    // matrix->initPiece(0);
+    matrix->initCurrPiece();
 
     // O_piece *test_piece = new O_piece();
     // for (size_t i = 0; i < 4; i++)
@@ -350,19 +351,20 @@ void KeyboardGL( unsigned char c, int x, int y )
     case 'i':
     case 'I':
         {
-            // rot_x_flag=true;
-            curr_command=RotateX;
+            matrix->rotatePieceX();
+
         }
         break;
     case 'o':
     case 'O':
         {
-            // rot_y_flag=true;
+            matrix->rotatePieceY();
         }
     case 'p':
     case 'P':
         {
-            // rot_z_flag=true;
+            // matrix->rotatePieceZ();
+            matrix->rotatePieceZ();
         }
         break;
     case 'r':
@@ -594,66 +596,66 @@ void RenderScene2()
             }
     }
 
-    makeMove(0);
+    // makeMove(0);
     
 
 }
 
-void makeMove(int piece_id){
-    // int* new_pos;
-    // O_piece *test_piece = new O_piece();
-    int new_pos[4];
+// void makeMove(int piece_id){
+//     // int* new_pos;
+//     // O_piece *test_piece = new O_piece();
+//     int new_pos[4];
 
-    switch(curr_command){
-        case RotateX: std::cout << "\nGot command ROTATE X\n";
+//     switch(curr_command){
+//         // case RotateX: std::cout << "\nGot command ROTATE X\n";
 
-            matrix->rotatePieceX(piece_id,new_pos);
-
-
-            // new_pos=pieces.at(0)->getCubes(); //OK
-            // pieces.at(0)->rotate_x(new_pos);
-            // std::cout << "\nRotating X! New Position:\n";
-            // for (size_t i = 0; i < 4; i++)
-            // {
-            //     std::cout << pieces.at(0)->getCubes()[i] << ",";
-            //     std::cout << new_pos[i] << ",";
-            // }
+//             // matrix->rotatePieceX(piece_id,new_pos);
 
 
-            // // --------
+//             // new_pos=pieces.at(0)->getCubes(); //OK
+//             // pieces.at(0)->rotate_x(new_pos);
+//             // std::cout << "\nRotating X! New Position:\n";
+//             // for (size_t i = 0; i < 4; i++)
+//             // {
+//             //     std::cout << pieces.at(0)->getCubes()[i] << ",";
+//             //     std::cout << new_pos[i] << ",";
+//             // }
+
+
+//             // // --------
 
             
 
 
-            // for (size_t i = 0; i < 4; i++)
-            // {
-            //     std::cout << test_piece->getCubes()[i] << ",";
+//             // for (size_t i = 0; i < 4; i++)
+//             // {
+//             //     std::cout << test_piece->getCubes()[i] << ",";
                 
-            // }
+//             // }
 
 
 
-            // pieces.at(0)->rotate_x(new_pos);
-            // // test_piece->rotate_x(new_pos);
-            // std::cout << std::endl <<"New Position:"<< std::endl;
-            // for (size_t i = 0; i < 4; i++)
-            // {
-            //     std::cout << new_pos[i] << ",";
-            // }
+//             // pieces.at(0)->rotate_x(new_pos);
+//             // // test_piece->rotate_x(new_pos);
+//             // std::cout << std::endl <<"New Position:"<< std::endl;
+//             // for (size_t i = 0; i < 4; i++)
+//             // {
+//             //     std::cout << new_pos[i] << ",";
+//             // }
         
         
-        break;
-        case RotateY: std::cout << "\nGot command ROTATE Y\n"; break;
-        case RotateZ: std::cout << "\nGot command ROTATE Z\n"; break;
-        case MovePosX: std::cout << "\nGot command MOVE POSITIVE X\n"; break;
-        case MoveNegX: std::cout << "\nGot command MOVE NEGATIVE X\n"; break;
-        case MoveNegY: std::cout << "\nGot command MOVE NEGATIVE Y\n"; break;
-        case MovePosZ: std::cout << "\nGot command MOVE POSITIVE Z\n"; break;
-        case MoveNegZ: std::cout << "\nGot command MOVE NEGATIVE Z\n"; break;
-        case Nothing: break;
-    }
-    curr_command=Nothing;
-}
+//         break;
+//         case RotateY: std::cout << "\nGot command ROTATE Y\n"; break;
+//         case RotateZ: std::cout << "\nGot command ROTATE Z\n"; break;
+//         case MovePosX: std::cout << "\nGot command MOVE POSITIVE X\n"; break;
+//         case MoveNegX: std::cout << "\nGot command MOVE NEGATIVE X\n"; break;
+//         case MoveNegY: std::cout << "\nGot command MOVE NEGATIVE Y\n"; break;
+//         case MovePosZ: std::cout << "\nGot command MOVE POSITIVE Z\n"; break;
+//         case MoveNegZ: std::cout << "\nGot command MOVE NEGATIVE Z\n"; break;
+//         case Nothing: break;
+//     }
+//     curr_command=Nothing;
+// }
 
 
 void RenderScene3()
