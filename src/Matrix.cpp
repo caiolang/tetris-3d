@@ -14,7 +14,7 @@ Matrix::Matrix()
     // m_curr_piece=m_pieces.at(0);
 
     // m_curr_piece=new O_piece();
-    m_curr_piece=new J_piece();
+    m_curr_piece=new T_piece();
 
 }
 
@@ -61,20 +61,20 @@ void Matrix::translatePieceX(int amount){
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "old cubes: ";
+    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        std::cout << old_cubes[i] << ", ";
+        // std::cout << old_cubes[i] << ", ";
     }
     std::cout << "\n";
 
     dummy_piece.translateX(amount);
     buf2 = dummy_piece.getCubes();
 
-    std::cout << "new cubes: ";
+    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buf2[i];
-        std::cout << new_cubes[i] << ", ";
+        // std::cout << new_cubes[i] << ", ";
     }
     std::cout << "\n";
 
@@ -85,7 +85,7 @@ void Matrix::translatePieceX(int amount){
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        std::cout << "\nMovement wasn't safe\n";
+        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -96,12 +96,12 @@ void Matrix::translatePieceY(int amount){
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "old cubes: ";
+    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        std::cout << old_cubes[i] << ", ";
+        // std::cout << old_cubes[i] << ", ";
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     this->m_curr_piece->translateY(amount);
 
@@ -161,28 +161,28 @@ void Matrix::rotatePieceX(){
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "old cubes: ";
+    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        std::cout << old_cubes[i] << ", ";
+        // std::cout << old_cubes[i] << ", ";
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     this->m_curr_piece->rotateX();
 
-    std::cout << "new cubes: ";
+    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        std::cout << new_cubes[i] << ", ";
+        // std::cout << new_cubes[i] << ", ";
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        std::cout << "\nMovement wasn't safe\n";
+        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -193,28 +193,28 @@ void Matrix::rotatePieceY(){
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "old cubes: ";
+    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        std::cout << old_cubes[i] << ", ";
+        // std::cout << old_cubes[i] << ", ";
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     this->m_curr_piece->rotateY();
 
-    std::cout << "new cubes: ";
+    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        std::cout << new_cubes[i] << ", ";
+        // std::cout << new_cubes[i] << ", ";
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        std::cout << "\nMovement wasn't safe\n";
+        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -225,21 +225,21 @@ void Matrix::rotatePieceZ(){
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "old cubes: ";
+    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        std::cout << old_cubes[i] << ", ";
+        // std::cout << old_cubes[i] << ", ";
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     this->m_curr_piece->rotateZ();
 
-    std::cout << "new cubes: ";
+    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
         std::cout << new_cubes[i] << ", ";
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
@@ -329,6 +329,31 @@ bool Matrix::isSafeToMove(int new0,int new1,int new2,int new3,int old0,int old1,
     int id=0;
     int newPos[4]={new0,new1,new2,new3};
     int oldPos[4]={old0,old1,old2,old3};
+    int coord[3][4];
+    
+    for(int i=0; i<3; i++){
+        for(int j=0; j<4; j++){
+            if(i==0){
+                coord[i][j]=newPos[j]%10;
+            }
+            else if(i==1){
+                coord[i][j]=(int) newPos[j]/100;
+            }
+            else{
+                coord[i][j]=(int) newPos[j]/10;
+                coord[i][j]=coord[i][j]%10;
+            }
+        }
+    }
+    int dist1 = std::abs(coord[0][1]-coord[0][0])+std::abs(coord[1][1]-coord[1][0])+std::abs(coord[2][1]-coord[2][0]);
+    int dist2 = std::abs(coord[0][2]-coord[0][0])+std::abs(coord[1][2]-coord[1][0])+std::abs(coord[2][2]-coord[2][0]);
+    int dist3 = std::abs(coord[0][3]-coord[0][0])+std::abs(coord[1][3]-coord[1][0])+std::abs(coord[2][3]-coord[2][0]);
+    if(dist1>4 || dist2>4 || dist3>4){
+        safe=false;
+        std::cout << "\nNot safe\n";
+        return safe;
+    }
+
 
     for (int i = 0; i < 4; i++)
     {
