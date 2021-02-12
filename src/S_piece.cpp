@@ -4,7 +4,7 @@
 
 S_piece::S_piece()
 {
-    m_color=010; // Green
+    m_color=10; // Green
     m_cube_position[0]=2044;
     m_cube_position[1]=m_cube_position[0]+1;
     m_cube_position[2]=m_cube_position[1]+100;

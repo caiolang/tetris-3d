@@ -9,8 +9,9 @@
 #include "S_piece.h"
 #include "Z_piece.h"
 #include "T_piece.h"
-// #include "L_piece.h"
-// #include "J_piece.h"
+#include "L_piece.h"
+#include "J_piece.h"
+#include "Piece.h"
  
 class Matrix
 {
@@ -28,7 +29,7 @@ class Matrix
         int idToX(int id);
         int idToY(int id);
         int idToZ(int id);
-        bool isSafe(int* ids_vec); // Receives a vector of four elements
+        bool isFree(int* ids_vec); // Receives a vector of four elements
         bool isSafeToMove(int a0,int a1,int a2,int a3,int b0,int b1,int b2,int b3);
         // void setAsPiece(int* ids_vec, int color); // Receives a vector of four elements and a color
         // void setAsEmpty(int* ids_vec);
@@ -41,7 +42,12 @@ class Matrix
         void rotatePieceY();
         void rotatePieceZ();
 
+        void translatePieceX(int amount);
+        void translatePieceY(int amount);
+        void translatePieceZ(int amount);
+
         Cube* getCubes();
+
 
 };
  

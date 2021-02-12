@@ -14,101 +14,239 @@ Matrix::Matrix()
     // m_curr_piece=m_pieces.at(0);
 
     // m_curr_piece=new O_piece();
-    m_curr_piece=new I_piece();
+    m_curr_piece=new J_piece();
 
+}
+
+// void Matrix::translatePieceX(int amount){
+//     int* buffer;
+//     int old_cubes[4], new_cubes[4];
+//     int color = this->m_curr_piece->getColor();
+
+//     buffer = this->m_curr_piece->getCubes();
+
+//     std::cout << "old cubes: ";
+//     for(int i=0;i<4;i++){
+//         old_cubes[i]=buffer[i];
+//         std::cout << old_cubes[i] << ", ";
+//     }
+//     std::cout << "\n";
+
+//     this->m_curr_piece->translateX(amount);
+
+//     std::cout << "new cubes: ";
+//     for(int i=0;i<4;i++){
+//         new_cubes[i]=buffer[i];
+//         std::cout << new_cubes[i] << ", ";
+//     }
+//     std::cout << "\n";
+
+//     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+//         // Updating cubes in Matrix
+//         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+//         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
+//     } else {
+//         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+//         std::cout << "\nMovement wasn't safe\n";
+//     }    
+// }
+
+
+void Matrix::translatePieceX(int amount){
+    int* buffer;
+    int* buf2;
+    int old_cubes[4], new_cubes[4];
+    int color = this->m_curr_piece->getColor();
+    Piece dummy_piece=*m_curr_piece;
+
+    buffer = this->m_curr_piece->getCubes();
+
+    std::cout << "old cubes: ";
+    for(int i=0;i<4;i++){
+        old_cubes[i]=buffer[i];
+        std::cout << old_cubes[i] << ", ";
+    }
+    std::cout << "\n";
+
+    dummy_piece.translateX(amount);
+    buf2 = dummy_piece.getCubes();
+
+    std::cout << "new cubes: ";
+    for(int i=0;i<4;i++){
+        new_cubes[i]=buf2[i];
+        std::cout << new_cubes[i] << ", ";
+    }
+    std::cout << "\n";
+
+    if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+        this->m_curr_piece->translateX(amount);
+        // Updating cubes in Matrix
+        this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
+    } else {
+        this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        std::cout << "\nMovement wasn't safe\n";
+    }    
+}
+
+void Matrix::translatePieceY(int amount){
+    int* buffer;
+    int old_cubes[4], new_cubes[4];
+    int color = this->m_curr_piece->getColor();
+
+    buffer = this->m_curr_piece->getCubes();
+
+    std::cout << "old cubes: ";
+    for(int i=0;i<4;i++){
+        old_cubes[i]=buffer[i];
+        std::cout << old_cubes[i] << ", ";
+    }
+    std::cout << "\n";
+
+    this->m_curr_piece->translateY(amount);
+
+    std::cout << "new cubes: ";
+    for(int i=0;i<4;i++){
+        new_cubes[i]=buffer[i];
+        std::cout << new_cubes[i] << ", ";
+    }
+    std::cout << "\n";
+
+    if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+        this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
+    } else {
+        this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        std::cout << "\nMovement wasn't safe\n";
+    }    
+}
+
+void Matrix::translatePieceZ(int amount){
+    int* buffer;
+    int old_cubes[4], new_cubes[4];
+    int color = this->m_curr_piece->getColor();
+
+    buffer = this->m_curr_piece->getCubes();
+
+    std::cout << "old cubes: ";
+    for(int i=0;i<4;i++){
+        old_cubes[i]=buffer[i];
+        std::cout << old_cubes[i] << ", ";
+    }
+    std::cout << "\n";
+
+    this->m_curr_piece->translateZ(amount);
+
+    std::cout << "new cubes: ";
+    for(int i=0;i<4;i++){
+        new_cubes[i]=buffer[i];
+        std::cout << new_cubes[i] << ", ";
+    }
+    std::cout << "\n";
+
+    if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+        this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
+    } else {
+        this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        std::cout << "\nMovement wasn't safe\n";
+    }    
 }
 
 
 void Matrix::rotatePieceX(){
     int* buffer;
-    int oldCubes[4], newCubes[4];
+    int old_cubes[4], new_cubes[4];
     int color = this->m_curr_piece->getColor();
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "oldCubes: ";
+    std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
-        oldCubes[i]=buffer[i];
-        std::cout << oldCubes[i] << ", ";
+        old_cubes[i]=buffer[i];
+        std::cout << old_cubes[i] << ", ";
     }
     std::cout << "\n";
 
     this->m_curr_piece->rotateX();
 
-    std::cout << "newCubes: ";
+    std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
-        newCubes[i]=buffer[i];
-        std::cout << newCubes[i] << ", ";
+        new_cubes[i]=buffer[i];
+        std::cout << new_cubes[i] << ", ";
     }
     std::cout << "\n";
 
-    if(this->isSafeToMove(newCubes[0],newCubes[1],newCubes[2],newCubes[3],oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3])){
-        this->setAsEmpty(oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3]);
-        this->setAsPiece(newCubes[0],newCubes[1],newCubes[2],newCubes[3],color);
+    if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+        this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
-        this->m_curr_piece->setCubesPos(oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3]);
+        this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
 void Matrix::rotatePieceY(){
     int* buffer;
-    int oldCubes[4], newCubes[4];
+    int old_cubes[4], new_cubes[4];
     int color = this->m_curr_piece->getColor();
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "oldCubes: ";
+    std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
-        oldCubes[i]=buffer[i];
-        std::cout << oldCubes[i] << ", ";
+        old_cubes[i]=buffer[i];
+        std::cout << old_cubes[i] << ", ";
     }
     std::cout << "\n";
 
     this->m_curr_piece->rotateY();
 
-    std::cout << "newCubes: ";
+    std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
-        newCubes[i]=buffer[i];
-        std::cout << newCubes[i] << ", ";
+        new_cubes[i]=buffer[i];
+        std::cout << new_cubes[i] << ", ";
     }
     std::cout << "\n";
 
-    if(this->isSafeToMove(newCubes[0],newCubes[1],newCubes[2],newCubes[3],oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3])){
-        this->setAsEmpty(oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3]);
-        this->setAsPiece(newCubes[0],newCubes[1],newCubes[2],newCubes[3],color);
+    if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+        this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
-        this->m_curr_piece->setCubesPos(oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3]);
+        this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
 void Matrix::rotatePieceZ(){
     int* buffer;
-    int oldCubes[4], newCubes[4];
+    int old_cubes[4], new_cubes[4];
     int color = this->m_curr_piece->getColor();
 
     buffer = this->m_curr_piece->getCubes();
 
-    std::cout << "oldCubes: ";
+    std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
-        oldCubes[i]=buffer[i];
-        std::cout << oldCubes[i] << ", ";
+        old_cubes[i]=buffer[i];
+        std::cout << old_cubes[i] << ", ";
     }
     std::cout << "\n";
 
     this->m_curr_piece->rotateZ();
 
-    std::cout << "newCubes: ";
+    std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
-        newCubes[i]=buffer[i];
-        std::cout << newCubes[i] << ", ";
+        new_cubes[i]=buffer[i];
+        std::cout << new_cubes[i] << ", ";
     }
     std::cout << "\n";
 
-    if(this->isSafeToMove(newCubes[0],newCubes[1],newCubes[2],newCubes[3],oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3])){
-        this->setAsEmpty(oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3]);
-        this->setAsPiece(newCubes[0],newCubes[1],newCubes[2],newCubes[3],color);
+    if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+        this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
-        this->m_curr_piece->setCubesPos(oldCubes[0],oldCubes[1],oldCubes[2],oldCubes[3]);
+        this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -116,8 +254,7 @@ void Matrix::rotatePieceZ(){
 void Matrix::initPiece(int piece_id){
     int* cubes = m_pieces.at(piece_id)->getCubes();
 
-
-    if( isSafe(m_pieces.at(piece_id)->getCubes()) ){
+    if( isFree(m_pieces.at(piece_id)->getCubes()) ){
             std::cout << "\nIS SAFE\n";
             int color = m_pieces.at(piece_id)->getColor();
             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
@@ -130,7 +267,7 @@ void Matrix::initCurrPiece(){
 
     int* cubes = m_curr_piece->getCubes();
 
-    if( isSafe(m_curr_piece->getCubes()) ){
+    if( isFree(m_curr_piece->getCubes()) ){
             std::cout << "\nIS SAFE\n";
             int color = m_curr_piece->getColor();
             // setAsPiece(m_curr_piece->getCubes(),color);
@@ -171,7 +308,7 @@ Cube* Matrix::getCubes(){
     return m_cubes;
 }
 
-bool Matrix::isSafe(int* ids_vec){
+bool Matrix::isFree(int* ids_vec){
     bool safe=true;
     int id=0;
 
@@ -180,33 +317,55 @@ bool Matrix::isSafe(int* ids_vec){
         id = ids_vec[i];
         if(this->m_cubes[id].isOccupied()){
             safe=false;
-            std::cout << "\nCube of id " << id << " is not safe\n";
+            std::cout << "\nCube of id " << id << " is not free\n";
         }
     }
     
     return safe;
 }
 
-// TODO Checar limites do jogo
-bool Matrix::isSafeToMove(int a0,int a1,int a2,int a3,int b0,int b1,int b2,int b3){
+bool Matrix::isSafeToMove(int new0,int new1,int new2,int new3,int old0,int old1,int old2,int old3){
     bool safe=true;
     int id=0;
-    int a[4]={a0,a1,a2,a3};
-    int b[4]={b0,b1,b2,b3};
+    int newPos[4]={new0,new1,new2,new3};
+    int oldPos[4]={old0,old1,old2,old3};
 
     for (int i = 0; i < 4; i++)
     {
-
-        if(this->m_cubes[a[i]].isOccupied()){
-            if(b[0]!=a[i] && b[1]!=a[i] && b[1]!=a[i] && b[3]!=a[i]){
+        
+        // Checking if any of the new positions is occupied by OTHER pieces
+        if(this->m_cubes[newPos[i]].isOccupied()){
+            if(newPos[i]!=oldPos[0] && newPos[i]!=oldPos[1] && newPos[i]!=oldPos[2] && newPos[i]!=oldPos[3]){
                 safe=false;
-                std::cout << "\nCube of id " << a[i] << " is not safe\n";
+                std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
+                return safe;
             }
-
-            
         }
+
+        // Checking if new position doesn't go out-of-bounds
+        if(newPos[i]>2199 || newPos[i]<0){
+            safe=false;
+            std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
+            return safe;
+        }
+
+        if( (idToX(newPos[i])==0 && idToX(oldPos[i])==9) || (idToX(newPos[i])==9 && idToX(oldPos[i])==0) ){
+            safe=false;
+            std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
+            return safe;
+        }
+
+        if( (idToZ(newPos[i])==0 && idToZ(oldPos[i])==9) || (idToZ(newPos[i])==9 && idToZ(oldPos[i])==0) ){
+            safe=false;
+            std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
+            return safe;
+        }
+
+
+
+
     }
-    
+
     return safe;
 }
 

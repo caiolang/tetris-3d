@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
-// #include <string.h>
+#include <string.h>
 #include "Cube.h"
 #include "Matrix.h"
 #include "Piece.h"
@@ -50,16 +50,6 @@ const int Z_DIM = 10;
 const int NUM_PIECES = 20;
 
 Matrix *matrix = new Matrix();
-// bool rot_x_flag = false;
-// bool rot_y_flag = false;
-// bool rot_z_flag = false;
-// bool mov_x_pos_flag = false;
-// bool mov_x_neg_flag = false;
-// bool mov_y_neg_flag = false;
-// bool mov_z_pos_flag = false;
-// bool mov_z_neg_flag = false;
-// Piece curr_piece;
-// int new_pos[4];
 
 /* GL functions' primitives */
 void InitGL( int argc, char* argv[] );
@@ -69,6 +59,7 @@ void KeyboardGL( unsigned char c, int x, int y );
 void MouseGL( int button, int state, int x, int y );
 void MotionGL( int x, int y );
 void ReshapeGL( int w, int h );
+void printTxt(float x, float y, char *String);
 
 /* 3D Primitives */
 void DrawCube( float width, float height, float depth );
@@ -81,36 +72,18 @@ int idToY(int id);
 int idToZ(int id);
 void resetFlags();
 void makeMove(int piece_id);
-// void startPiece(Piece *piece);
-
-// enum Command
-// {
-//     RotateX,
-//     RotateY,
-//     RotateZ,
-//     MovePosX,
-//     MoveNegX,
-//     MoveNegY,
-//     MovePosZ,
-//     MoveNegZ,
-//     Nothing
-// };
-// Command curr_command = Nothing;
 
 enum ESceneType
 {
     ST_Scene1 = 0,
-    ST_Scene2,
-    ST_Scene3,
-    ST_Scene4
-    // ST_NumScenes
+    ST_Scene2
 };
 ESceneType g_eCurrentScene = ST_Scene1;
 
-// Rotation parameters
-float g_fRotate1 = 0.0f;
-float g_fRotate2 = 0.0f;
-float g_fRotate3 = 0.0f;
+
+float time_sum = 0.0f;
+int level = 0;
+int points = 0;
 
 /* Clock variables */
 std::clock_t g_PreviousTicks;
@@ -121,8 +94,6 @@ void RenderScene1();
 // Render Tetris Game
 void RenderScene2(); 
 
-void RenderScene3();
-void RenderScene4();
 
 // We're exiting, cleanup the allocated resources.
 void Cleanup( int exitCode, bool bExit = true );
@@ -134,48 +105,8 @@ int main( int argc, char* argv[] )
     // Capture the previous time to calculate the delta time on the next frame
     g_PreviousTicks = std::clock();
 
-    // Matrix *matrix = new Matrix();
- 
-    // for (size_t i = 0; i < MATRIX_SIZE; i++)
-    // {
-    //     std::cout << matrix->getCubes()[i]; // << "\n";
-    // }
-    
-    // std::vector<Piece*> pieces;
-
-
-    // std::cout << matrix->getCubes()[436].isOccupied();
-    // std::cout << matrix->getCubes()[0].isOccupied();
-    // std::cout << matrix->getCubes()[2044].isOccupied();
-    // std::cout << matrix->getCubes()[2144].isOccupied();
-    // std::cout << matrix->getCubes()[2145].isOccupied();
-    // std::cout << matrix->getCubes()[2045].isOccupied();
-
-    // if( matrix->isSafe(pieces.at(0)->getCubes()) ){
-    //     // std::cout << "\nIS SAFE\n";
-    //     int color = pieces.at(0)->getColor();
-    //     matrix->setAsPiece(pieces.at(0)->getCubes(),color);
-    // } else {
-    //     std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
-    // }
-
-    // matrix->initPiece(0);
     matrix->initCurrPiece();
 
-    // O_piece *test_piece = new O_piece();
-    // for (size_t i = 0; i < 4; i++)
-    // {
-    //     std::cout << test_piece->getCubes()[i] << ",";
-        
-    // }
-
-    // int new_pos[4];
-    // test_piece->rotate_x(new_pos);
-    // std::cout << std::endl <<"New Position:"<< std::endl;
-    // for (size_t i = 0; i < 4; i++)
-    // {
-    //     std::cout << new_pos[i] << ",";
-    // }
 
     InitGL( argc, argv );
     glutMainLoop();
@@ -239,7 +170,7 @@ void InitGL( int argc, char* argv[] )
     glutReshapeFunc(ReshapeGL);
 
     // Setup initial GL State
-    glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
+    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
     glClearDepth( 1.0f );
 
     glShadeModel( GL_SMOOTH );
@@ -263,16 +194,6 @@ void DisplayGL()
             RenderScene2();
         }
         break;
-    case ST_Scene3:
-        {
-            RenderScene3();
-        }
-        break;
-    case ST_Scene4:
-        {
-            RenderScene4();
-        }
-        break;
     }
 
     glutSwapBuffers();
@@ -280,40 +201,7 @@ void DisplayGL()
 }
 
 void IdleGL()
-{
-    // Update our simulation
-
-    
-    // pieces.at(0)->rotate_x(new_pos);
-    // std::cout << "\nRotating! New Position:\n";
-    // for (size_t i = 0; i < 4; i++)
-    // {
-    //     std::cout << new_pos[i] << ",";
-    // }
-
-    
-
-    
-
-    g_CurrentTicks = std::clock();
-    float deltaTicks = ( g_CurrentTicks - g_PreviousTicks );
-    g_PreviousTicks = g_CurrentTicks;
-
-    float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
-
-    // Rate of rotation in (degrees) per second
-    // const float fRotationRate = 50.0f;
-
-    // Update our rotation parameters
-    // g_fRotate1 += ( fRotationRate * fDeltaTime );
-    // g_fRotate1 = fmodf( g_fRotate1, 360.0f );
-
-    // g_fRotate2 += ( fRotationRate * fDeltaTime );
-    // g_fRotate2 = fmodf( g_fRotate2, 360.0f );
-
-    // g_fRotate3 += ( fRotationRate * fDeltaTime );
-    // g_fRotate3 = fmodf( g_fRotate3, 360.0f );
-
+{   
     glutPostRedisplay();
 }
 
@@ -326,7 +214,8 @@ void KeyboardGL( unsigned char c, int x, int y )
     {
     case '1':
         {
-            glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );                         // White background
+            // glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );                         // White background
+            glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
             g_eCurrentScene = ST_Scene1;
         }
         break;
@@ -336,48 +225,84 @@ void KeyboardGL( unsigned char c, int x, int y )
             g_eCurrentScene = ST_Scene2;
         }
         break;
-    case '3':
-        {
-            glClearColor( 0.27f, 0.27f, 0.27f, 1.0f );                      // Dark-Gray background
-            g_eCurrentScene = ST_Scene3;
-        }
-        break;
-    case '4':
-        {
-            glClearColor( 0.73f, 0.73f, 0.73f, 1.0f );                      // Light-Gray background
-            g_eCurrentScene = ST_Scene4;
-        }
-        break;
     case 'i':
     case 'I':
         {
-            matrix->rotatePieceX();
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->rotatePieceX();
+            }
 
         }
         break;
     case 'o':
     case 'O':
         {
-            matrix->rotatePieceY();
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->rotatePieceY();
+            }
         }
+        break;
     case 'p':
     case 'P':
         {
-            // matrix->rotatePieceZ();
-            matrix->rotatePieceZ();
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->rotatePieceZ();
+            }
         }
         break;
-    case 'r':
-    case 'R':
+    case 'd':
+    case 'D':
         {
-            std::cout << "Reset Parameters..." << std::endl;
-            g_fRotate1 = g_fRotate2 = g_fRotate3 = 0.0f;
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->translatePieceX(1);
+            }
+
         }
         break;
+    case 'a':
+    case 'A':
+        {
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->translatePieceX(-1);
+            }
+
+        }
+        break;
+    case 'w':
+    case 'W':
+        {
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->translatePieceZ(-1);
+            }
+        }
+        break;
+    case 's':
+    case 'S':
+        {
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->translatePieceZ(1);
+            }
+        }
+        break;
+    case 'e':
+    case 'E':
+        {
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->translatePieceY(1);
+            }
+        }
+        break;
+    case 'q':
+    case 'Q':
+        {
+            if(g_eCurrentScene==ST_Scene2){
+                matrix->translatePieceY(-1);
+            }
+        }
+        break;
+
     case '\033': // escape quits
-    case '\015': // Enter quits    
-    case 'Q':    // Q quits
-    case 'q':    // q (or escape) quits
+    // case '\015': // Enter quits    
         {
             // Cleanup up and quit
             Cleanup(0);
@@ -391,6 +316,40 @@ void KeyboardGL( unsigned char c, int x, int y )
     }
 
     glutPostRedisplay();
+}
+
+void printTxt(float x, float y, char *String)
+{
+    /* Available fonts: */
+    // GLUT_BITMAP_8_BY_13
+    // GLUT_BITMAP_9_BY_15
+    // GLUT_BITMAP_TIMES_ROMAN_10
+    // GLUT_BITMAP_TIMES_ROMAN_24
+    // GLUT_BITMAP_HELVETICA_10
+    // GLUT_BITMAP_HELVETICA_12
+    // GLUT_BITMAP_HELVETICA_18
+
+    char *c;
+
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0, 10, 0, 10);
+
+    glColor3f(255.0f, 255.0f, 255.0f);
+    glRasterPos2f(x, y);
+    glDisable(GL_LIGHTING);
+
+    for (c = String; *c != '\0'; c++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c);
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
 }
 
 /* Unused Mouse methods */
@@ -430,23 +389,32 @@ void RenderScene1()
 {
 
     glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
-    glLoadIdentity();                                                       // Load the identity matrix
+    glLoadIdentity();       
 
-    // float x = .5; /* Centre in the middle of the window */
-    // glRasterPos2f(x - (float) glutGet(GLUT_SCREEN_WIDTH) / 2, 0.);
-    // glColor3f(1.f, 0.f, 0.f);
-    // int len = strlen(hello_string);
-    // for (int i = 0; i < len; i++) {
-    //     glutBitmapCharacter(GLUT_BITMAP_8_BY_13, hello_string);
-    // }
+    char scr[30];
+    strcpy(scr, "T E T R I S  3 D");
+    printTxt(5.0f, 5.0f, scr);
+    strcpy(scr, "rafaverissimo e caiolang");
+    printTxt(5.0f, 7.0f, scr);
 
-    glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate our view matrix back and a bit to the left.
+    // glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
+    // glLoadIdentity();                                                       // Load the identity matrix
+
+    // // float x = .5; /* Centre in the middle of the window */
+    // // glRasterPos2f(x - (float) glutGet(GLUT_SCREEN_WIDTH) / 2, 0.);
+    // // glColor3f(1.f, 0.f, 0.f);
+    // // int len = strlen(hello_string);
+    // // for (int i = 0; i < len; i++) {
+    // //     glutBitmapCharacter(GLUT_BITMAP_8_BY_13, hello_string);
+    // // }
+
+    // glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate our view matrix back and a bit to the left.
     
 
-    glTranslatef( 3.0f, 0.0f, 0.0f );                                       // Shift view 3 units to the right
-    glColor3f( 0.0f, 0.0f, 1.0f );                                          // Set Color to blue
-    // DrawRectangle( 2.0f, 2.0f );
-    glutSolidCube(0.5);
+    // glTranslatef( 3.0f, 0.0f, 0.0f );                                       // Shift view 3 units to the right
+    // glColor3f( 0.0f, 0.0f, 1.0f );                                          // Set Color to blue
+    // // DrawRectangle( 2.0f, 2.0f );
+    // glutSolidCube(0.5);
 
 }
 
@@ -564,12 +532,43 @@ void renderCube(int x0, int y0, int z0, int color){
 
 }
 
+void renderGameText(){
+    char scr[20];
+    strcpy(scr, "N E X T  P I E C E:");
+    printTxt(7.3f, 7.0f, scr);
+
+    strcpy(scr, "L E V E L:");
+    printTxt(7.3f, 5.5f, scr);
+    sprintf(scr, "%d", level);
+    printTxt(7.3f, 3.7f, scr);
+
+    strcpy(scr, "P O I N T S:");
+    printTxt(7.3f, 4.0f, scr);
+    sprintf(scr, "%d", points);
+    printTxt(7.3f, 3.7f, scr);
+}
+
 void RenderScene2()
 {
+
+    g_CurrentTicks = std::clock();
+    float deltaTicks = ( g_CurrentTicks - g_PreviousTicks );
+    g_PreviousTicks = g_CurrentTicks;
+
+    float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
+    time_sum += fDeltaTime;
+    std::cout<<time_sum;
+    if(time_sum>0.01){
+        matrix->translatePieceY(-1);
+        time_sum=0;
+    }
+
+    renderGameText();
+
     glMatrixMode( GL_MODELVIEW ); // Switch to modelview matrix mode
     glLoadIdentity(); // Load the identity matrix
     glEnable( GL_DEPTH_TEST );
-    glTranslatef( -5.0f, -10.0f, -30.0f ); // Translate back and to the left
+    glTranslatef( -5.0f, -10.0f, -30.0f ); // 
     
     /* Rendering game matrix */
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -583,7 +582,6 @@ void RenderScene2()
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
     for (size_t i = 0; i < MATRIX_SIZE; i++){
-            // std::cout << matrix->getCubes()[i]; // << "\n";
             cube_aux = matrix->getCubes()[i];
             color = cube_aux.getColor();
              
@@ -596,244 +594,11 @@ void RenderScene2()
             }
     }
 
-    // makeMove(0);
     
 
 }
 
-// void makeMove(int piece_id){
-//     // int* new_pos;
-//     // O_piece *test_piece = new O_piece();
-//     int new_pos[4];
 
-//     switch(curr_command){
-//         // case RotateX: std::cout << "\nGot command ROTATE X\n";
-
-//             // matrix->rotatePieceX(piece_id,new_pos);
-
-
-//             // new_pos=pieces.at(0)->getCubes(); //OK
-//             // pieces.at(0)->rotate_x(new_pos);
-//             // std::cout << "\nRotating X! New Position:\n";
-//             // for (size_t i = 0; i < 4; i++)
-//             // {
-//             //     std::cout << pieces.at(0)->getCubes()[i] << ",";
-//             //     std::cout << new_pos[i] << ",";
-//             // }
-
-
-//             // // --------
-
-            
-
-
-//             // for (size_t i = 0; i < 4; i++)
-//             // {
-//             //     std::cout << test_piece->getCubes()[i] << ",";
-                
-//             // }
-
-
-
-//             // pieces.at(0)->rotate_x(new_pos);
-//             // // test_piece->rotate_x(new_pos);
-//             // std::cout << std::endl <<"New Position:"<< std::endl;
-//             // for (size_t i = 0; i < 4; i++)
-//             // {
-//             //     std::cout << new_pos[i] << ",";
-//             // }
-        
-        
-//         break;
-//         case RotateY: std::cout << "\nGot command ROTATE Y\n"; break;
-//         case RotateZ: std::cout << "\nGot command ROTATE Z\n"; break;
-//         case MovePosX: std::cout << "\nGot command MOVE POSITIVE X\n"; break;
-//         case MoveNegX: std::cout << "\nGot command MOVE NEGATIVE X\n"; break;
-//         case MoveNegY: std::cout << "\nGot command MOVE NEGATIVE Y\n"; break;
-//         case MovePosZ: std::cout << "\nGot command MOVE POSITIVE Z\n"; break;
-//         case MoveNegZ: std::cout << "\nGot command MOVE NEGATIVE Z\n"; break;
-//         case Nothing: break;
-//     }
-//     curr_command=Nothing;
-// }
-
-
-void RenderScene3()
-{
-    glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
-    glLoadIdentity();                                                       // Load the identity matrix
-
-    glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate back and to the left
-    glPushMatrix();                                                         // Push the current transformation onto the matrix stack
-    glRotatef( g_fRotate1, 0.0f, 0.0f, 1.0f );
-    // Draw a triangle with different colors on each vertex
-    glBegin( GL_TRIANGLES );
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex2f( 0.0f, 1.0f );                                           // Top-Center
-
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex2f( -1.0f, -1.0f );                                         // Bottom-Left
-
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex2f( 1.0f, -1.0f );                                          // Bottom-Right
-    glEnd();
-    glPopMatrix();
-
-    glTranslatef( 3.0f, 0.0f, 0.0f );                                       // Translate right
-    glPushMatrix();
-    glRotatef( g_fRotate2, 0.0f, 0.0f, 1.0f );
-    // Draw a rectangle with different colors on each vertex
-    glBegin( GL_QUADS );
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex2f( -1.0f, 1.0f );                                          // Top-Left
-
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex2f( 1.0f, 1.0f );                                           // Top-Right
-
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex2f( 1.0f, -1.0f );                                          // Bottom-Right
-
-        glColor3f( 1.0f, 1.0f, 1.0f );                                      // White
-        glVertex2f( -1.0f, -1.0f );                                         // Bottom-Left
-    glEnd();
-    glPopMatrix();
-
-    glTranslatef( -1.5f, -3.0f, 0.0f );                                     // Back to center and lower screen
-    glPushMatrix();
-    glRotatef( g_fRotate3, 0.0f, 0.0f, 1.0f );
-    // Draw a circle with blended red/blue vertecies
-    const float step = M_PI / 16;
-    const float radius = 1.0f;
-
-    glBegin( GL_TRIANGLE_FAN );
-        glColor3f( 1.0f, 1.0f, 1.0f );    
-        glVertex2f(0.0f, 0.0f);
-        for ( float angle = 0.0f; angle < ( 2.0f * M_PI ); angle += step )
-        {
-            float fSin = sinf(angle);
-            float fCos = cosf(angle);
-
-            glColor3f( ( fCos + 1.0f ) * 0.5f, ( fSin + 1.0f ) * 0.5f , 0.0f);
-            glVertex2f( radius * fSin, radius * fCos );
-        }
-        glColor3f( 1.0f, 0.5f, 0.0f );
-        glVertex2f( 0.0f, radius ); // One more vertex to close the circle
-    glEnd();
-    glPopMatrix();
-}
-
-void RenderScene4()
-{
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-
-    glEnable( GL_DEPTH_TEST );
-
-    glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate back and to the left
-
-    glPushMatrix();                                                         // Push the current modelview matrix on the matrix stack
-    // glRotatef(g_fRotate1, 1.0f, 1.0f, 1.0f );                               // Rotate on all 3 axis
-    glBegin( GL_TRIANGLES );                                                // Draw a pyramid        
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex3f( 0.0f, 1.0f, 0.0f );                                     // Top of front face
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex3f( -1.0f, -1.0f, 1.0f );                                   // Left of front face
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex3f( 1.0f, -1.0f, 1.0f );                                    // Right of front face
-
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex3f( 0.0f, 1.0f, 0.0f );                                     // Top of right face
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex3f( 1.0f, -1.0f, 1.0f );                                    // Left of right face
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex3f( 1.0f, -1.0f, -1.0f );                                   // Right of right face
-
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex3f( 0.0f, 1.0f, 0.0f );                                     // Top of back face
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex3f( 1.0f, -1.0f, -1.0f );                                   // Left of back face
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex3f( -1.0f, -1.0f, -1.0f );                                  // Right of back face
-
-        glColor3f( 1.0f, 0.0f, 0.0f );                                      // Red
-        glVertex3f( 0.0f, 1.0f, 0.0f );                                     // Top of left face
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex3f( -1.0f, -1.0f, -1.0f );                                  // Left of left face
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex3f( -1.0f, -1.0f, 1.0f );                                   // Right of left face
-    glEnd();
-
-    // Render a quad for the bottom of our pyramid
-    glBegin( GL_QUADS );
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex3f( -1.0f, -1.0f, 1.0f );                                   // Left/right of front/left face
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex3f( 1.0f, -1.0f, 1.0f );                                    // Right/left of front/right face
-        glColor3f( 0.0f, 1.0f, 0.0f );                                      // Green
-        glVertex3f( 1.0f, -1.0f, -1.0f );                                   // Right/left of right/back face
-        glColor3f( 0.0f, 0.0f, 1.0f );                                      // Blue
-        glVertex3f( -1.0f, -1.0f, -1.0f );                                  // Left/right of right/back face
-    glEnd();
-    glPopMatrix();
-
-    glTranslatef( 3.0f, 0.0f, 0.0f );                                        // Translate right
-    glPushMatrix();                                                         // Push the current modelview matrix on the matrix stack
-    glRotatef( g_fRotate2, 1.0f, 1.0f, 1.0f );                              // Rotate the primitive on all 3 axis
-    glBegin( GL_QUADS );
-        // Top face
-        glColor3f(   0.0f, 1.0f,  0.0f );                                   // Green
-        glVertex3f(  1.0f, 1.0f, -1.0f );                                   // Top-right of top face
-        glVertex3f( -1.0f, 1.0f, -1.0f );                                   // Top-left of top face
-        glVertex3f( -1.0f, 1.0f,  1.0f );                                   // Bottom-left of top face
-        glVertex3f(  1.0f, 1.0f,  1.0f );                                   // Bottom-right of top face
-
-        // Bottom face
-        glColor3f(   1.0f,  0.5f,  0.0f );                                  // Orange
-        glVertex3f(  1.0f, -1.0f, -1.0f );                                  // Top-right of bottom face
-        glVertex3f( -1.0f, -1.0f, -1.0f );                                  // Top-left of bottom face
-        glVertex3f( -1.0f, -1.0f,  1.0f );                                  // Bottom-left of bottom face
-        glVertex3f(  1.0f, -1.0f,  1.0f );                                  // Bottom-right of bottom face
-
-        // Front face
-        glColor3f(   1.0f,  0.0f, 0.0f );                                  // Red
-        glVertex3f(  1.0f,  1.0f, 1.0f );                                  // Top-Right of front face
-        glVertex3f( -1.0f,  1.0f, 1.0f );                                  // Top-left of front face
-        glVertex3f( -1.0f, -1.0f, 1.0f );                                  // Bottom-left of front face
-        glVertex3f(  1.0f, -1.0f, 1.0f );                                  // Bottom-right of front face
-
-        // Back face
-        glColor3f(   1.0f,  1.0f,  0.0f );                                 // Yellow
-        glVertex3f(  1.0f, -1.0f, -1.0f );                                 // Bottom-Left of back face
-        glVertex3f( -1.0f, -1.0f, -1.0f );                                 // Bottom-Right of back face
-        glVertex3f( -1.0f,  1.0f, -1.0f );                                 // Top-Right of back face
-        glVertex3f(  1.0f,  1.0f, -1.0f );                                 // Top-Left of back face
-
-        // Left face
-        glColor3f(   0.0f,  0.0f,  1.0f);                                   // Blue
-        glVertex3f( -1.0f,  1.0f,  1.0f);                                   // Top-Right of left face
-        glVertex3f( -1.0f,  1.0f, -1.0f);                                   // Top-Left of left face
-        glVertex3f( -1.0f, -1.0f, -1.0f);                                   // Bottom-Left of left face
-        glVertex3f( -1.0f, -1.0f,  1.0f);                                   // Bottom-Right of left face
-
-        // Right face
-        glColor3f(   1.0f,  0.0f,  1.0f);                                   // Violet
-        glVertex3f(  1.0f,  1.0f,  1.0f);                                   // Top-Right of left face
-        glVertex3f(  1.0f,  1.0f, -1.0f);                                   // Top-Left of left face
-        glVertex3f(  1.0f, -1.0f, -1.0f);                                   // Bottom-Left of left face
-        glVertex3f(  1.0f, -1.0f,  1.0f);                                   // Bottom-Right of left face
-    glEnd();
-    glPopMatrix();
-
-    glTranslatef( -1.5f, -3.0f, 0.0f );                                     // Back to center and lower screen
-    glPushMatrix();
-    glRotatef( g_fRotate3, 1.0f, 1.0f, 1.0f );   
-    glColor3f( 1.0f, 1.0f, 0.0f );                                          // Yellow
-    glutSolidSphere( 1.0f, 16, 16 );                                        // Use GLUT to draw a solid sphere
-    glScalef( 1.01f, 1.01f, 1.01f );                                        
-    glColor3f( 1.0f, 0.0f, 0.0f );                                          // Red
-    glutWireSphere( 1.0f, 16, 16 );                                         // Use GLUT to draw a wireframe sphere
-    glPopMatrix();
-}
 
 
 int idToX(int id){
@@ -858,13 +623,3 @@ int idToZ(int id){
     return z;
 }
 
-// void resetFlags(){
-//     bool rot_x_flag = false;
-//     bool rot_y_flag = false;
-//     bool rot_z_flag = false;
-//     bool mov_x_pos_flag = false;
-//     bool mov_x_neg_flag = false;
-//     bool mov_y_neg_flag = false;
-//     bool mov_z_pos_flag = false;
-//     bool mov_z_neg_flag = false;
-// }
