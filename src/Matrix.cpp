@@ -3,12 +3,18 @@
 Matrix::Matrix()
 {
 
+    srand ((unsigned)time(NULL));
+    int n;
     /* Initializing the Matrix Cubes */
     for (int i = 0; i < 2200; i++)
     {
         m_cubes[i]= Cube(idToX(i), idToY(i), idToZ(i), false);
+        while( ( n = rand() ) > RAND_MAX - (RAND_MAX-6)%7 || n%7==m_list_pieces[i-1])
+        { /* bad value retrieved so get next one */ }
+        m_list_pieces[i]=n%7;
     }
 
+    m_num_piece=0;
     // m_pieces.push_back( new O_piece());
 
     // m_curr_piece=m_pieces.at(0);
@@ -266,10 +272,12 @@ void Matrix::rotatePieceZ(){
 void Matrix::nextPiece(){
     int pieceType;
     this->m_curr_piece = this->m_next_piece;
-    srand (time(NULL));
-
-    pieceType = rand() % 700;
-    pieceType/=100;
+    
+    pieceType = m_list_pieces[m_num_piece];
+    m_num_piece+=1;
+    if(m_num_piece>=2200){
+        m_num_piece=0;
+    }
 
     switch (pieceType)
     {
@@ -295,7 +303,7 @@ void Matrix::nextPiece(){
         this->m_next_piece=new Z_piece();
         break;
     default:
-        this->m_next_piece=new T_piece();
+        this->m_next_piece=new O_piece();
         break;
     }
 
