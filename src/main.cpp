@@ -557,7 +557,7 @@ void RenderScene2()
 
     float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
     time_sum += fDeltaTime;
-    std::cout<<time_sum;
+    // std::cout<<time_sum;
     if(time_sum>0.01){
         matrix->translatePieceY(-1);
         time_sum=0;

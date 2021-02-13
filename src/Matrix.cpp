@@ -361,6 +361,12 @@ bool Matrix::isSafeToMove(int new0,int new1,int new2,int new3,int old0,int old1,
             return safe;
         }
 
+        // if( (idToZ(newPos[i])==0 && idToZ(oldPos[i])==9) || (idToZ(newPos[i])==9 && idToZ(oldPos[i])==0) ){
+        //     safe=false;
+        //     std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
+        //     return safe;
+        // }
+
 
 
 
