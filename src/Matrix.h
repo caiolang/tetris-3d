@@ -24,6 +24,8 @@ class Matrix
         // std::vector<Piece*> m_pieces;
         Piece* m_curr_piece;
         Piece* m_next_piece;
+        int m_list_pieces[2200];
+        int m_num_piece;
 
         Piece* m_curr_ghost;
         Piece* m_next_ghost;
