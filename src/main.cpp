@@ -47,7 +47,7 @@ const int MATRIX_SIZE = 2200;
 const int X_DIM = 10;
 const int Y_DIM = 22;
 const int Z_DIM = 10;
-const int NUM_PIECES = 20;
+// const int NUM_PIECES = 20;
 
 Matrix *matrix = new Matrix();
 
@@ -70,8 +70,10 @@ void DrawPyramid( float scale = 1.0f );
 int idToX(int id);
 int idToY(int id);
 int idToZ(int id);
-void resetFlags();
 void makeMove(int piece_id);
+void updateGame();
+void renderCube(int x0, int y0, int z0, int color);
+void renderGameStage();
 
 enum ESceneType
 {
@@ -397,30 +399,10 @@ void RenderScene1()
     strcpy(scr, "rafaverissimo e caiolang");
     printTxt(5.0f, 7.0f, scr);
 
-    // glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
-    // glLoadIdentity();                                                       // Load the identity matrix
-
-    // // float x = .5; /* Centre in the middle of the window */
-    // // glRasterPos2f(x - (float) glutGet(GLUT_SCREEN_WIDTH) / 2, 0.);
-    // // glColor3f(1.f, 0.f, 0.f);
-    // // int len = strlen(hello_string);
-    // // for (int i = 0; i < len; i++) {
-    // //     glutBitmapCharacter(GLUT_BITMAP_8_BY_13, hello_string);
-    // // }
-
-    // glTranslatef( -1.5f, 1.0f, -6.0f );                                     // Translate our view matrix back and a bit to the left.
-    
-
-    // glTranslatef( 3.0f, 0.0f, 0.0f );                                       // Shift view 3 units to the right
-    // glColor3f( 0.0f, 0.0f, 1.0f );                                          // Set Color to blue
-    // // DrawRectangle( 2.0f, 2.0f );
-    // glutSolidCube(0.5);
-
 }
 
 void renderGameStage(){
 
-    // glColor3f( 1.0f, 1.0f, 1.0f);
     glColor3f( 0.3f, 0.3f, 0.3f);
 
     // Bottom
@@ -532,6 +514,63 @@ void renderCube(int x0, int y0, int z0, int color){
 
 }
 
+void renderCube2(int x0, int y0, int z0, int color){
+    
+    GLfloat x0f=(GLfloat)x0, y0f=(GLfloat)y0, z0f=(GLfloat)z0;
+    float r,g,b;
+    r=color/100;
+    g=(color/10)%10;
+    b=color%10;
+
+    glBegin( GL_QUADS );
+
+        // glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
+        glColor3f( (GLfloat)r-0.5f, (GLfloat)g-0.5f, (GLfloat)b-0.5f);
+
+        // Top face
+        glVertex3f(  x0f+0.01f, y0f+0.99f, z0f+0.01f );                                   
+        glVertex3f(  x0f+0.99f, y0f+0.99f, z0f+0.01f );
+        glVertex3f(  x0f+0.99f, y0f+0.99f, z0f+0.99f );                             
+        glVertex3f(  x0f+0.01f, y0f+0.99f, z0f+0.99f );                                  
+
+        // Bottom face
+        glVertex3f(  x0f+0.01f, y0f+0.01f, z0f+0.01f );                                   
+        glVertex3f(  x0f+0.99f, y0f+0.01f, z0f+0.01f );
+        glVertex3f(  x0f+0.99f, y0f+0.01f, z0f+0.99f );                             
+        glVertex3f(  x0f+0.01f, y0f+0.01f, z0f+0.99f );         
+
+        glColor3f( (GLfloat)r-0.3f, (GLfloat)g-0.3f, (GLfloat)b-0.3f);
+
+        // Left face
+        glVertex3f(  x0f+0.01f, y0f+0.01f, z0f+0.01f );                                   
+        glVertex3f(  x0f+0.01f, y0f+0.01f, z0f+0.99f );
+        glVertex3f(  x0f+0.01f, y0f+0.99f, z0f+0.99f );                             
+        glVertex3f(  x0f+0.01f, y0f+0.99f, z0f+0.01f );   
+
+        // Right face
+        glVertex3f(  x0f+0.99f, y0f+0.01f, z0f+0.01f );                                   
+        glVertex3f(  x0f+0.99f, y0f+0.01f, z0f+0.99f );
+        glVertex3f(  x0f+0.99f, y0f+0.99f, z0f+0.99f );                             
+        glVertex3f(  x0f+0.99f, y0f+0.99f, z0f+0.01f );     
+
+        glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
+
+        // Front face
+        glVertex3f(  x0f+0.01f, y0f+0.01f, z0f+0.99f );                                   
+        glVertex3f(  x0f+0.01f, y0f+0.99f, z0f+0.99f );
+        glVertex3f(  x0f+0.99f, y0f+0.99f, z0f+0.99f );                             
+        glVertex3f(  x0f+0.99f, y0f+0.01f, z0f+0.99f );  
+
+        // Back face
+        glVertex3f(  x0f+0.01f, y0f+0.01f, z0f+0.01f );                                   
+        glVertex3f(  x0f+0.01f, y0f+0.99f, z0f+0.01f );
+        glVertex3f(  x0f+0.99f, y0f+0.99f, z0f+0.01f );                             
+        glVertex3f(  x0f+0.99f, y0f+0.01f, z0f+0.01f );    
+
+    glEnd();
+
+}
+
 void renderGameText(){
     char scr[20];
     strcpy(scr, "N E X T  P I E C E:");
@@ -540,17 +579,15 @@ void renderGameText(){
     strcpy(scr, "L E V E L:");
     printTxt(7.3f, 5.5f, scr);
     sprintf(scr, "%d", level);
-    printTxt(7.3f, 3.7f, scr);
+    printTxt(7.3f, 5.0f, scr);
 
     strcpy(scr, "P O I N T S:");
     printTxt(7.3f, 4.0f, scr);
     sprintf(scr, "%d", points);
-    printTxt(7.3f, 3.7f, scr);
+    printTxt(7.3f, 3.5f, scr);
 }
 
-void RenderScene2()
-{
-
+void updateGame(){
     g_CurrentTicks = std::clock();
     float deltaTicks = ( g_CurrentTicks - g_PreviousTicks );
     g_PreviousTicks = g_CurrentTicks;
@@ -559,9 +596,38 @@ void RenderScene2()
     time_sum += fDeltaTime;
     // std::cout<<time_sum;
     if(time_sum>0.01){
-        matrix->translatePieceY(-1);
+        // matrix->translatePieceY(-1);
+        if(!matrix->autoTranslateY()){ // If movement was NOT succesful, stop Piece
+            matrix->nextPiece();
+            matrix->initCurrPiece();
+            points+=20;
+        }
+
         time_sum=0;
+        
     }
+}
+
+void RenderScene2()
+{
+
+    // g_CurrentTicks = std::clock();
+    // float deltaTicks = ( g_CurrentTicks - g_PreviousTicks );
+    // g_PreviousTicks = g_CurrentTicks;
+
+    // float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
+    // time_sum += fDeltaTime;
+    // // std::cout<<time_sum;
+    // if(time_sum>0.01){
+    //     matrix->translatePieceY(-1);
+    //     // matrix->nextPiece();
+    //     // matrix->initCurrPiece();
+
+    //     time_sum=0;
+    //     points+=20;
+    // }
+
+    updateGame();
 
     renderGameText();
 
@@ -580,6 +646,7 @@ void RenderScene2()
     int x,y,z;
 
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
     for (size_t i = 0; i < MATRIX_SIZE; i++){
             cube_aux = matrix->getCubes()[i];
@@ -588,9 +655,20 @@ void RenderScene2()
             x=idToX(i);
             y=idToY(i);
             z=idToZ(i);
+            float r=color/100;
+            float g=(color/10)%10;
+            float b=color%10;
 
             if (cube_aux.isOccupied()){
-                renderCube(x,y,z,color);
+                glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+                renderCube2(x,y,z,color);
+                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+                renderCube(x,y,z,0);
+                
+                // glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
+                // glutSolidCube(0.99);
+                // glColor3f( 0.0f, 0.0f, 0.0f);
+                // glutWireCube(1);
             }
     }
 

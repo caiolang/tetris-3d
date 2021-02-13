@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <iostream>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 #include "Cube.h"
 #include "O_piece.h"
 #include "I_piece.h"
@@ -19,8 +21,9 @@ class Matrix
     private:
 
         Cube m_cubes[2200];
-        std::vector<Piece*> m_pieces;
+        // std::vector<Piece*> m_pieces;
         Piece* m_curr_piece;
+        Piece* m_next_piece;
 
     public:
     
@@ -35,8 +38,9 @@ class Matrix
         // void setAsEmpty(int* ids_vec);
         void setAsPiece(int id0, int id1, int id2, int id3, int color);
         void setAsEmpty(int id0, int id1, int id2, int id3);
-        void initPiece(int piece_id);
+        // void initPiece(int piece_id);
         void initCurrPiece();
+        void nextPiece();
 
         void rotatePieceX();
         void rotatePieceY();
@@ -44,6 +48,7 @@ class Matrix
 
         void translatePieceX(int amount);
         void translatePieceY(int amount);
+        bool autoTranslateY();
         void translatePieceZ(int amount);
 
         Cube* getCubes();

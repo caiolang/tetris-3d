@@ -9,85 +9,50 @@ Matrix::Matrix()
         m_cubes[i]= Cube(idToX(i), idToY(i), idToZ(i), false);
     }
 
-    m_pieces.push_back( new O_piece());
+    // m_pieces.push_back( new O_piece());
 
     // m_curr_piece=m_pieces.at(0);
-
     // m_curr_piece=new O_piece();
+
     m_curr_piece=new T_piece();
-
+    m_next_piece=new O_piece();
 }
-
-// void Matrix::translatePieceX(int amount){
-//     int* buffer;
-//     int old_cubes[4], new_cubes[4];
-//     int color = this->m_curr_piece->getColor();
-
-//     buffer = this->m_curr_piece->getCubes();
-
-//     std::cout << "old cubes: ";
-//     for(int i=0;i<4;i++){
-//         old_cubes[i]=buffer[i];
-//         std::cout << old_cubes[i] << ", ";
-//     }
-//     std::cout << "\n";
-
-//     this->m_curr_piece->translateX(amount);
-
-//     std::cout << "new cubes: ";
-//     for(int i=0;i<4;i++){
-//         new_cubes[i]=buffer[i];
-//         std::cout << new_cubes[i] << ", ";
-//     }
-//     std::cout << "\n";
-
-//     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
-//         // Updating cubes in Matrix
-//         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-//         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
-//     } else {
-//         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-//         std::cout << "\nMovement wasn't safe\n";
-//     }    
-// }
-
 
 void Matrix::translatePieceX(int amount){
     int* buffer;
-    int* buf2;
     int old_cubes[4], new_cubes[4];
     int color = this->m_curr_piece->getColor();
-    Piece dummy_piece=*m_curr_piece;
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
+    std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
+        std::cout << old_cubes[i] << ", ";
     }
     std::cout << "\n";
 
-    dummy_piece.translateX(amount);
-    buf2 = dummy_piece.getCubes();
+    this->m_curr_piece->translateX(amount);
 
-    // std::cout << "new cubes: ";
+    std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
-        new_cubes[i]=buf2[i];
-        // std::cout << new_cubes[i] << ", ";
+        new_cubes[i]=buffer[i];
+        std::cout << new_cubes[i] << ", ";
     }
     std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
-        this->m_curr_piece->translateX(amount);
         // Updating cubes in Matrix
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        // std::cout << "\nMovement wasn't safe\n";
+        std::cout << "\nMovement wasn't safe\n";
     }    
 }
+
+
+
 
 void Matrix::translatePieceY(int amount){
     int* buffer;
@@ -118,6 +83,41 @@ void Matrix::translatePieceY(int amount){
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         std::cout << "\nMovement wasn't safe\n";
+    }    
+}
+
+bool Matrix::autoTranslateY(){
+    int amount=-1;
+    int* buffer;
+    int old_cubes[4], new_cubes[4];
+    int color = this->m_curr_piece->getColor();
+
+    buffer = this->m_curr_piece->getCubes();
+
+    // std::cout << "old cubes: ";
+    for(int i=0;i<4;i++){
+        old_cubes[i]=buffer[i];
+        // std::cout << old_cubes[i] << ", ";
+    }
+    // std::cout << "\n";
+
+    this->m_curr_piece->translateY(amount);
+
+    std::cout << "new cubes: ";
+    for(int i=0;i<4;i++){
+        new_cubes[i]=buffer[i];
+        std::cout << new_cubes[i] << ", ";
+    }
+    std::cout << "\n";
+
+    if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
+        this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
+        return true; // Returns true if movement was successful
+    } else {
+        this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
+        std::cout << "\nMovement wasn't safe\n";
+        return false; // Returns false if movement was NOT successful
     }    
 }
 
@@ -251,16 +251,54 @@ void Matrix::rotatePieceZ(){
 }
 
 
-void Matrix::initPiece(int piece_id){
-    int* cubes = m_pieces.at(piece_id)->getCubes();
+// void Matrix::initPiece(int piece_id){
+//     int* cubes = m_pieces.at(piece_id)->getCubes();
 
-    if( isFree(m_pieces.at(piece_id)->getCubes()) ){
-            std::cout << "\nIS SAFE\n";
-            int color = m_pieces.at(piece_id)->getColor();
-            setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
-        } else {
-            std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
-        }
+//     if( isFree(m_pieces.at(piece_id)->getCubes()) ){
+//             std::cout << "\nIS SAFE\n";
+//             int color = m_pieces.at(piece_id)->getColor();
+//             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
+//         } else {
+//             std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
+//         }
+// }
+
+void Matrix::nextPiece(){
+    int pieceType;
+    this->m_curr_piece = this->m_next_piece;
+    srand (time(NULL));
+
+    pieceType = rand() % 700;
+    pieceType/=100;
+
+    switch (pieceType)
+    {
+    case 0:
+        this->m_next_piece=new I_piece();
+        break;
+    case 1:
+        this->m_next_piece=new J_piece();
+        break;
+    case 2:
+        this->m_next_piece=new L_piece();
+        break;
+    case 3:
+        this->m_next_piece=new O_piece();
+        break;
+    case 4:
+        this->m_next_piece=new S_piece();
+        break;
+    case 5:
+        this->m_next_piece=new T_piece();
+        break;
+    case 6:
+        this->m_next_piece=new Z_piece();
+        break;
+    default:
+        this->m_next_piece=new T_piece();
+        break;
+    }
+
 }
 
 void Matrix::initCurrPiece(){
@@ -270,7 +308,6 @@ void Matrix::initCurrPiece(){
     if( isFree(m_curr_piece->getCubes()) ){
             std::cout << "\nIS SAFE\n";
             int color = m_curr_piece->getColor();
-            // setAsPiece(m_curr_piece->getCubes(),color);
             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
         } else {
             std::cout << "\nNOT SAFE TO INITIALIZE PIECE\n";
