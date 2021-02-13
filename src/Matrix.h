@@ -25,6 +25,9 @@ class Matrix
         Piece* m_curr_piece;
         Piece* m_next_piece;
 
+        Piece* m_curr_ghost;
+        Piece* m_next_ghost;
+
     public:
     
         Matrix(); // Default constructor
@@ -36,11 +39,17 @@ class Matrix
         bool isSafeToMove(int a0,int a1,int a2,int a3,int b0,int b1,int b2,int b3);
         // void setAsPiece(int* ids_vec, int color); // Receives a vector of four elements and a color
         // void setAsEmpty(int* ids_vec);
+
         void setAsPiece(int id0, int id1, int id2, int id3, int color);
         void setAsEmpty(int id0, int id1, int id2, int id3);
+        void setAsGhost(int id0, int id1, int id2, int id3, int color);
+        void setAsNonGhost(int id0, int id1, int id2, int id3);
+
         // void initPiece(int piece_id);
         void initCurrPiece();
+        void initGhostPiece();
         void nextPiece();
+        void updateGhostPiece();
 
         void rotatePieceX();
         void rotatePieceY();
@@ -48,8 +57,12 @@ class Matrix
 
         void translatePieceX(int amount);
         void translatePieceY(int amount);
-        bool autoTranslateY();
+        bool autoTranslateCurrY();
+        bool autoTranslateGhostY();
         void translatePieceZ(int amount);
+
+        int getFreeDeltaY();
+        
 
         Cube* getCubes();
 

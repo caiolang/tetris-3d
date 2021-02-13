@@ -18,10 +18,6 @@ class Piece
         int* getCubes();
         int getColor();
 
-        // void translateX(int* new_pos, int dir);
-        // void translateY(int* new_pos);
-        // void translateZ(int* new_pos,int dir);
-
         void translateX(int amount);
         void translateY(int amount);
         void translateZ(int amount);

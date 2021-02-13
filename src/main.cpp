@@ -59,7 +59,6 @@ void KeyboardGL( unsigned char c, int x, int y );
 void MouseGL( int button, int state, int x, int y );
 void MotionGL( int x, int y );
 void ReshapeGL( int w, int h );
-void printTxt(float x, float y, char *String);
 
 /* 3D Primitives */
 void DrawCube( float width, float height, float depth );
@@ -74,6 +73,7 @@ void makeMove(int piece_id);
 void updateGame();
 void renderCube(int x0, int y0, int z0, int color);
 void renderGameStage();
+void printTxt(float x, float y, char *String);
 
 enum ESceneType
 {
@@ -82,7 +82,7 @@ enum ESceneType
 };
 ESceneType g_eCurrentScene = ST_Scene1;
 
-
+/* Other variables */
 float time_sum = 0.0f;
 int level = 0;
 int points = 0;
@@ -108,30 +108,13 @@ int main( int argc, char* argv[] )
     g_PreviousTicks = std::clock();
 
     matrix->initCurrPiece();
-
+    matrix->updateGhostPiece();
 
     InitGL( argc, argv );
+    ReshapeGL(glutGet(GLUT_SCREEN_WIDTH),glutGet(GLUT_SCREEN_HEIGHT));
     glutMainLoop();
     Cleanup(g_iErrorCode);
 }
-
-// void startPiece(Piece *piece){
-//     // std::cout << "Starting piece " + piece + "\n";
-//     // Cube* cubes;
-//     int color;
-//     int *id;
-
-//     id = piece->getCubes();
-//     matrix[id]
-//     color = piece->getColor();
-
-//     for(int i=0; i<4; i++){
-//         cubes[i].setColor(color);
-//         cubes[i].setOccupied(true);
-//         std::cout << "Cube in position " + piece + "\n";
-//     }
-
-// }
 
 void Cleanup( int errorCode, bool bExit )
 {
@@ -216,7 +199,6 @@ void KeyboardGL( unsigned char c, int x, int y )
     {
     case '1':
         {
-            // glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );                         // White background
             glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
             g_eCurrentScene = ST_Scene1;
         }
@@ -354,12 +336,13 @@ void printTxt(float x, float y, char *String)
     glPopMatrix();
 }
 
-/* Unused Mouse methods */
+/* Unused Mouse method */
 void MouseGL( int button, int state, int x, int y )
 {
 
 }
 
+/* Unused Mouse method */
 void MotionGL( int x, int y )
 {
 
@@ -457,7 +440,7 @@ void renderGameStage(){
 
 }
 
-void renderCube(int x0, int y0, int z0, int color){
+void renderWireCube(int x0, int y0, int z0, int color){
     
     GLfloat x0f=(GLfloat)x0, y0f=(GLfloat)y0, z0f=(GLfloat)z0;
     float r,g,b;
@@ -514,7 +497,7 @@ void renderCube(int x0, int y0, int z0, int color){
 
 }
 
-void renderCube2(int x0, int y0, int z0, int color){
+void renderSolidCube(int x0, int y0, int z0, int color){
     
     GLfloat x0f=(GLfloat)x0, y0f=(GLfloat)y0, z0f=(GLfloat)z0;
     float r,g,b;
@@ -594,12 +577,13 @@ void updateGame(){
 
     float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
     time_sum += fDeltaTime;
-    // std::cout<<time_sum;
+
     if(time_sum>0.01){
-        // matrix->translatePieceY(-1);
-        if(!matrix->autoTranslateY()){ // If movement was NOT succesful, stop Piece
+
+        if(!matrix->autoTranslateCurrY()){ // If movement was NOT succesful, stop Piece
             matrix->nextPiece();
             matrix->initCurrPiece();
+            
             points+=20;
         }
 
@@ -610,22 +594,6 @@ void updateGame(){
 
 void RenderScene2()
 {
-
-    // g_CurrentTicks = std::clock();
-    // float deltaTicks = ( g_CurrentTicks - g_PreviousTicks );
-    // g_PreviousTicks = g_CurrentTicks;
-
-    // float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
-    // time_sum += fDeltaTime;
-    // // std::cout<<time_sum;
-    // if(time_sum>0.01){
-    //     matrix->translatePieceY(-1);
-    //     // matrix->nextPiece();
-    //     // matrix->initCurrPiece();
-
-    //     time_sum=0;
-    //     points+=20;
-    // }
 
     updateGame();
 
@@ -648,6 +616,8 @@ void RenderScene2()
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
+    std::cout << "Free delta Y: \n"<< matrix->getFreeDeltaY() << "\n";
+
     for (size_t i = 0; i < MATRIX_SIZE; i++){
             cube_aux = matrix->getCubes()[i];
             color = cube_aux.getColor();
@@ -661,15 +631,19 @@ void RenderScene2()
 
             if (cube_aux.isOccupied()){
                 glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-                renderCube2(x,y,z,color);
+                renderSolidCube(x,y,z,color);
                 glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-                renderCube(x,y,z,0);
-                
-                // glColor3f( (GLfloat)r, (GLfloat)g, (GLfloat)b);
-                // glutSolidCube(0.99);
-                // glColor3f( 0.0f, 0.0f, 0.0f);
-                // glutWireCube(1);
+                renderWireCube(x,y,z,0);
+
             }
+            
+            if (cube_aux.isGhost())
+            {
+                // std::cout << x << ", " << y << ", " << z << ", " << " is Ghost\n";
+                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+                renderWireCube(x,y,z,color);
+            }
+            
     }
 
     

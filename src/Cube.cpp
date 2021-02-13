@@ -5,7 +5,8 @@ Cube::Cube(){
     m_y = 0;
     m_z = 0;
     m_occupied = false;
-    m_color = 101; // DEFAULT: Violet (TEMPORARY)
+    m_ghost = false;
+    m_color = 101; // DEFAULT: Violet
     // m_piece = NULL; 
 }
 
@@ -15,7 +16,8 @@ Cube::Cube(int pos_x, int pos_y, int pos_z) //Constructor
     m_y = pos_y;
     m_z = pos_z;
     m_occupied = false;
-    m_color = 101; // DEFAULT: Violet (TEMPORARY)
+    m_ghost = false;
+    m_color = 101; // DEFAULT: Violet
     // m_piece = NULL;
 }
 
@@ -25,35 +27,9 @@ Cube::Cube(int pos_x, int pos_y, int pos_z, bool occ) //Constructor
     m_y = pos_y;
     m_z = pos_z;
     m_occupied = occ;
-    m_color = 101; // DEFAULT: Violet (TEMPORARY)
-    // m_piece = NULL;
-
-    //TEMPORARY:
-    // if(pos_x==3){
-    //     m_occupied=true;
-    // }
-
-    // if(pos_x==6 && pos_y==4 && pos_z==3 ){
-    //     m_occupied=true;
-    // }
-
-
-    // if(pos_x==4 && pos_y==20 && pos_z==0 ){
-    //     m_occupied=true;
-    // }
-
-    // if(pos_x==3 && pos_y==20 && pos_z==4 ){
-    //     m_occupied=true;
-    // }
-
-    // if(pos_x==5 && pos_y==19 && pos_z==4 ){
-    //     m_occupied=true;
-    // }
-
-    // if(pos_x==5 && pos_y==20 && pos_z==4 ){
-    //     m_occupied=true;
-    // }
-
+    m_ghost = false;
+    m_color = 101; // DEFAULT: Violet
+    
 }
 
 // Acess methods
@@ -62,6 +38,7 @@ int Cube::getY()  { return m_y; }
 int Cube::getZ()  { return m_z; }
 int Cube::getPos() {return m_x+10*m_z+100*m_y;}
 bool Cube::isOccupied()  { return m_occupied; }
+bool Cube::isGhost()  { return m_ghost; }
 int Cube::getColor() { return m_color;} // TEMPORARY
 
 void Cube::setColor(int color){
@@ -70,12 +47,15 @@ void Cube::setColor(int color){
 
 void Cube::setOccupied(bool state){
     this->m_occupied = state;
-    std::cout << this->m_x << "," << this->m_y << "," << this->m_z << ", " << this->m_occupied <<"\n";
+    // std::cout << this->m_x << "," << this->m_y << "," << this->m_z << ", " << this->m_occupied <<"\n";
+}
+
+void Cube::setGhost(bool state){
+    this->m_ghost = state;
 }
 
 void Cube::print(std::ostream &flux) const
 {
-    // flux << m_heures << "h" << m_minutes << "m" << m_secondes << "s";
     flux << "( " << m_x << ", " << m_y << ", " << m_z << ", " << m_occupied << " )";
 }
 

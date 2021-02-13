@@ -11,7 +11,9 @@ class Cube{
         int m_y;
         int m_z;
         bool m_occupied;
+        bool m_ghost;
         int m_color; // TEMPORARY - three digit (0-111) representing RGB color
+        
     
     public:
         Cube(); // Default constructor 
@@ -23,9 +25,13 @@ class Cube{
         int getZ() ;
         int getPos() ;
         bool isOccupied() ;
+        bool isGhost() ;
+        
         int getColor(); // TEMPORARY
+
         void setColor(int color);
         void setOccupied(bool state);
+        void setGhost(bool state);
 
         void print(std::ostream &flux) const;      
 };
