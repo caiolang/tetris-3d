@@ -9,9 +9,6 @@ Works on MacOS and Linux.
 
 ## To-do
 
-
-* [x] implementar sequência de pecas - mudar seed do rand
-* [ ] fazer uma previsao de qual sera o movimento final da peca se ela apenas for deixada ali caindo - CAIO
 * [ ] implementar mudanca de nível
 * [ ] fazer um andar (linha?) inteiro desaparecer quando for completo (funcoes de checagem para ver se um andar foi completo)
 * [ ] fazer o resto dos andares cair depois que um andar desaparecer
