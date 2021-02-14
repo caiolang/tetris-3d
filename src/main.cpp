@@ -86,6 +86,7 @@ ESceneType g_eCurrentScene = ST_Scene1;
 float time_sum = 0.0f;
 int level = 0;
 int points = 0;
+int rotate = 0;
 
 /* Clock variables */
 std::clock_t g_PreviousTicks;
@@ -238,7 +239,21 @@ void KeyboardGL( unsigned char c, int x, int y )
     case 'D':
         {
             if(g_eCurrentScene==ST_Scene2){
-                matrix->translatePieceX(1);
+                // matrix->translatePieceX(1);
+                switch(rotate){
+                    case 0:
+                        matrix->translatePieceX(1);
+                    break;
+                    case 90:
+                        matrix->translatePieceZ(1);
+                    break;
+                    case 180:
+                        matrix->translatePieceX(-1);
+                    break;
+                    case 270:
+                        matrix->translatePieceZ(-1);
+                    break;
+                }
             }
 
         }
@@ -247,7 +262,21 @@ void KeyboardGL( unsigned char c, int x, int y )
     case 'A':
         {
             if(g_eCurrentScene==ST_Scene2){
-                matrix->translatePieceX(-1);
+                // matrix->translatePieceX(-1);
+                switch(rotate){
+                    case 0:
+                        matrix->translatePieceX(-1);
+                    break;
+                    case 90:
+                        matrix->translatePieceZ(-1);
+                    break;
+                    case 180:
+                        matrix->translatePieceX(1);
+                    break;
+                    case 270:
+                        matrix->translatePieceZ(1);
+                    break;
+                }
             }
 
         }
@@ -256,7 +285,21 @@ void KeyboardGL( unsigned char c, int x, int y )
     case 'W':
         {
             if(g_eCurrentScene==ST_Scene2){
-                matrix->translatePieceZ(-1);
+                // matrix->translatePieceZ(-1);
+                switch(rotate){
+                    case 0:
+                        matrix->translatePieceZ(-1);
+                    break;
+                    case 90:
+                        matrix->translatePieceX(1);
+                    break;
+                    case 180:
+                        matrix->translatePieceZ(1);
+                    break;
+                    case 270:
+                        matrix->translatePieceX(-1);
+                    break;
+                }
             }
         }
         break;
@@ -264,7 +307,21 @@ void KeyboardGL( unsigned char c, int x, int y )
     case 'S':
         {
             if(g_eCurrentScene==ST_Scene2){
-                matrix->translatePieceZ(1);
+                // matrix->translatePieceZ(1);
+                switch(rotate){
+                    case 0:
+                        matrix->translatePieceZ(1);
+                    break;
+                    case 90:
+                        matrix->translatePieceX(-1);
+                    break;
+                    case 180:
+                        matrix->translatePieceZ(-1);
+                    break;
+                    case 270:
+                        matrix->translatePieceX(1);
+                    break;
+                }
             }
         }
         break;
@@ -272,19 +329,25 @@ void KeyboardGL( unsigned char c, int x, int y )
     case 'E':
         {
             if(g_eCurrentScene==ST_Scene2){
-                matrix->translatePieceY(1);
-            }
-        }
-        break;
-    case 'q':
-    case 'Q':
-        {
-            if(g_eCurrentScene==ST_Scene2){
                 matrix->translatePieceY(-1);
             }
         }
         break;
-
+    // case 'q':
+    // case 'Q':
+    //     {
+    //         if(g_eCurrentScene==ST_Scene2){
+    //             matrix->translatePieceY(1);
+    //         }
+    //     }
+    //     break;
+    case 'r':
+    case 'R':
+        {
+            rotate += 90;
+            rotate = rotate%360;
+        }
+        break;
     case '\033': // escape quits
     // case '\015': // Enter quits    
         {
@@ -386,6 +449,62 @@ void RenderScene1()
 
 }
 
+// void renderGameStage(){
+
+//     glColor3f( 0.3f, 0.3f, 0.3f);
+
+//     // Bottom
+//     glBegin( GL_QUADS );
+//         for(GLfloat x0f=0; x0f<X_DIM;x0f++){
+//             for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+//                 glVertex3f(  x0f, 0.0f, z0f );                                   
+//                 glVertex3f(  x0f+1.0f, 0.0f, z0f );
+//                 glVertex3f(  x0f+1.0f, 0.0f, z0f+1.0f );                             
+//                 glVertex3f(  x0f, 0.0f, z0f+1.0f );   
+//             }
+//         }
+//     glEnd();
+
+//     // Left
+//     glBegin( GL_QUADS );
+//         for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+//             for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+//                 glVertex3f(  0.0f, y0f, z0f );                                   
+//                 glVertex3f(  0.0f, y0f, z0f+1.0f );
+//                 glVertex3f(  0.0f, y0f+1.0f, z0f+1.0f );                             
+//                 glVertex3f(  0.0f, y0f+1.0f, z0f );   
+//             }
+//         }
+//     glEnd();
+
+//     // Right
+//     glBegin( GL_QUADS );
+//         for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+//             for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+//                 glVertex3f(  10.0f, y0f, z0f );                                   
+//                 glVertex3f(  10.0f, y0f, z0f+1.0f );
+//                 glVertex3f(  10.0f, y0f+1.0f, z0f+1.0f );                             
+//                 glVertex3f(  10.0f, y0f+1.0f, z0f );   
+//             }
+//         }
+//     glEnd();
+
+//     // Back
+//     glBegin( GL_QUADS );
+//         for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+//             for(GLfloat x0f=0; x0f<X_DIM;x0f++){
+//                 glVertex3f(  x0f, y0f, 0.0f );                                   
+//                 glVertex3f(  x0f, y0f+1.0f, 0.0f );
+//                 glVertex3f(  x0f+1.0f, y0f+1.0f, 0.0f );                             
+//                 glVertex3f(  x0f+1.0f, y0f, 0.0f );   
+//             }
+//         }
+//     glEnd();
+
+      
+
+// }
+
 void renderGameStage(){
 
     glColor3f( 0.3f, 0.3f, 0.3f);
@@ -402,44 +521,62 @@ void renderGameStage(){
         }
     glEnd();
 
-    // Left
-    glBegin( GL_QUADS );
-        for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
-            for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
-                glVertex3f(  0.0f, y0f, z0f );                                   
-                glVertex3f(  0.0f, y0f, z0f+1.0f );
-                glVertex3f(  0.0f, y0f+1.0f, z0f+1.0f );                             
-                glVertex3f(  0.0f, y0f+1.0f, z0f );   
+    if (rotate!=90){ 
+
+        // Left
+        glBegin( GL_QUADS );
+            for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+                for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+                    glVertex3f(  0.0f, y0f, z0f );                                   
+                    glVertex3f(  0.0f, y0f, z0f+1.0f );
+                    glVertex3f(  0.0f, y0f+1.0f, z0f+1.0f );                             
+                    glVertex3f(  0.0f, y0f+1.0f, z0f );   
+                }
             }
-        }
-    glEnd();
+        glEnd();
 
-    // Right
-    glBegin( GL_QUADS );
-        for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
-            for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
-                glVertex3f(  10.0f, y0f, z0f );                                   
-                glVertex3f(  10.0f, y0f, z0f+1.0f );
-                glVertex3f(  10.0f, y0f+1.0f, z0f+1.0f );                             
-                glVertex3f(  10.0f, y0f+1.0f, z0f );   
+    } if (rotate!=270){ 
+
+        // Right
+        glBegin( GL_QUADS );
+            for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+                for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
+                    glVertex3f(  10.0f, y0f, z0f );                                   
+                    glVertex3f(  10.0f, y0f, z0f+1.0f );
+                    glVertex3f(  10.0f, y0f+1.0f, z0f+1.0f );                             
+                    glVertex3f(  10.0f, y0f+1.0f, z0f );   
+                }
             }
-        }
-    glEnd();
+        glEnd();
 
-    // Back
-    glBegin( GL_QUADS );
-        for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
-            for(GLfloat x0f=0; x0f<X_DIM;x0f++){
-                glVertex3f(  x0f, y0f, 0.0f );                                   
-                glVertex3f(  x0f, y0f+1.0f, 0.0f );
-                glVertex3f(  x0f+1.0f, y0f+1.0f, 0.0f );                             
-                glVertex3f(  x0f+1.0f, y0f, 0.0f );   
+    } if (rotate!=180){ 
+
+        // Back
+        glBegin( GL_QUADS );
+            for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+                for(GLfloat x0f=0; x0f<X_DIM;x0f++){
+                    glVertex3f(  x0f, y0f, 0.0f );                                   
+                    glVertex3f(  x0f, y0f+1.0f, 0.0f );
+                    glVertex3f(  x0f+1.0f, y0f+1.0f, 0.0f );                             
+                    glVertex3f(  x0f+1.0f, y0f, 0.0f );   
+                }
             }
-        }
-    glEnd();
+        glEnd();
 
-      
+    } if (rotate!=0){ 
 
+        // Front
+        glBegin( GL_QUADS );
+            for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
+                for(GLfloat x0f=0; x0f<X_DIM;x0f++){
+                    glVertex3f(  x0f, y0f, 10.0f );                                   
+                    glVertex3f(  x0f, y0f+1.0f, 10.0f );
+                    glVertex3f(  x0f+1.0f, y0f+1.0f, 10.0f );                             
+                    glVertex3f(  x0f+1.0f, y0f, 10.0f );   
+                }
+            }
+        glEnd();
+    }
 }
 
 void renderWireCube(int x0, int y0, int z0, int color){
@@ -573,6 +710,7 @@ void renderGameText(){
 }
 
 void updateGame(){
+    
     g_CurrentTicks = std::clock();
     float deltaTicks = ( g_CurrentTicks - g_PreviousTicks );
     g_PreviousTicks = g_CurrentTicks;
@@ -607,6 +745,23 @@ void RenderScene2()
     glEnable( GL_DEPTH_TEST );
     glTranslatef( -5.0f, -10.0f, -30.0f ); // 
     
+    glRotatef( (GLfloat)rotate, 0.0f, 1.0f, 0.0f ); // TEST
+    switch(rotate){
+        case 0:
+        break;
+        case 90:
+            glTranslatef( -10.0f, 0.0f, 0.0f );
+        break;
+        case 180:
+            glTranslatef( -10.0f, 0.0f, -10.0f );
+        break;
+        case 270:
+            glTranslatef( 
+                0.0f, 0.0f, -10.0f );
+        break;
+    }
+
+
     /* Rendering game matrix */
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     renderGameStage();
