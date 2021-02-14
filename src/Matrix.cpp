@@ -146,6 +146,10 @@ bool Matrix::autoTranslateCurrY(){
     }    
 }
 
+/* Verifies for eac cube of m_curr_piece the max it can go down in the
+* y axis and returns the smaller between these distances
+* @returns int - smaller free deltaY below the piece
+*/
 int Matrix::getFreeDeltaY(){
     // verificar para cada cubo de m_curr_piece o y max que pode descer
     // retorna o menor dentre eles
@@ -162,7 +166,8 @@ int Matrix::getFreeDeltaY(){
     int curr_z[4];
 
    
-    int dist_min=0;
+    int dist_min=INT16_MAX;
+    int delta_y=INT16_MAX;
 
 
     for(int i=0;i<4;i++){
@@ -173,37 +178,49 @@ int Matrix::getFreeDeltaY(){
         curr_z[i]=(int) curr_cubes[i]/10;
         curr_z[i]=curr_z[i]%10;
     }
-    std::cout << "curr_x: " << curr_x[0] << ", "<< curr_x[1] << ", "<< curr_x[2] << ", "<< curr_x[3] << "\n";
-    std::cout << "curr_y: " << curr_y[0] << ", "<< curr_y[1] << ", "<< curr_y[2] << ", "<< curr_y[3] << "\n";
-    std::cout << "curr_z: " << curr_z[0] << ", "<< curr_z[1] << ", "<< curr_z[2] << ", "<< curr_z[3] << "\n";
+    // std::cout << "curr_x: " << curr_x[0] << ", "<< curr_x[1] << ", "<< curr_x[2] << ", "<< curr_x[3] << "\n";
+    // std::cout << "curr_y: " << curr_y[0] << ", "<< curr_y[1] << ", "<< curr_y[2] << ", "<< curr_y[3] << "\n";
+    // std::cout << "curr_z: " << curr_z[0] << ", "<< curr_z[1] << ", "<< curr_z[2] << ", "<< curr_z[3] << "\n";
 
-    /* REVER AQUI! */
-    // bool same=false;
-    // for(int i=0; i<4; i++){
+    bool has_lower_neighbour=false;
 
-    //     same=false;
+    for(int i=0; i<4; i++){
 
-    //     for(int j=0; j<4; j++){å
-    //         if(curr_x[i]==curr_x[j] && curr_z[i]==curr_z[j]){
-    //             if(curr_y[i]>curr_y[j]){
-    //                 same=true;
-    //             }
-    //         }
-    //     }
+        delta_y=INT16_MAX;
+        has_lower_neighbour=false;
 
-    //     if(!same){
-    //         for(int y=curr_y[i]-1;y>=0; y--){
-    //             if(m_cubes[curr_x[i]+curr_z[i]*10+y*100].isOccupied()){
-    //                 if(curr_y[i]-y<dist_min){
-    //                     dist_min=curr_y[i]-y;
-    //                 }
-    //             }
-    //         }
-    //     }   
+        for(int j=0; j<4; j++){
+            if(i!=j && curr_x[i]==curr_x[j] && curr_z[i]==curr_z[j]){
+                if(curr_y[i]>curr_y[j]){
+                    has_lower_neighbour=true;
+                } 
+                // std::cout << "\nHas higher neighbour? : " << has_higher_neighbour;
+            }
+        }
 
-    // }
 
-std::cout << "dist_min: " << dist_min << "\n";
+        if(!has_lower_neighbour){
+            for(int y=curr_y[i]-1;y>=0; y--){
+                if(m_cubes[curr_x[i]+curr_z[i]*10+y*100].isOccupied()){
+                    if(curr_y[i]-y-1<delta_y){
+                        delta_y=curr_y[i]-y-1;
+                    }
+                }
+            }
+
+        }
+        
+        if(curr_y[i]<delta_y){
+            delta_y=curr_y[i];
+        }
+
+        if(delta_y<dist_min){
+            dist_min=delta_y;
+        }
+
+    }
+
+// std::cout << "dist_min: ";
 return dist_min;
 
 }
