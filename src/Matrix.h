@@ -49,7 +49,7 @@ class Matrix
 
         // void initPiece(int piece_id);
         void initCurrPiece();
-        void initGhostPiece();
+        // void initGhostPiece();
         void nextPiece();
         void updateGhostPiece();
 

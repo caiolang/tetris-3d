@@ -294,6 +294,8 @@ void KeyboardGL( unsigned char c, int x, int y )
         break;
     }
 
+    matrix->updateGhostPiece();
+
     if ( currentScene != g_eCurrentScene )
     {
         std::cout << "Changed Render Scene: " << ( g_eCurrentScene + 1 ) << std::endl; 
@@ -441,7 +443,7 @@ void renderGameStage(){
 }
 
 void renderWireCube(int x0, int y0, int z0, int color){
-    
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     GLfloat x0f=(GLfloat)x0, y0f=(GLfloat)y0, z0f=(GLfloat)z0;
     float r,g,b;
     r=color/100;
@@ -498,7 +500,7 @@ void renderWireCube(int x0, int y0, int z0, int color){
 }
 
 void renderSolidCube(int x0, int y0, int z0, int color){
-    
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     GLfloat x0f=(GLfloat)x0, y0f=(GLfloat)y0, z0f=(GLfloat)z0;
     float r,g,b;
     r=color/100;
@@ -583,6 +585,7 @@ void updateGame(){
         if(!matrix->autoTranslateCurrY()){ // If movement was NOT succesful, stop Piece
             matrix->nextPiece();
             matrix->initCurrPiece();
+            matrix->updateGhostPiece();
             
             points+=20;
         }
@@ -630,9 +633,7 @@ void RenderScene2()
             float b=color%10;
 
             if (cube_aux.isOccupied()){
-                glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
                 renderSolidCube(x,y,z,color);
-                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
                 renderWireCube(x,y,z,0);
 
             }
@@ -640,7 +641,6 @@ void RenderScene2()
             if (cube_aux.isGhost())
             {
                 // std::cout << x << ", " << y << ", " << z << ", " << " is Ghost\n";
-                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
                 renderWireCube(x,y,z,color);
             }
             

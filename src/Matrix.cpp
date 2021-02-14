@@ -15,10 +15,6 @@ Matrix::Matrix()
     }
 
     m_num_piece=0;
-    // m_pieces.push_back( new O_piece());
-
-    // m_curr_piece=m_pieces.at(0);
-    // m_curr_piece=new O_piece();
 
     m_curr_piece=new T_piece();
     m_curr_ghost=new T_piece();
@@ -29,20 +25,17 @@ Matrix::Matrix()
 
 void Matrix::updateGhostPiece(){
     
-    // bool flag=true;
-    // int* buffer;
-    // int curr_cubes[4];
-    // int ghost_cubes[4];
-    // buffer = this->m_curr_piece->getCubes();
+    int* curr_cubes;
+    int* ghost_cubes;
+    int delta_y=100*getFreeDeltaY();
+    int color = this->m_curr_piece->getColor();
 
-    // std::cout << "Updating Ghost Piece\n";
-    // this->m_curr_ghost->setCubesPos(curr_cubes[0],curr_cubes[1],curr_cubes[2],curr_cubes[3]);
-
-    // while(flag){
-    //     flag=autoTranslateGhostY();
-    // }
-
-
+    curr_cubes = this->m_curr_piece->getCubes();
+    ghost_cubes = this->m_curr_ghost->getCubes();
+    
+    setAsNonGhost(ghost_cubes[0],ghost_cubes[1],ghost_cubes[2],ghost_cubes[3]);
+    m_curr_ghost->setCubesPos(curr_cubes[0]-delta_y,curr_cubes[1]-delta_y,curr_cubes[2]-delta_y,curr_cubes[3]-delta_y);
+    setAsGhost(curr_cubes[0]-delta_y,curr_cubes[1]-delta_y,curr_cubes[2]-delta_y,curr_cubes[3]-delta_y, color);
 }
 
 
@@ -151,11 +144,6 @@ bool Matrix::autoTranslateCurrY(){
 * @returns int - smaller free deltaY below the piece
 */
 int Matrix::getFreeDeltaY(){
-    // verificar para cada cubo de m_curr_piece o y max que pode descer
-    // retorna o menor dentre eles
-
-    // esse valor sera usado para deslocar todas as pecas da ghost em y
-
     int* buffer;
     int curr_cubes[4];
 
@@ -449,20 +437,21 @@ void Matrix::initCurrPiece(){
             std::cout << "\nIT IS SAFE TO INIT PIECE\n";
             int color = m_curr_piece->getColor();
             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
-            initGhostPiece();
+            // initGhostPiece();
+            updateGhostPiece();
         } else {
             std::cout << "\nNOT SAFE TO INIT PIECE\n";
         }
 }
 
-void Matrix::initGhostPiece(){
+// void Matrix::initGhostPiece(){
 
-    int* cubes = m_curr_ghost->getCubes();
-    // std::cout << "\nGhost piece in starting id: " << cubes[0] << "\n";
+//     int* cubes = m_curr_ghost->getCubes();
+//     // std::cout << "\nGhost piece in starting id: " << cubes[0] << "\n";
 
-    int color = m_curr_ghost->getColor();
-    setAsGhost(cubes[0],cubes[1],cubes[2],cubes[3],color);
-}
+//     int color = m_curr_ghost->getColor();
+//     setAsGhost(cubes[0],cubes[1],cubes[2],cubes[3],color);
+// }
 
 
 int Matrix::coordToId(int x, int y, int z){
