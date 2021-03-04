@@ -47,6 +47,11 @@ const int MATRIX_SIZE = 2200;
 const int X_DIM = 10;
 const int Y_DIM = 22;
 const int Z_DIM = 10;
+#ifdef __APPLE__
+const double TIME_MULT = 0.01;
+#else
+const double TIME_MULT = 1;
+#endif
 // const int NUM_PIECES = 20;
 
 Matrix *matrix = new Matrix();
@@ -449,61 +454,6 @@ void RenderScene1()
 
 }
 
-// void renderGameStage(){
-
-//     glColor3f( 0.3f, 0.3f, 0.3f);
-
-//     // Bottom
-//     glBegin( GL_QUADS );
-//         for(GLfloat x0f=0; x0f<X_DIM;x0f++){
-//             for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
-//                 glVertex3f(  x0f, 0.0f, z0f );                                   
-//                 glVertex3f(  x0f+1.0f, 0.0f, z0f );
-//                 glVertex3f(  x0f+1.0f, 0.0f, z0f+1.0f );                             
-//                 glVertex3f(  x0f, 0.0f, z0f+1.0f );   
-//             }
-//         }
-//     glEnd();
-
-//     // Left
-//     glBegin( GL_QUADS );
-//         for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
-//             for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
-//                 glVertex3f(  0.0f, y0f, z0f );                                   
-//                 glVertex3f(  0.0f, y0f, z0f+1.0f );
-//                 glVertex3f(  0.0f, y0f+1.0f, z0f+1.0f );                             
-//                 glVertex3f(  0.0f, y0f+1.0f, z0f );   
-//             }
-//         }
-//     glEnd();
-
-//     // Right
-//     glBegin( GL_QUADS );
-//         for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
-//             for(GLfloat z0f=0; z0f<Z_DIM;z0f++){
-//                 glVertex3f(  10.0f, y0f, z0f );                                   
-//                 glVertex3f(  10.0f, y0f, z0f+1.0f );
-//                 glVertex3f(  10.0f, y0f+1.0f, z0f+1.0f );                             
-//                 glVertex3f(  10.0f, y0f+1.0f, z0f );   
-//             }
-//         }
-//     glEnd();
-
-//     // Back
-//     glBegin( GL_QUADS );
-//         for(GLfloat y0f=0; y0f<Y_DIM;y0f++){
-//             for(GLfloat x0f=0; x0f<X_DIM;x0f++){
-//                 glVertex3f(  x0f, y0f, 0.0f );                                   
-//                 glVertex3f(  x0f, y0f+1.0f, 0.0f );
-//                 glVertex3f(  x0f+1.0f, y0f+1.0f, 0.0f );                             
-//                 glVertex3f(  x0f+1.0f, y0f, 0.0f );   
-//             }
-//         }
-//     glEnd();
-
-      
-
-// }
 
 void renderGameStage(){
 
@@ -695,7 +645,8 @@ void renderSolidCube(int x0, int y0, int z0, int color){
 
 void renderGameText(){
     char scr[20];
-    strcpy(scr, "N E X T  P I E C E:");
+    strcpy(scr, "N E X T:");
+    // strcpy(scr, "N E X T  P I E C E:");
     printTxt(7.3f, 7.0f, scr);
 
     strcpy(scr, "L E V E L:");
@@ -718,10 +669,11 @@ void updateGame(){
     float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
     time_sum += fDeltaTime;
 
-    if(time_sum>1.00){
+    if(time_sum>1*TIME_MULT){ // Change according to platform
 
         if(!matrix->autoTranslateCurrY()){ // If movement was NOT succesful, stop Piece
-            matrix->checkLevel();
+            matrix->checkLevel(); // Checks if the player filled a whole square
+            matrix->killGhost();
             matrix->nextPiece();
             matrix->initCurrPiece();
             matrix->updateGhostPiece();

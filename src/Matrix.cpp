@@ -213,43 +213,7 @@ return dist_min;
 
 }
 
-bool Matrix::autoTranslateGhostY(){
-    // std::cout << "autoTranslateGhostY()\n";
-    // int amount=-1;
-    // int* buffer;
-    // int old_cubes[4], new_cubes[4];
 
-    // int color = m_curr_ghost->getColor();
-    // buffer = m_curr_ghost->getCubes();
-
-    // std::cout << "old ghost cubes: ";
-    // for(int i=0;i<4;i++){
-    //     old_cubes[i]=buffer[i];
-    //     std::cout << old_cubes[i] << ", ";
-    // }
-    // std::cout << "\n";
-
-    // m_curr_ghost->translateY(amount);
-
-    // std::cout << "new ghost cubes: ";
-    // for(int i=0;i<4;i++){
-    //     new_cubes[i]=buffer[i];
-    //     std::cout << new_cubes[i] << ", ";
-    // }
-    // std::cout << "\n";
-
-    // // if(true){
-    // if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
-    //     this->setAsNonGhost(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-    //     this->setAsGhost(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
-    //     return true; // Returns true if movement was successful
-    // } else {
-    //     m_curr_ghost->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-    //     std::cout << "\nAuto translate of Ghost Piece wasn't safe\n";
-    //     return false; // Returns false if movement was NOT successful
-    // }    
-    return true;
-}
 
 void Matrix::translatePieceZ(int amount){
     int* buffer;
@@ -437,7 +401,6 @@ void Matrix::initCurrPiece(){
             std::cout << "\nIT IS SAFE TO INIT PIECE\n";
             int color = m_curr_piece->getColor();
             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
-            // initGhostPiece();
             updateGhostPiece();
         } else {
             std::cout << "\nNOT SAFE TO INIT PIECE\n";
@@ -610,17 +573,25 @@ void Matrix::setAsGhost(int id0, int id1, int id2, int id3, int color){
 }
 
 void Matrix::setAsNonGhost(int id0, int id1, int id2, int id3){
-    int color=111;
 
-    this->m_cubes[id0].setColor(color);
     this->m_cubes[id0].setGhost(false);
-    this->m_cubes[id1].setColor(color);
     this->m_cubes[id1].setGhost(false);
-    this->m_cubes[id2].setColor(color);
     this->m_cubes[id2].setGhost(false);
-    this->m_cubes[id3].setColor(color);
     this->m_cubes[id3].setGhost(false);
     
+}
+
+void Matrix::killGhost(){
+    int* buffer;
+    int ghost_cubes[4];
+
+    buffer = this->m_curr_ghost->getCubes();
+
+    for(int i=0;i<4;i++){
+        ghost_cubes[i]=buffer[i];
+    }
+
+    this->setAsNonGhost(ghost_cubes[0],ghost_cubes[1],ghost_cubes[2],ghost_cubes[3]);
 }
 
 void Matrix::checkLevel(){
@@ -630,9 +601,10 @@ void Matrix::checkLevel(){
             if(this->m_cubes[i*10+j].isOccupied()){
                 check_count++;
             }
-            std::cout << check_count << std::endl;
+            // std::cout << check_count << std::endl;
             if(check_count==10){
                 clearLine(i);
+                i--;
             }
         } 
     }
@@ -648,11 +620,11 @@ void Matrix::clearLine(int line){
     for(int k=line+10; k<220; k+=10){
         for(int j=0; j<10; j++){
             if(this->m_cubes[10*k+j].isOccupied()){
-                aux_color = this->m_cubes[10*line+j].getColor();
+                aux_color = this->m_cubes[10*k+j].getColor();
                 this->m_cubes[10*k+j].setOccupied(color);
                 this->m_cubes[10*k+j].setOccupied(false);
-                this->m_cubes[10*(k-1)+j].setOccupied(true);
-                this->m_cubes[10*(k-1)+j].setColor(aux_color);
+                this->m_cubes[10*(k-10)+j].setOccupied(true);
+                this->m_cubes[10*(k-10)+j].setColor(aux_color);
             }
         }
     }

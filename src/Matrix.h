@@ -52,6 +52,7 @@ class Matrix
         // void initGhostPiece();
         void nextPiece();
         void updateGhostPiece();
+        void killGhost();
 
         void rotatePieceX();
         void rotatePieceY();
@@ -60,7 +61,6 @@ class Matrix
         void translatePieceX(int amount);
         void translatePieceY(int amount);
         bool autoTranslateCurrY();
-        bool autoTranslateGhostY();
         void translatePieceZ(int amount);
         void checkLevel();
         void clearLine(int line);
