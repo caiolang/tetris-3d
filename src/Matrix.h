@@ -62,8 +62,11 @@ class Matrix
         bool autoTranslateCurrY();
         bool autoTranslateGhostY();
         void translatePieceZ(int amount);
+        void checkLevel();
+        void clearLine(int line);
 
         int getFreeDeltaY();
+        
         
 
         Cube* getCubes();

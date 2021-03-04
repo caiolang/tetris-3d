@@ -623,3 +623,37 @@ void Matrix::setAsNonGhost(int id0, int id1, int id2, int id3){
     
 }
 
+void Matrix::checkLevel(){
+    for(int i=0; i<220; i++){
+        int check_count=0;
+        for(int j=0; j<10; j++){
+            if(this->m_cubes[i*10+j].isOccupied()){
+                check_count++;
+            }
+            std::cout << check_count << std::endl;
+            if(check_count==10){
+                clearLine(i);
+            }
+        } 
+    }
+}
+
+void Matrix::clearLine(int line){
+    int color=111;
+    int aux_color=111;
+    for(int j=0; j<10; j++){
+        this->m_cubes[10*line+j].setColor(color);
+        this->m_cubes[10*line+j].setOccupied(false);
+    }
+    for(int k=line+10; k<220; k+=10){
+        for(int j=0; j<10; j++){
+            if(this->m_cubes[10*k+j].isOccupied()){
+                aux_color = this->m_cubes[10*line+j].getColor();
+                this->m_cubes[10*k+j].setOccupied(color);
+                this->m_cubes[10*k+j].setOccupied(false);
+                this->m_cubes[10*(k-1)+j].setOccupied(true);
+                this->m_cubes[10*(k-1)+j].setColor(aux_color);
+            }
+        }
+    }
+}

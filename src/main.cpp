@@ -718,9 +718,10 @@ void updateGame(){
     float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
     time_sum += fDeltaTime;
 
-    if(time_sum>0.01){
+    if(time_sum>1.00){
 
         if(!matrix->autoTranslateCurrY()){ // If movement was NOT succesful, stop Piece
+            matrix->checkLevel();
             matrix->nextPiece();
             matrix->initCurrPiece();
             matrix->updateGhostPiece();
@@ -774,7 +775,7 @@ void RenderScene2()
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-    std::cout << "Free delta Y: \n"<< matrix->getFreeDeltaY() << "\n";
+    // std::cout << "Free delta Y: \n"<< matrix->getFreeDeltaY() << "\n";
 
     for (size_t i = 0; i < MATRIX_SIZE; i++){
             cube_aux = matrix->getCubes()[i];

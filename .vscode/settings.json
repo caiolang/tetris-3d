@@ -53,6 +53,8 @@
         "string_view": "cpp",
         "system_error": "cpp",
         "initializer_list": "cpp",
-        "ranges": "cpp"
-    }
+        "ranges": "cpp",
+        "fstream": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
