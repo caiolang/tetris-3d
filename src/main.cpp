@@ -48,11 +48,10 @@ const int X_DIM = 10;
 const int Y_DIM = 22;
 const int Z_DIM = 10;
 #ifdef __APPLE__
-const double TIME_MULT = 0.01;
+const double TIME_MULT = 0.1; // Time
 #else
 const double TIME_MULT = 1;
 #endif
-// const int NUM_PIECES = 20;
 
 Matrix *matrix = new Matrix();
 
@@ -89,6 +88,7 @@ ESceneType g_eCurrentScene = ST_Scene1;
 
 /* Other variables */
 float time_sum = 0.0f;
+int line_count = 0;
 int level = 0;
 int points = 0;
 int rotate = 0;
@@ -660,6 +660,23 @@ void renderGameText(){
     printTxt(7.3f, 3.5f, scr);
 }
 
+void addLinePoints(int lines_erased){
+    switch(lines_erased){
+        case 1:
+            points+=40*(level+1);
+        break;
+        case 2:
+            points+=100*(level+1);
+        break;
+        case 3:
+            points+=300*(level+1);
+        break;
+        case 4:
+            points+=1200*(level+1);
+        break;
+    }
+}
+
 void updateGame(){
     
     g_CurrentTicks = std::clock();
@@ -668,11 +685,21 @@ void updateGame(){
 
     float fDeltaTime = deltaTicks / (float)CLOCKS_PER_SEC;
     time_sum += fDeltaTime;
+    int completed_lines=0;
 
-    if(time_sum>1*TIME_MULT){ // Change according to platform
+    if(time_sum>TIME_MULT/(level+1)){ // Change according to platform
 
         if(!matrix->autoTranslateCurrY()){ // If movement was NOT succesful, stop Piece
-            matrix->checkLevel(); // Checks if the player filled a whole square
+            completed_lines=matrix->checkLine(); // Checks if the player filled a whole square
+            if(completed_lines!=0){
+                addLinePoints(completed_lines);
+                line_count+=completed_lines;
+
+                if(line_count>=1){
+                    level++;
+                    line_count=0;
+                }
+            }
             matrix->killGhost();
             matrix->nextPiece();
             matrix->initCurrPiece();

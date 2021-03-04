@@ -62,7 +62,7 @@ class Matrix
         void translatePieceY(int amount);
         bool autoTranslateCurrY();
         void translatePieceZ(int amount);
-        void checkLevel();
+        int checkLine();
         void clearLine(int line);
 
         int getFreeDeltaY();

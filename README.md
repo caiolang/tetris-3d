@@ -9,15 +9,16 @@ Works on MacOS and Linux.
 
 ## To-do
 
-* [ ] implementar mudanca de nível
-* [ ] fazer um andar (linha?) inteiro desaparecer quando for completo (funcoes de checagem para ver se um andar foi completo)
-* [ ] fazer o resto dos andares cair depois que um andar desaparecer
-* [ ] contar o numero de pontos de acordo com cada nivel
-* [ ] mudar a velocidade vertical da peca a cada nivel (regular velocidade de acordo com o sistema operacional)
+* [x] implementar mudanca de nível
+* [x] fazer um andar (linha?) inteiro desaparecer quando for completo (funcoes de checagem para ver se um andar foi completo)
+* [x] fazer o resto dos andares cair depois que um andar desaparecer
+* [x] contar o numero de pontos de acordo com cada nivel
+* [x] mudar a velocidade vertical da peca a cada nivel (regular velocidade de acordo com o sistema operacional)
  Parametros: Au niveau 0 on peut faire 5-6 déplacements latéraux avant que
 la pièce tombe d'un rang, au niveau 9 on ne peut plus faire que 1-2 mouvements latéraux. Le niveau 15
 équivaut au niveau de la vitesse à tout le temps appuyer sur la flèche du bas, il n'y a plus de
 déplacements latéraux possibles directement. 
+* [ ] fazer game over
 * [ ] mostrar a proxima peca na direita 
 * [ ] unificar funcoes de rotate e translate (passar ENUM como argumento para saber o eixo)
 * [ ] transformar main.cpp em Game.cpp (organizar em formato de classe)

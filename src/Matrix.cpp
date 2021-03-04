@@ -407,15 +407,6 @@ void Matrix::initCurrPiece(){
         }
 }
 
-// void Matrix::initGhostPiece(){
-
-//     int* cubes = m_curr_ghost->getCubes();
-//     // std::cout << "\nGhost piece in starting id: " << cubes[0] << "\n";
-
-//     int color = m_curr_ghost->getColor();
-//     setAsGhost(cubes[0],cubes[1],cubes[2],cubes[3],color);
-// }
-
 
 int Matrix::coordToId(int x, int y, int z){
     int id = x + 10*y + 100*z;
@@ -594,7 +585,8 @@ void Matrix::killGhost(){
     this->setAsNonGhost(ghost_cubes[0],ghost_cubes[1],ghost_cubes[2],ghost_cubes[3]);
 }
 
-void Matrix::checkLevel(){
+int Matrix::checkLine(){
+    int completed_lines=0;
     for(int i=0; i<220; i++){
         int check_count=0;
         for(int j=0; j<10; j++){
@@ -604,10 +596,12 @@ void Matrix::checkLevel(){
             // std::cout << check_count << std::endl;
             if(check_count==10){
                 clearLine(i);
+                completed_lines++;
                 i--;
             }
         } 
     }
+    return completed_lines;
 }
 
 void Matrix::clearLine(int line){
