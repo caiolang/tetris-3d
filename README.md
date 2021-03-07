@@ -18,8 +18,9 @@ Works on MacOS and Linux.
 la pièce tombe d'un rang, au niveau 9 on ne peut plus faire que 1-2 mouvements latéraux. Le niveau 15
 équivaut au niveau de la vitesse à tout le temps appuyer sur la flèche du bas, il n'y a plus de
 déplacements latéraux possibles directement. 
-* [ ] fazer game over
-* [ ] mostrar a proxima peca na direita 
+* [ ] arrumar fileiras - RAFA
+* [ ] fazer game over - LANG
+* [ ] mostrar a proxima peca na direita - 
 * [ ] unificar funcoes de rotate e translate (passar ENUM como argumento para saber o eixo)
 * [ ] transformar main.cpp em Game.cpp (organizar em formato de classe)
 

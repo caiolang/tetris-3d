@@ -48,7 +48,7 @@ class Matrix
         void setAsNonGhost(int id0, int id1, int id2, int id3);
 
         // void initPiece(int piece_id);
-        void initCurrPiece();
+        bool initCurrPiece();
         // void initGhostPiece();
         void nextPiece();
         void updateGhostPiece();
@@ -64,9 +64,9 @@ class Matrix
         void translatePieceZ(int amount);
         int checkLine();
         void clearLine(int line);
-
         int getFreeDeltaY();
         
+        bool checkGameOver();
         
 
         Cube* getCubes();

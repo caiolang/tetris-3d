@@ -48,9 +48,9 @@ const int X_DIM = 10;
 const int Y_DIM = 22;
 const int Z_DIM = 10;
 #ifdef __APPLE__
-const double TIME_MULT = 0.1; // Time
+const double TIME_MULT = 0.1; // Time parameter for macOS
 #else
-const double TIME_MULT = 1;
+const double TIME_MULT = 1; // Time parameter for Linux
 #endif
 
 Matrix *matrix = new Matrix();
@@ -82,7 +82,8 @@ void printTxt(float x, float y, char *String);
 enum ESceneType
 {
     ST_Scene1 = 0,
-    ST_Scene2
+    ST_Scene2,
+    ST_Scene3
 };
 ESceneType g_eCurrentScene = ST_Scene1;
 
@@ -92,6 +93,7 @@ int line_count = 0;
 int level = 0;
 int points = 0;
 int rotate = 0;
+bool game_over = false;
 
 /* Clock variables */
 std::clock_t g_PreviousTicks;
@@ -101,6 +103,8 @@ std::clock_t g_CurrentTicks;
 void RenderScene1();
 // Render Tetris Game
 void RenderScene2(); 
+// Render Game Over
+void RenderScene3(); 
 
 
 // We're exiting, cleanup the allocated resources.
@@ -185,6 +189,11 @@ void DisplayGL()
             RenderScene2();
         }
         break;
+    case ST_Scene3:
+        {
+            RenderScene3();
+        }
+        break;
     }
 
     glutSwapBuffers();
@@ -203,18 +212,24 @@ void KeyboardGL( unsigned char c, int x, int y )
 
     switch ( c )
     {
-    case '1':
-        {
-            glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
-            g_eCurrentScene = ST_Scene1;
-        }
-        break;
+    // case '1':
+    //     {
+    //         glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
+    //         g_eCurrentScene = ST_Scene1;
+    //     }
+    //     break;
     case '2':
         {
             glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
             g_eCurrentScene = ST_Scene2;
         }
         break;
+    // case '3':
+    //     {
+    //         glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
+    //         g_eCurrentScene = ST_Scene3;
+    //     }
+    //     break;
     case 'i':
     case 'I':
         {
@@ -406,6 +421,40 @@ void printTxt(float x, float y, char *String)
     glPopMatrix();
 }
 
+void printSmallTxt(float x, float y, char *String)
+{
+    /* Available fonts: */
+    // GLUT_BITMAP_8_BY_13
+    // GLUT_BITMAP_9_BY_15
+    // GLUT_BITMAP_TIMES_ROMAN_10
+    // GLUT_BITMAP_TIMES_ROMAN_24
+    // GLUT_BITMAP_HELVETICA_10
+    // GLUT_BITMAP_HELVETICA_12
+    // GLUT_BITMAP_HELVETICA_18
+
+    char *c;
+
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0, 10, 0, 10);
+
+    glColor3f(255.0f, 255.0f, 255.0f);
+    glRasterPos2f(x, y);
+    glDisable(GL_LIGHTING);
+
+    for (c = String; *c != '\0'; c++)
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *c);
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
+
 /* Unused Mouse method */
 void MouseGL( int button, int state, int x, int y )
 {
@@ -448,9 +497,15 @@ void RenderScene1()
 
     char scr[30];
     strcpy(scr, "T E T R I S  3 D");
-    printTxt(5.0f, 5.0f, scr);
-    strcpy(scr, "rafaverissimo e caiolang");
-    printTxt(5.0f, 7.0f, scr);
+    printTxt(3.3f, 7.0f, scr);
+    strcpy(scr, "Press [2] to start");
+    printSmallTxt(3.3f, 6.5f, scr);
+    strcpy(scr, "Rafael Verissimo");
+    printSmallTxt(3.3f, 4.5f, scr);
+    strcpy(scr, "Caio Lang");
+    printSmallTxt(3.3f, 4.0f, scr);
+    strcpy(scr, "2021, ENSTA Paris");
+    printSmallTxt(3.3f, 3.0f, scr);
 
 }
 
@@ -643,21 +698,39 @@ void renderSolidCube(int x0, int y0, int z0, int color){
 
 }
 
+void renderGameOver(){
+    char scr[20];
+    strcpy(scr, "G A M E  O V E R");
+    printTxt(3.3f, 7.0f, scr);
+    strcpy(scr, "Press [ESC] to quit");
+    printSmallTxt(3.3f, 6.5f, scr);
+
+    strcpy(scr, "L E V E L:");
+    printSmallTxt(3.3f, 5.5f, scr);
+    sprintf(scr, "%d", level);
+    printSmallTxt(3.3f, 5.0f, scr);
+
+    strcpy(scr, "P O I N T S:");
+    printSmallTxt(3.3f, 4.0f, scr);
+    sprintf(scr, "%d", points);
+    printSmallTxt(3.3f, 3.5f, scr);
+
+}
+
 void renderGameText(){
     char scr[20];
     strcpy(scr, "N E X T:");
-    // strcpy(scr, "N E X T  P I E C E:");
-    printTxt(7.3f, 7.0f, scr);
+    printSmallTxt(7.6f, 7.0f, scr);
 
     strcpy(scr, "L E V E L:");
-    printTxt(7.3f, 5.5f, scr);
+    printSmallTxt(7.6f, 5.5f, scr);
     sprintf(scr, "%d", level);
-    printTxt(7.3f, 5.0f, scr);
+    printSmallTxt(7.6f, 5.0f, scr);
 
     strcpy(scr, "P O I N T S:");
-    printTxt(7.3f, 4.0f, scr);
+    printSmallTxt(7.6f, 4.0f, scr);
     sprintf(scr, "%d", points);
-    printTxt(7.3f, 3.5f, scr);
+    printSmallTxt(7.6f, 3.5f, scr);
 }
 
 void addLinePoints(int lines_erased){
@@ -676,6 +749,7 @@ void addLinePoints(int lines_erased){
         break;
     }
 }
+
 
 void updateGame(){
     
@@ -700,12 +774,17 @@ void updateGame(){
                     line_count=0;
                 }
             }
+            game_over=matrix->checkGameOver();
             matrix->killGhost();
             matrix->nextPiece();
-            matrix->initCurrPiece();
+            if (!matrix->initCurrPiece())
+            {
+                game_over = true;
+                // std::cout<<"GAME OVER\n";
+            }
             matrix->updateGhostPiece();
-            
-            points+=20;
+
+            points += 20;
         }
 
         time_sum=0;
@@ -715,6 +794,16 @@ void updateGame(){
 
 void RenderScene2()
 {
+    if(game_over){
+        game_over=false;
+        renderGameOver();
+        g_eCurrentScene = ST_Scene3;
+
+        // glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
+        // g_eCurrentScene = ST_Scene1;
+        // std::cout<<"GAME OVER DETECTED\n";
+    }
+    
 
     updateGame();
 
@@ -782,6 +871,13 @@ void RenderScene2()
     }
 
     
+
+}
+
+void RenderScene3()
+{
+
+        renderGameOver();
 
 }
 

@@ -393,7 +393,21 @@ void Matrix::nextPiece(){
 
 }
 
-void Matrix::initCurrPiece(){
+// void Matrix::initCurrPiece(){
+
+//     int* cubes = m_curr_piece->getCubes();
+
+//     if( isFree(m_curr_piece->getCubes()) ){
+//             std::cout << "\nIT IS SAFE TO INIT PIECE\n";
+//             int color = m_curr_piece->getColor();
+//             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
+//             updateGhostPiece();
+//     } else {
+//         std::cout << "\nNOT SAFE TO INIT PIECE\n";
+//     }
+// }
+
+bool Matrix::initCurrPiece(){
 
     int* cubes = m_curr_piece->getCubes();
 
@@ -402,9 +416,11 @@ void Matrix::initCurrPiece(){
             int color = m_curr_piece->getColor();
             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
             updateGhostPiece();
-        } else {
-            std::cout << "\nNOT SAFE TO INIT PIECE\n";
-        }
+            return true;
+    } else {
+        std::cout << "\nNOT SAFE TO INIT PIECE\n";
+        return false;
+    }
 }
 
 
@@ -583,6 +599,20 @@ void Matrix::killGhost(){
     }
 
     this->setAsNonGhost(ghost_cubes[0],ghost_cubes[1],ghost_cubes[2],ghost_cubes[3]);
+}
+
+bool Matrix::checkGameOver(){
+
+    for(int i=0; i<10; i++){
+        for(int j=0; j<10; j++){
+            if(this->m_cubes[2100+i*10+j].isOccupied()){
+                std::cout << "GAME OVER\n";
+                return true;
+            }
+        }
+    } 
+    return false;
+
 }
 
 int Matrix::checkLine(){
