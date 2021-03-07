@@ -63,7 +63,7 @@ class Matrix
         bool autoTranslateCurrY();
         void translatePieceZ(int amount);
         int checkLine();
-        void clearLine(int line);
+        void clearLine(int start, int level, bool transverse);
         int getFreeDeltaY();
         
         bool checkGameOver();

@@ -617,38 +617,88 @@ bool Matrix::checkGameOver(){
 
 int Matrix::checkLine(){
     int completed_lines=0;
-    for(int i=0; i<220; i++){
-        int check_count=0;
+    for(int i=0; i<22; i++){
         for(int j=0; j<10; j++){
-            if(this->m_cubes[i*10+j].isOccupied()){
-                check_count++;
-            }
-            // std::cout << check_count << std::endl;
-            if(check_count==10){
-                clearLine(i);
-                completed_lines++;
-                i--;
+            int check_count1=0;
+            int check_count2=0;
+            for(int k=0; k<10; k++){
+                if(this->m_cubes[i*100+10*j+k].isOccupied()){
+                    check_count1++;
+                }
+                if(this->m_cubes[i*100+j+10*k].isOccupied()){
+                    check_count2++;
+                }
+                // std::cout << check_count << std::endl;
+                if(check_count1==10){
+                    clearLine(j,i, false);
+                    j--;
+                    completed_lines++;
+                }
+                if(check_count2==10){
+                    clearLine(j,i, true);
+                    j--;
+                    completed_lines++;
+                }
             }
         } 
     }
     return completed_lines;
 }
 
-void Matrix::clearLine(int line){
+// void Matrix::clearLine(int line){
+//     int color=111;
+//     int aux_color=111;
+//     for(int j=0; j<10; j++){
+//         this->m_cubes[10*line+j].setColor(color);
+//         this->m_cubes[10*line+j].setOccupied(false);
+//     }
+//     for(int k=line+10; k<220; k+=10){
+//         for(int j=0; j<10; j++){
+//             if(this->m_cubes[10*k+j].isOccupied()){
+//                 aux_color = this->m_cubes[10*k+j].getColor();
+//                 this->m_cubes[10*k+j].setOccupied(color);
+//                 this->m_cubes[10*k+j].setOccupied(false);
+//                 this->m_cubes[10*(k-10)+j].setOccupied(true);
+//                 this->m_cubes[10*(k-10)+j].setColor(aux_color);
+//             }
+//         }
+//     }
+// }
+
+void Matrix::clearLine(int start, int level, bool transverse = false){
     int color=111;
     int aux_color=111;
-    for(int j=0; j<10; j++){
-        this->m_cubes[10*line+j].setColor(color);
-        this->m_cubes[10*line+j].setOccupied(false);
-    }
-    for(int k=line+10; k<220; k+=10){
-        for(int j=0; j<10; j++){
-            if(this->m_cubes[10*k+j].isOccupied()){
-                aux_color = this->m_cubes[10*k+j].getColor();
-                this->m_cubes[10*k+j].setOccupied(color);
-                this->m_cubes[10*k+j].setOccupied(false);
-                this->m_cubes[10*(k-10)+j].setOccupied(true);
-                this->m_cubes[10*(k-10)+j].setColor(aux_color);
+    if(transverse){
+        for(int i=0; i<10 ; i++){
+            this->m_cubes[100*level+start+10*i].setColor(color);
+            this->m_cubes[100*level+start+10*i].setOccupied(false);
+        }
+        for(int k=level+1; k<22; k++){
+            for(int i=0; i<10; i++){
+                if(this->m_cubes[100*k+start+10*i].isOccupied()){
+                    aux_color = this->m_cubes[100*k+start+10*i].getColor();
+                    this->m_cubes[100*k+start+10*i].setOccupied(color);
+                    this->m_cubes[100*k+start+10*i].setOccupied(false);
+                    this->m_cubes[100*(k-1)+start+10*i].setOccupied(true);
+                    this->m_cubes[100*(k-1)+start+10*i].setColor(aux_color);
+                }
+            }
+        }
+    }else{
+        for(int i=0; i<10; i++){
+            this->m_cubes[100*level+10*start+i].setColor(color);
+            this->m_cubes[100*level+10*start+i].setOccupied(false);
+            
+        }
+        for(int k=level+1; k<22; k++){
+            for(int i=0; i<10; i++){
+                if(this->m_cubes[100*k+10*start+i].isOccupied()){
+                    aux_color = this->m_cubes[100*k+10*start+i].getColor();
+                    this->m_cubes[100*k+10*start+i].setOccupied(color);
+                    this->m_cubes[100*k+10*start+i].setOccupied(false);
+                    this->m_cubes[100*(k-1)+10*start+i].setOccupied(true);
+                    this->m_cubes[100*(k-1)+10*start+i].setColor(aux_color);
+                }
             }
         }
     }

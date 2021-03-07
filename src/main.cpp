@@ -765,6 +765,7 @@ void updateGame(){
 
         if(!matrix->autoTranslateCurrY()){ // If movement was NOT succesful, stop Piece
             completed_lines=matrix->checkLine(); // Checks if the player filled a whole square
+            std::cout << completed_lines << std::endl;
             if(completed_lines!=0){
                 addLinePoints(completed_lines);
                 line_count+=completed_lines;
