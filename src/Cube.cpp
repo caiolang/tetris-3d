@@ -7,7 +7,6 @@ Cube::Cube(){
     m_occupied = false;
     m_ghost = false;
     m_color = 101; // DEFAULT: Violet
-    // m_piece = NULL; 
 }
 
 Cube::Cube(int pos_x, int pos_y, int pos_z) //Constructor 
@@ -18,7 +17,6 @@ Cube::Cube(int pos_x, int pos_y, int pos_z) //Constructor
     m_occupied = false;
     m_ghost = false;
     m_color = 101; // DEFAULT: Violet
-    // m_piece = NULL;
 }
 
 Cube::Cube(int pos_x, int pos_y, int pos_z, bool occ) //Constructor 
@@ -39,7 +37,7 @@ int Cube::getZ()  { return m_z; }
 int Cube::getPos() {return m_x+10*m_z+100*m_y;}
 bool Cube::isOccupied()  { return m_occupied; }
 bool Cube::isGhost()  { return m_ghost; }
-int Cube::getColor() { return m_color;} // TEMPORARY
+int Cube::getColor() { return m_color;} 
 
 void Cube::setColor(int color){
     this->m_color = color;
@@ -47,7 +45,6 @@ void Cube::setColor(int color){
 
 void Cube::setOccupied(bool state){
     this->m_occupied = state;
-    // std::cout << this->m_x << "," << this->m_y << "," << this->m_z << ", " << this->m_occupied <<"\n";
 }
 
 void Cube::setGhost(bool state){

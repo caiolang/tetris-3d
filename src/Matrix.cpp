@@ -46,21 +46,15 @@ void Matrix::translatePieceX(int amount){
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     this->m_curr_piece->translateX(amount);
 
-    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        // std::cout << new_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         // Updating cubes in Matrix
@@ -68,7 +62,6 @@ void Matrix::translatePieceX(int amount){
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -79,28 +72,21 @@ void Matrix::translatePieceY(int amount){
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     this->m_curr_piece->translateY(amount);
 
-    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        // std::cout << new_cubes[i] << ", ";
     }
-    // std::cout << "\n";
-
+    
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -112,21 +98,15 @@ bool Matrix::autoTranslateCurrY(){
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     this->m_curr_piece->translateY(amount);
 
-    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        // std::cout << new_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
@@ -134,7 +114,7 @@ bool Matrix::autoTranslateCurrY(){
         return true; // Returns true if movement was successful
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        std::cout << "\nAuto translate of Current Piece wasn't safe\n";
+        // std::cout << "\nAuto translate of Current Piece wasn't safe\n";
         return false; // Returns false if movement was NOT successful
     }    
 }
@@ -160,16 +140,12 @@ int Matrix::getFreeDeltaY(){
 
     for(int i=0;i<4;i++){
         curr_cubes[i]=buffer[i];
-        // std::cout << curr_cubes[i] << ", ";
         curr_x[i]=(int) curr_cubes[i]%10;
         curr_y[i]=(int) curr_cubes[i]/100;
         curr_z[i]=(int) curr_cubes[i]/10;
         curr_z[i]=curr_z[i]%10;
     }
-    // std::cout << "curr_x: " << curr_x[0] << ", "<< curr_x[1] << ", "<< curr_x[2] << ", "<< curr_x[3] << "\n";
-    // std::cout << "curr_y: " << curr_y[0] << ", "<< curr_y[1] << ", "<< curr_y[2] << ", "<< curr_y[3] << "\n";
-    // std::cout << "curr_z: " << curr_z[0] << ", "<< curr_z[1] << ", "<< curr_z[2] << ", "<< curr_z[3] << "\n";
-
+   
     bool has_lower_neighbour=false;
 
     for(int i=0; i<4; i++){
@@ -182,7 +158,6 @@ int Matrix::getFreeDeltaY(){
                 if(curr_y[i]>curr_y[j]){
                     has_lower_neighbour=true;
                 } 
-                // std::cout << "\nHas higher neighbour? : " << has_higher_neighbour;
             }
         }
 
@@ -207,8 +182,6 @@ int Matrix::getFreeDeltaY(){
         }
 
     }
-
-// std::cout << "dist_min: ";
 return dist_min;
 
 }
@@ -222,28 +195,21 @@ void Matrix::translatePieceZ(int amount){
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     this->m_curr_piece->translateZ(amount);
 
-    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        // std::cout << new_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -254,28 +220,21 @@ void Matrix::rotatePieceX(){
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     this->m_curr_piece->rotateX();
 
-    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        // std::cout << new_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -286,28 +245,21 @@ void Matrix::rotatePieceY(){
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     this->m_curr_piece->rotateY();
 
-    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        // std::cout << new_cubes[i] << ", ";
     }
-    // std::cout << "\n";
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -318,28 +270,23 @@ void Matrix::rotatePieceZ(){
 
     buffer = this->m_curr_piece->getCubes();
 
-    // std::cout << "old cubes: ";
     for(int i=0;i<4;i++){
         old_cubes[i]=buffer[i];
-        // std::cout << old_cubes[i] << ", ";
     }
-    // std::cout << "\n";
+
 
     this->m_curr_piece->rotateZ();
 
-    // std::cout << "new cubes: ";
     for(int i=0;i<4;i++){
         new_cubes[i]=buffer[i];
-        // std::cout << new_cubes[i] << ", ";
     }
-    // std::cout << "\n";
+  
 
     if(this->isSafeToMove(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3])){
         this->setAsEmpty(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
         this->setAsPiece(new_cubes[0],new_cubes[1],new_cubes[2],new_cubes[3],color);
     } else {
         this->m_curr_piece->setCubesPos(old_cubes[0],old_cubes[1],old_cubes[2],old_cubes[3]);
-        // std::cout << "\nMovement wasn't safe\n";
     }    
 }
 
@@ -393,19 +340,6 @@ void Matrix::nextPiece(){
 
 }
 
-// void Matrix::initCurrPiece(){
-
-//     int* cubes = m_curr_piece->getCubes();
-
-//     if( isFree(m_curr_piece->getCubes()) ){
-//             std::cout << "\nIT IS SAFE TO INIT PIECE\n";
-//             int color = m_curr_piece->getColor();
-//             setAsPiece(cubes[0],cubes[1],cubes[2],cubes[3],color);
-//             updateGhostPiece();
-//     } else {
-//         std::cout << "\nNOT SAFE TO INIT PIECE\n";
-//     }
-// }
 
 bool Matrix::initCurrPiece(){
 
@@ -464,7 +398,6 @@ bool Matrix::isFree(int* ids_vec){
         id = ids_vec[i];
         if(this->m_cubes[id].isOccupied()){
             safe=false;
-            std::cout << "\nCube of id " << id << " is not free\n";
         }
     }
     
@@ -497,7 +430,6 @@ bool Matrix::isSafeToMove(int new0,int new1,int new2,int new3,int old0,int old1,
     int dist3 = std::abs(coord[0][3]-coord[0][0])+std::abs(coord[1][3]-coord[1][0])+std::abs(coord[2][3]-coord[2][0]);
     if(dist1>4 || dist2>4 || dist3>4){
         safe=false;
-        // std::cout << "\nNot safe to move\n";
         return safe;
     }
 
@@ -509,7 +441,6 @@ bool Matrix::isSafeToMove(int new0,int new1,int new2,int new3,int old0,int old1,
         if(this->m_cubes[newPos[i]].isOccupied()){
             if(newPos[i]!=oldPos[0] && newPos[i]!=oldPos[1] && newPos[i]!=oldPos[2] && newPos[i]!=oldPos[3]){
                 safe=false;
-                // std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
                 return safe;
             }
         }
@@ -517,19 +448,16 @@ bool Matrix::isSafeToMove(int new0,int new1,int new2,int new3,int old0,int old1,
         // Checking if new position doesn't go out-of-bounds
         if(newPos[i]>2199 || newPos[i]<0){
             safe=false;
-            // std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
             return safe;
         }
 
         if( (idToX(newPos[i])==0 && idToX(oldPos[i])==9) || (idToX(newPos[i])==9 && idToX(oldPos[i])==0) ){
             safe=false;
-            // std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
             return safe;
         }
 
         if( (idToZ(newPos[i])==0 && idToZ(oldPos[i])==9) || (idToZ(newPos[i])==9 && idToZ(oldPos[i])==0) ){
             safe=false;
-            // std::cout << "\nCube of id " << newPos[i] << " is not safe\n";
             return safe;
         }
 
@@ -628,7 +556,6 @@ int Matrix::checkLine(){
                 if(this->m_cubes[i*100+j+10*k].isOccupied()){
                     check_count2++;
                 }
-                // std::cout << check_count << std::endl;
                 if(check_count1==10){
                     clearLine(j,i, false);
                     j--;
@@ -644,26 +571,6 @@ int Matrix::checkLine(){
     }
     return completed_lines;
 }
-
-// void Matrix::clearLine(int line){
-//     int color=111;
-//     int aux_color=111;
-//     for(int j=0; j<10; j++){
-//         this->m_cubes[10*line+j].setColor(color);
-//         this->m_cubes[10*line+j].setOccupied(false);
-//     }
-//     for(int k=line+10; k<220; k+=10){
-//         for(int j=0; j<10; j++){
-//             if(this->m_cubes[10*k+j].isOccupied()){
-//                 aux_color = this->m_cubes[10*k+j].getColor();
-//                 this->m_cubes[10*k+j].setOccupied(color);
-//                 this->m_cubes[10*k+j].setOccupied(false);
-//                 this->m_cubes[10*(k-10)+j].setOccupied(true);
-//                 this->m_cubes[10*(k-10)+j].setColor(aux_color);
-//             }
-//         }
-//     }
-// }
 
 void Matrix::clearLine(int start, int level, bool transverse = false){
     int color=111;

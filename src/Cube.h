@@ -12,7 +12,7 @@ class Cube{
         int m_z;
         bool m_occupied;
         bool m_ghost;
-        int m_color; // TEMPORARY - three digit (0-111) representing RGB color
+        int m_color; 
         
     
     public:
@@ -27,7 +27,7 @@ class Cube{
         bool isOccupied() ;
         bool isGhost() ;
         
-        int getColor(); // TEMPORARY
+        int getColor(); 
 
         void setColor(int color);
         void setOccupied(bool state);

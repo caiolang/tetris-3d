@@ -39,17 +39,12 @@ class Matrix
         int idToZ(int id);
         bool isFree(int* ids_vec); // Receives a vector of four elements
         bool isSafeToMove(int a0,int a1,int a2,int a3,int b0,int b1,int b2,int b3);
-        // void setAsPiece(int* ids_vec, int color); // Receives a vector of four elements and a color
-        // void setAsEmpty(int* ids_vec);
-
         void setAsPiece(int id0, int id1, int id2, int id3, int color);
         void setAsEmpty(int id0, int id1, int id2, int id3);
         void setAsGhost(int id0, int id1, int id2, int id3, int color);
         void setAsNonGhost(int id0, int id1, int id2, int id3);
 
-        // void initPiece(int piece_id);
         bool initCurrPiece();
-        // void initGhostPiece();
         void nextPiece();
         void updateGhostPiece();
         void killGhost();

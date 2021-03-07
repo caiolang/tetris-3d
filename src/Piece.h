@@ -22,7 +22,6 @@ class Piece
         void translateY(int amount);
         void translateZ(int amount);
 
-        // void checkRotateX(int* new_pos);
         void rotateX();
         void rotateY();
         void rotateZ();
