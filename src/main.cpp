@@ -100,11 +100,11 @@ std::clock_t g_PreviousTicks;
 std::clock_t g_CurrentTicks;
 
 // Render main menu
-void RenderScene1();
+void renderSceneIntro();
 // Render Tetris Game
-void RenderScene2(); 
+void renderSceneGame(); 
 // Render Game Over
-void RenderScene3(); 
+void renderSceneEndGame(); 
 
 
 // We're exiting, cleanup the allocated resources.
@@ -181,17 +181,19 @@ void DisplayGL()
     {
     case ST_Scene1:
         {
-            RenderScene1();
+            renderSceneIntro();
         }
         break;
     case ST_Scene2:
         {
-            RenderScene2();
+
+            renderSceneGame();
+
         }
         break;
     case ST_Scene3:
         {
-            RenderScene3();
+            renderSceneEndGame();
         }
         break;
     }
@@ -221,7 +223,9 @@ void KeyboardGL( unsigned char c, int x, int y )
     case '2':
         {
             glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
-            g_eCurrentScene = ST_Scene2;
+            if(!game_over){
+                g_eCurrentScene = ST_Scene2;
+            }
         }
         break;
     // case '3':
@@ -489,7 +493,7 @@ void ReshapeGL( int w, int h )
     glutPostRedisplay();
 }
 
-void RenderScene1()
+void renderSceneIntro()
 {
 
     glMatrixMode( GL_MODELVIEW );                                           // Switch to modelview matrix mode
@@ -497,18 +501,30 @@ void RenderScene1()
 
     char scr[30];
     strcpy(scr, "T E T R I S  3 D");
-    printTxt(3.3f, 7.0f, scr);
+    printTxt(3.3f, 8.0f, scr);
     strcpy(scr, "Press [2] to start");
-    printSmallTxt(3.3f, 6.5f, scr);
-    strcpy(scr, "Rafael Verissimo");
+    printSmallTxt(3.3f, 7.5f, scr);
+
+    strcpy(scr, "[W][A][S][D] : move laterally");
+    printSmallTxt(3.3f, 6.0f, scr);
+    strcpy(scr, "[E] : move down");
+    printSmallTxt(3.3f, 5.5f, scr);
+    strcpy(scr, "[R] : rotate game");
+    printSmallTxt(3.3f, 5.0f, scr);
+    strcpy(scr, "[I][O][P] : rotate piece");
     printSmallTxt(3.3f, 4.5f, scr);
-    strcpy(scr, "Caio Lang");
+    strcpy(scr, "[E] : move down");
     printSmallTxt(3.3f, 4.0f, scr);
+   
+
+    strcpy(scr, "Rafael Verissimo");
+    printSmallTxt(3.3f, 2.5f, scr);
+    strcpy(scr, "Caio Lang");
+    printSmallTxt(3.3f, 2.0f, scr);
     strcpy(scr, "2021, ENSTA Paris");
-    printSmallTxt(3.3f, 3.0f, scr);
+    printSmallTxt(3.3f, 1.0f, scr);
 
 }
-
 
 void renderGameStage(){
 
@@ -719,8 +735,8 @@ void renderGameOver(){
 
 void renderGameText(){
     char scr[20];
-    strcpy(scr, "N E X T:");
-    printSmallTxt(7.6f, 7.0f, scr);
+    // strcpy(scr, "N E X T:");
+    // printSmallTxt(7.6f, 7.0f, scr);
 
     strcpy(scr, "L E V E L:");
     printSmallTxt(7.6f, 5.5f, scr);
@@ -749,7 +765,6 @@ void addLinePoints(int lines_erased){
         break;
     }
 }
-
 
 void updateGame(){
     
@@ -792,29 +807,57 @@ void updateGame(){
     }
 }
 
-void RenderScene2()
+void renderNextPiece(){
+    // int x,y,z,x_aux,y_aux,z_aux;
+    
+    // x_aux=12;
+    // y_aux=12;
+    // z_aux=8;
+    // x=x_aux;
+    // y=y_aux;
+    // z=z_aux;
+
+    // switch (rotate)
+    // {
+    // case 0:
+    //     x=x_aux;
+    //     z=z_aux;
+    //     break;
+    // case 90:
+    //     x=-z_aux;
+    //     z=x_aux;
+    //     break;
+    // case 180:
+
+    //     break;
+    // case 270:
+    //     x=-z_aux;
+    //     z=x_aux;
+    //     break;
+    // }
+
+    // renderWireCube(x,y,z,101);
+}
+
+void renderSceneGame()
 {
     if(game_over){
-        game_over=false;
         renderGameOver();
         g_eCurrentScene = ST_Scene3;
-
-        // glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
-        // g_eCurrentScene = ST_Scene1;
-        // std::cout<<"GAME OVER DETECTED\n";
     }
     
-
     updateGame();
 
     renderGameText();
+
+    renderNextPiece();
 
     glMatrixMode( GL_MODELVIEW ); // Switch to modelview matrix mode
     glLoadIdentity(); // Load the identity matrix
     glEnable( GL_DEPTH_TEST );
     glTranslatef( -5.0f, -10.0f, -30.0f ); // 
     
-    glRotatef( (GLfloat)rotate, 0.0f, 1.0f, 0.0f ); // TEST
+    glRotatef( (GLfloat)rotate, 0.0f, 1.0f, 0.0f ); // 
     switch(rotate){
         case 0:
         break;
@@ -874,11 +917,9 @@ void RenderScene2()
 
 }
 
-void RenderScene3()
+void renderSceneEndGame()
 {
-
         renderGameOver();
-
 }
 
 
