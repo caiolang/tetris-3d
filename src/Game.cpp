@@ -228,12 +228,7 @@ void KeyboardGL( unsigned char c, int x, int y )
             }
         }
         break;
-    // case '3':
-    //     {
-    //         glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );                         // Black background
-    //         g_eCurrentScene = ST_Scene3;
-    //     }
-    //     break;
+        
     case 'i':
     case 'I':
         {
@@ -357,14 +352,6 @@ void KeyboardGL( unsigned char c, int x, int y )
             }
         }
         break;
-    // case 'q':
-    // case 'Q':
-    //     {
-    //         if(g_eCurrentScene==ST_Scene2){
-    //             matrix->translatePieceY(1);
-    //         }
-    //     }
-    //     break;
     case 'r':
     case 'R':
         {
@@ -427,15 +414,6 @@ void printTxt(float x, float y, char *String)
 
 void printSmallTxt(float x, float y, char *String)
 {
-    /* Available fonts: */
-    // GLUT_BITMAP_8_BY_13
-    // GLUT_BITMAP_9_BY_15
-    // GLUT_BITMAP_TIMES_ROMAN_10
-    // GLUT_BITMAP_TIMES_ROMAN_24
-    // GLUT_BITMAP_HELVETICA_10
-    // GLUT_BITMAP_HELVETICA_12
-    // GLUT_BITMAP_HELVETICA_18
-
     char *c;
 
     glPushMatrix();
@@ -735,8 +713,6 @@ void renderGameOver(){
 
 void renderGameText(){
     char scr[20];
-    // strcpy(scr, "N E X T:");
-    // printSmallTxt(7.6f, 7.0f, scr);
 
     strcpy(scr, "L E V E L:");
     printSmallTxt(7.6f, 5.5f, scr);
